@@ -74,6 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'controller.context_processors.global_data',
+                'academics.context_processors.global_data',
             ],
         },
     },

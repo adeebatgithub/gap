@@ -40,8 +40,10 @@ class Student(TimeStampedModel):
 
 
 class AcademicYear(TimeStampedModel):
+    name = models.CharField(max_length=100)
     start_date = models.DateField()
     end_date = models.DateField()
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.start_date.strftime("%B %Y")
@@ -59,3 +61,8 @@ class Enrollment(TimeStampedModel):
     school_class = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
     status = models.IntegerField(choices=STATUS_CHOICES, default=ACTIVE)
     academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        if not self.academic_year_id:
+            self.academic_year = AcademicYear.objects.get(is_active=True)
+        return super().save(*args, **kwargs)
