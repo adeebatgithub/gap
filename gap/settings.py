@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-%f@w4h=rj#kk7n3rqmv*8*xcr6v83b@h9icr@cy=feus@2#b1^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 PROJECT_NAME = "GAP"
 

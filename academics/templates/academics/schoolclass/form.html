@@ -6,33 +6,33 @@
 
 {% block navbar_btns %}
     <a href="{% url 'academics:schoolclass:list' %}"
-       class="inline-flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+       class="hidden sm:inline-flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
         <i class="bi bi-arrow-left"></i> Back to List
     </a>
 {% endblock %}
 
 {% block content %}
     <div class="max-w-3xl mx-auto">
-        <div class="bg-white shadow-sm rounded-xl overflow-hidden">
+        <div class="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100 sm:border-transparent">
 
-            <div class="px-6 py-5 border-b border-gray-100 bg-gray-50/50">
-                <h3 class="text-lg font-semibold text-gray-900">
+            <div class="px-4 py-4 sm:px-6 sm:py-5 border-b border-gray-100 bg-gray-50/50">
+                <h3 class="text-base sm:text-lg font-semibold text-gray-900">
                     {% if form.instance.pk %}
                         Update Class Details
                     {% else %}
                         Class Information
                     {% endif %}
                 </h3>
-                <p class="mt-1 text-sm text-gray-500">
+                <p class="mt-1 text-xs sm:text-sm text-gray-500">
                     {% if form.instance.pk %}
-                        Modify the existing information for this teacher.
+                        Modify the existing information for this class.
                     {% else %}
                         Fill in the details below to add a new class to the system.
                     {% endif %}
                 </p>
             </div>
 
-            <div class="p-6">
+            <div class="p-4 sm:p-6">
                 {% url 'academics:schoolclass:list' as cancel_destination %}
 
                 {% include 'includes/form.html' with form=form show_secondary_btn=True secondary_btn_url=cancel_destination secondary_btn_label="Cancel" %}
