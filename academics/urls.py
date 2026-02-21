@@ -9,4 +9,5 @@ urlpatterns = [
     path('', DashboardView.as_view(), name='dashboard'),
 
     path('teachers/', include('academics.teacher.urls')),
+    path('schoolclass/', include('academics.schoolclass.urls')),
 ]

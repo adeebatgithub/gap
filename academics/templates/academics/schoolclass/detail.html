@@ -1,0 +1,186 @@
+{% extends 'includes/base.html' %}
+
+{% block navbar_title %}
+    Class Details
+{% endblock %}
+
+{% block navbar_btns %}
+    <a href="{% url 'academics:schoolclass:list' %}"
+       class="inline-flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+        <i class="bi bi-arrow-left"></i> Back to Classes
+    </a>
+    <a href="{% url 'academics:schoolclass:update' school_class.pk %}"
+       class="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+        <i class="bi bi-pencil"></i> Edit Class
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="max-w-6xl mx-auto space-y-6">
+
+        <div class="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
+
+            <div class="px-6 py-6 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="h-14 w-14 rounded-lg bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-600 flex-shrink-0">
+                        <i class="bi bi-easel text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">{{ school_class }}</h2>
+                        <p class="text-sm font-medium text-gray-500 mt-1">
+                            Class Teacher: <span
+                                class="text-gray-700">{{ school_class.class_teacher|default:"Not assigned" }}</span>
+                        </p>
+                    </div>
+                </div>
+
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                    Active Class
+                </span>
+            </div>
+
+            <div class="px-6 py-6">
+                <dl class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                    <div>
+                        <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="bi bi-door-open text-gray-400"></i> Room Number
+                        </dt>
+                        <dd class="mt-1 text-sm text-gray-900 font-medium">{{ school_class.room_number|default:"TBD" }}</dd>
+                    </div>
+
+                    <div>
+                        <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="bi bi-clock text-gray-400"></i> Schedule
+                        </dt>
+                        <dd class="mt-1 text-sm text-gray-900 font-medium">{{ school_class.schedule|default:"Mon-Fri" }}</dd>
+                    </div>
+
+                    <div>
+                        <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="bi bi-people text-gray-400"></i> Total Capacity
+                        </dt>
+                        <dd class="mt-1 text-sm text-gray-900 font-medium">{{ school_class.capacity|default:"30" }}
+                            Students
+                        </dd>
+                    </div>
+
+                    <div>
+                        <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="bi bi-calendar3 text-gray-400"></i> Academic Year
+                        </dt>
+                        <dd class="mt-1 text-sm text-gray-900 font-medium">{{ school_class.academic_year|default:"2025-2026" }}</dd>
+                    </div>
+
+                </dl>
+            </div>
+        </div>
+
+        <div class="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
+
+            <div class="px-6 py-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                        Enrolled Students
+                        <span class="bg-gray-100 text-gray-600 py-0.5 px-2.5 rounded-full text-xs font-bold border border-gray-200">
+                            {{ students|length }}
+                        </span>
+                    </h3>
+                </div>
+
+                <div>
+                    <a href=""
+                       class="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors">
+                        <i class="bi bi-plus"></i> Add Student
+                    </a>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-100">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 font-semibold tracking-wider w-16 text-center">
+                            Roll No
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-semibold tracking-wider">
+                            Student Name
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-semibold tracking-wider">
+                            Gender / Email
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-right font-semibold tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                    {% for student in students %}
+                        <tr class="hover:bg-gray-50 transition-colors duration-150 group">
+
+                            <td class="px-6 py-3 whitespace-nowrap text-center font-medium text-gray-600">
+                                {{ student.roll_number|default:"-" }}
+                            </td>
+
+                            <td class="px-6 py-3 whitespace-nowrap font-medium text-gray-900 flex items-center gap-3">
+                                <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 flex-shrink-0 overflow-hidden">
+                                    <i class="bi bi-person-fill"></i>
+                                </div>
+                                {{ student }}
+                            </td>
+
+                            <td class="px-6 py-3 whitespace-nowrap text-gray-600">
+                                {{ student.gender|default:"N/A" }}
+                                {% if student.email %}
+                                    <span class="text-gray-400 mx-1">|</span>
+                                    <a href="mailto:{{ student.email }}"
+                                       class="text-blue-600 hover:underline">{{ student.email }}</a>
+                                {% endif %}
+                            </td>
+
+                            <td class="px-6 py-3 whitespace-nowrap text-right">
+                                <div class="flex items-center justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+
+                                    <a href="{% url 'academics:student:detail' student.pk %}"
+                                       class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors"
+                                       title="View Student">
+                                        View
+                                    </a>
+
+                                    <form method="POST"
+                                          action="{% url 'academics:student:remove_from_class' student.pk %}"
+                                          class="inline-block m-0 p-0"
+                                          onsubmit="return confirm('Remove {{ student }} from this class?');">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="class_id" value="{{ school_class.pk }}">
+                                        <button type="submit"
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded transition-colors cursor-pointer"
+                                                title="Remove from Class">
+                                            Remove
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="px-6 py-12 text-center text-gray-500">
+                                <div class="flex flex-col items-center justify-center">
+                                    <div class="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
+                                        <i class="bi bi-people text-3xl text-gray-400"></i>
+                                    </div>
+                                    <p class="text-base font-medium text-gray-900">No students enrolled yet</p>
+                                    <p class="text-sm mt-1">Students assigned to this class will appear here.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}
