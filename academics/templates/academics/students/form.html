@@ -1,11 +1,11 @@
 {% extends 'includes/base.html' %}
 
 {% block navbar_title %}
-    {% if form.instance.pk %}Edit Subject{% else %}Add New Subject{% endif %}
+    {% if form.instance.pk %}Edit Student{% else %}Add New Student{% endif %}
 {% endblock %}
 
 {% block navbar_btns %}
-    <a href="{% url 'academics:subject:list' %}"
+    <a href="{% url 'academics:student:list' %}"
        class="hidden sm:inline-flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
         <i class="bi bi-arrow-left"></i> Back to List
     </a>
@@ -18,22 +18,22 @@
             <div class="px-4 py-4 sm:px-6 sm:py-5 border-b border-gray-100 bg-gray-50/50">
                 <h3 class="text-base sm:text-lg font-semibold text-gray-900">
                     {% if form.instance.pk %}
-                        Update Subject Details
+                        Update Student Details
                     {% else %}
-                        Subject Information
+                        Student Information
                     {% endif %}
                 </h3>
                 <p class="mt-1 text-xs sm:text-sm text-gray-500">
                     {% if form.instance.pk %}
-                        Modify the existing information for this subject.
+                        Modify the existing information for this student.
                     {% else %}
-                        Fill in the details below to add a new subject to the system.
+                        Fill in the details below to add a new student to the system.
                     {% endif %}
                 </p>
             </div>
 
             <div class="p-4 sm:p-6">
-                {% url 'academics:subject:list' as cancel_destination %}
+                {% url 'academics:student:list' as cancel_destination %}
 
                 {% include 'includes/form.html' with form=form show_secondary_btn=True secondary_btn_url=cancel_destination secondary_btn_label="Cancel" %}
             </div>

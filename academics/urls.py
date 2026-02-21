@@ -9,6 +9,7 @@ urlpatterns = [
     path('', DashboardView.as_view(), name='dashboard'),
 
     path('teachers/', include('academics.teacher.urls')),
-    path('schoolclass/', include('academics.schoolclass.urls')),
-    path('subject/', include('academics.subject.urls')),
+    path('schoolclasses/', include('academics.schoolclass.urls')),
+    path('subjects/', include('academics.subject.urls')),
+    path('students/', include('academics.student.urls')),
 ]

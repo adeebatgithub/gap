@@ -78,6 +78,12 @@
                     <i class="bi bi-easel text-lg"></i> Subjects
                 </a>
 
+                <a href="{% url 'academics:student:list' %}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                       {% if request.resolver_match.app_name == 'academics:student' %}bg-gray-800 text-white{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                    <i class="bi bi-easel text-lg"></i> Students
+                </a>
+
             </nav>
         </div>
     </aside>
