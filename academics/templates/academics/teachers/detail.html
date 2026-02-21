@@ -1,0 +1,103 @@
+{% extends 'includes/base.html' %}
+
+{% block navbar_title %}
+    Teacher Profile
+{% endblock %}
+
+{% block navbar_btns %}
+    <a href="{% url 'academics:teacher:list' %}"
+       class="inline-flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+        <i class="bi bi-arrow-left"></i> Back to List
+    </a>
+    <a href="{% url 'academics:teacher:update' teacher.pk %}?back_to=detail"
+       class="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+        <i class="bi bi-pencil"></i> Edit Teacher
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto space-y-6">
+
+        <div class="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
+
+            <div class="px-6 py-8 sm:p-10 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                <div class="flex-shrink-0">
+                    <div class="h-24 w-24 rounded-full bg-blue-100 border-4 border-white shadow-sm flex items-center justify-center text-blue-600">
+                        <i class="bi bi-person text-5xl"></i>
+                    </div>
+                </div>
+
+                <div class="text-center sm:text-left flex-1 mt-2">
+                    <h2 class="text-2xl font-bold text-gray-900">{{ teacher }}</h2>
+                    <p class="text-sm font-medium text-gray-500 mt-1 flex items-center justify-center sm:justify-start gap-2">
+                        <i class="bi bi-briefcase"></i> Faculty Member
+                    </p>
+
+                    <div class="mt-4 flex flex-wrap justify-center sm:justify-start gap-2">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                            Active Status
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-6 py-6 sm:px-10">
+                <h3 class="text-base font-semibold text-gray-900 mb-4 border-b border-gray-100 pb-2">Personal
+                    Information</h3>
+
+                <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6">
+
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500 flex items-center gap-2">
+                            <i class="bi bi-envelope text-gray-400"></i> Email Address
+                        </dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ teacher.email|default:"Not provided" }}</dd>
+                    </div>
+
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500 flex items-center gap-2">
+                            <i class="bi bi-telephone text-gray-400"></i> Phone Number
+                        </dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ teacher.phone|default:"Not provided" }}</dd>
+                    </div>
+
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500 flex items-center gap-2">
+                            <i class="bi bi-building text-gray-400"></i> Department
+                        </dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ teacher.department|default:"Not assigned" }}</dd>
+                    </div>
+
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500 flex items-center gap-2">
+                            <i class="bi bi-book text-gray-400"></i> Main Subject
+                        </dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ teacher.subject|default:"Not assigned" }}</dd>
+                    </div>
+
+                </dl>
+            </div>
+
+        </div>
+
+        <div class="bg-red-50 border border-red-100 rounded-xl overflow-hidden p-6 sm:p-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h3 class="text-base font-semibold text-red-800">Danger Zone</h3>
+                <p class="text-sm text-red-600 mt-1">Deleting this teacher will permanently remove them from the system.
+                    This action cannot be undone.</p>
+            </div>
+
+            <div class="flex-shrink-0">
+                <form method="POST" action="{% url 'academics:teacher:delete' teacher.pk %}?back_to=detail"
+                      onsubmit="return confirm('Are you sure you want to completely delete {{ teacher }}? This action cannot be undone.');">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-red-50">
+                        <i class="bi bi-trash"></i> Delete Teacher
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
