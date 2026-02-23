@@ -1,6 +1,8 @@
-from django.db import models
-from controller.models import TimeStampedModel
 from django.contrib.auth import get_user_model
+from django.db import models
+
+from controller.models import TimeStampedModel
+
 
 class Teacher(TimeStampedModel):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
@@ -66,3 +68,31 @@ class Enrollment(TimeStampedModel):
         if not self.academic_year_id:
             self.academic_year = AcademicYear.objects.get(is_active=True)
         return super().save(*args, **kwargs)
+
+
+class Session(TimeStampedModel):
+    academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    school_class = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    date = models.DateField()
+
+    def save(self, *args, **kwargs):
+        if not self.academic_year_id:
+            self.academic_year = AcademicYear.objects.get(is_active=True)
+        return super().save(*args, **kwargs)
+
+
+class Attendance(TimeStampedModel):
+    PENDING = 0
+    PRESENT = 1
+    ABSENT = 2
+    STATUS_CHOICES = (
+        (PENDING, 'Pending'),
+        (PRESENT, 'Present'),
+        (ABSENT, 'Absent'),
+    )
+
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=PENDING)

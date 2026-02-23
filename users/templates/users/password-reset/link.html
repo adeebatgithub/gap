@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Reset Your Password</title>
+    <style type="text/css">
+        /* Client-specific resets */
+        body, table, td, a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table, td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+            }
+
+            .content-padding {
+                padding: 20px !important;
+            }
+
+            .header-text {
+                font-size: 24px !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f4f4; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f4f4;">
+    <tr>
+        <td align="center" style="padding: 40px 10px;">
+
+            <table border="0" cellpadding="0" cellspacing="0" width="600" class="email-container"
+                   style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+
+                <tr>
+                    <td align="center" style="background-color: #667eea; padding: 40px 30px; color: #ffffff;">
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <h1 class="header-text"
+                                style="margin: 0; font-size: 28px; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
+                                Reset Your Password</h1>
+                            <p style="margin: 10px 0 0; font-size: 16px; opacity: 0.9;">You're just one step away from
+                                securing your account</p>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="content-padding" style="padding: 40px 30px;">
+
+                        <p style="margin: 0 0 20px; font-size: 18px; color: #2c3e50; font-weight: 600;">
+                            Hello {{ user }},
+                        </p>
+
+                        <p style="margin: 0 0 30px; font-size: 16px; line-height: 1.6; color: #555555;">
+                            We received a request to reset the password associated with your account. If this was you,
+                            please click the button below to set a new password.
+                        </p>
+
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr>
+                                <td align="center" style="padding: 10px 0 30px 0;">
+                                    <a href="{{ url }}"
+                                       style="display: inline-block; padding: 16px 36px; font-family: 'Segoe UI', sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 50px; background-color: #667eea; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-weight: bold; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+                                        Reset My Password
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 30px;">
+                            <tr>
+                                <td style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; padding: 15px;">
+                                    <p style="margin: 0; font-size: 14px; color: #856404; line-height: 1.5;">
+                                        <strong>Security Note:</strong> This password reset link is valid for 24 hours.
+                                        If you didn’t request a password reset, please ignore this email or contact our
+                                        support team.
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p style="margin: 0 0 10px; font-size: 14px; color: #666666;">
+                            If the button above doesn't work, copy and paste this link:
+                        </p>
+                        <div style="background-color: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 4px; padding: 15px; word-break: break-all; margin-bottom: 30px;">
+                            <a href="{{ url }}"
+                               style="color: #667eea; font-size: 13px; text-decoration: none; display: block; line-height: 1.4;">
+                                {{ url }}
+                            </a>
+                        </div>
+
+                        <p style="margin: 0 0 10px; font-size: 16px; line-height: 1.6; color: #555555;">
+                            If you have any questions or need help, feel free to reach out to our support team. We're
+                            here for you.
+                        </p>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="background-color: #f8f9fa; border-top: 1px solid #e9ecef; padding: 30px; text-align: center;">
+                        <p style="margin: 0 0 10px; font-size: 14px; color: #6c757d;">
+                            Thank you for taking steps to keep your account secure.
+                        </p>
+                        <p style="margin: 0 0 20px; font-size: 14px; color: #6c757d;">
+                            Best regards,<br>The [Company Name] Team
+                        </p>
+                        <div style="font-size: 12px; color: #adb5bd; margin-top: 20px;">
+                            <p style="margin: 5px 0;">[Company Name] | [Company Address]</p>
+                            <p style="margin: 5px 0;">© 2025 [Company Name]. All rights reserved.</p>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

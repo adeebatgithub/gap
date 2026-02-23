@@ -1,0 +1,39 @@
+{% load teacher_tags %}
+<nav class="flex flex-col gap-1">
+
+    <div class="mt-2 mb-1 px-3">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center">
+            <i class="bi bi-calendar mr-2 text-sm"></i> {{ ACADEMIC_YEAR }}
+        </p>
+    </div>
+
+    <div class="mt-2 mb-1 px-3">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center">
+            <i class="bi bi-grid-3x3-gap mr-2 text-sm"></i> Overview
+        </p>
+    </div>
+
+    <a href="{% url 'teacher:dashboard' request.user.pk|get_teacher_id %}"
+       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                       {% if request.resolver_match.url_name == 'dashboard' %}bg-gray-800 text-white{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+        <i class="bi bi-speedometer2 text-lg"></i> Dashboard
+    </a>
+
+    <a href="{% url 'teacher:attendance:list' %}"
+       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                       {% if request.resolver_match.app_name == 'teacher:attendance' %}bg-gray-800 text-white{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+        <i class="bi bi-speedometer2 text-lg"></i> Attendance
+    </a>
+
+    <a href="{% url 'teacher:schoolclass:list' %}"
+       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                       {% if request.resolver_match.app_name == 'teacher:schoolclass' %}bg-gray-800 text-white{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+        <i class="bi bi-speedometer2 text-lg"></i> Classes
+    </a>
+
+    <a href="{% url 'users:logout' %}" onclick="return confirm('Logout')"
+       class="inline-flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+        <i class="bi bi-box-arrow-right"></i> <span class="hidden sm:inline">Logout</span>
+    </a>
+
+</nav>

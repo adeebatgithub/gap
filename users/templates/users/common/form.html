@@ -1,0 +1,106 @@
+{% load widget_tweaks %}
+
+<form method="{{ method|default:'post' }}"
+      action="{{ action|default:'' }}"
+      enctype="{{ enctype|default:'multipart/form-data' }}"
+      class="space-y-6"
+      novalidate
+      id="main-form">
+
+    {% csrf_token %}
+
+    {# General errors #}
+    {% if form.non_field_errors %}
+        <div class="relative rounded-md border border-red-200 bg-red-50 p-4 mb-6" id="general-errors">
+            <h3 class="text-sm font-medium text-red-800">Please correct the following errors:</h3>
+            <div class="mt-2 text-sm text-red-700">
+                <ul class="list-disc pl-5 space-y-1">
+                    {% for e in form.non_field_errors %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <button type="button" class="absolute top-4 right-4 text-red-500 hover:text-red-700"
+                    onclick="document.getElementById('general-errors').remove()">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    {% endif %}
+
+    {# Normal fields #}
+    <div class="space-y-5">
+        {% for field in form.visible_fields %}
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1" for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                    {% if field.field.required %}
+                        <span class="text-red-500">*</span>
+                    {% endif %}
+                </label>
+
+                {% if field|widget_type == "checkboxinput" %}
+                    <div class="flex items-center mt-2">
+                        {% render_field field class+="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900" %}
+                        <label class="ml-2 block text-sm text-gray-900" for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+                    </div>
+
+                {% elif field|widget_type == "select" %}
+                    {% render_field field class+="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900" %}
+
+                {% elif field|widget_type == "textarea" %}
+                    {% render_field field class+="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900" rows="3" %}
+
+                {% else %}
+                    {% render_field field class+="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900" %}
+                {% endif %}
+
+{#                {% if field.help_text %}#}
+{#                    <p class="mt-1 text-sm text-gray-500">{{ field.help_text|safe }}</p>#}
+{#                {% endif %}#}
+
+                {% for e in field.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ e }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    {# Hidden fields #}
+    {% for h in form.hidden_fields %}
+        {{ h }}
+    {% endfor %}
+
+    <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-200">
+        <button type="submit" id="submit-btn"
+                class="inline-flex items-center justify-center rounded-md border border-transparent bg-gray-900 px-6 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed">
+            <span class="submit-text">{{ submit_label|default:"Submit" }}</span>
+
+            <svg id="submit-spinner" class="hidden ml-2 h-4 w-4 animate-spin text-white"
+                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+        </button>
+    </div>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("main-form");
+        const submitBtn = document.getElementById("submit-btn");
+        const submitSpinner = document.getElementById("submit-spinner");
+        const submitText = submitBtn.querySelector(".submit-text");
+
+        form.addEventListener("submit", () => {
+            submitBtn.disabled = true;
+            submitText.textContent = "Submitting...";
+            submitSpinner.classList.remove("hidden");
+        });
+    });
+</script>

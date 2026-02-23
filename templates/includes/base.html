@@ -1,5 +1,6 @@
 {% load static %}
 {% load tailwind_tags %}
+{% load users %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,57 +47,12 @@
                 </button>
             </div>
 
-            <nav class="flex flex-col gap-1">
+            {% if request.user|has_group:"Admin" %}
+                {% include 'includes/navbar-admin.html' %}
+            {% elif request.user|has_group:"Teacher" %}
+                {% include 'includes/navbar-teacher.html' %}
+            {% endif %}
 
-                <div class="mt-2 mb-1 px-3">
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center">
-                        <i class="bi bi-calendar mr-2 text-sm"></i> {{ ACADEMIC_YEAR }}
-                    </p>
-                </div>
-
-                <div class="mt-2 mb-1 px-3">
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center">
-                        <i class="bi bi-grid-3x3-gap mr-2 text-sm"></i> Overview
-                    </p>
-                </div>
-
-                <a href="{% url 'academics:dashboard' %}"
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                       {% if request.resolver_match.url_name == 'dashboard' %}bg-gray-800 text-white{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
-                    <i class="bi bi-speedometer2 text-lg"></i> Dashboard
-                </a>
-
-                <a href="{% url 'academics:teacher:list' %}"
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                       {% if request.resolver_match.app_name == 'academics:teacher' %}bg-gray-800 text-white{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
-                    <i class="bi bi-people text-lg"></i> Teachers
-                </a>
-
-                <a href="{% url 'academics:schoolclass:list' %}"
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                       {% if request.resolver_match.app_name == 'academics:schoolclass' %}bg-gray-800 text-white{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
-                    <i class="bi bi-easel text-lg"></i> Classes
-                </a>
-
-                <a href="{% url 'academics:subject:list' %}"
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                       {% if request.resolver_match.app_name == 'academics:subject' %}bg-gray-800 text-white{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
-                    <i class="bi bi-easel text-lg"></i> Subjects
-                </a>
-
-                <a href="{% url 'academics:enrollment:list' %}"
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                       {% if request.resolver_match.app_name == 'academics:enrollment' %}bg-gray-800 text-white{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
-                    <i class="bi bi-easel text-lg"></i> Enrollments
-                </a>
-
-                <a href="{% url 'academics:academicyear:list' %}"
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                       {% if request.resolver_match.app_name == 'academics:academicyear' %}bg-gray-800 text-white{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
-                    <i class="bi bi-easel text-lg"></i> Academic Year
-                </a>
-
-            </nav>
         </div>
     </aside>
 
@@ -117,11 +73,6 @@
 
             <div class="flex items-center gap-2 sm:gap-3 ml-auto">
                 {% block navbar_btns %}{% endblock %}
-
-                <a href=""
-                   class="inline-flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                    <i class="bi bi-box-arrow-right"></i> <span class="hidden sm:inline">Logout</span>
-                </a>
             </div>
         </nav>
 

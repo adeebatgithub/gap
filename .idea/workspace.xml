@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="37f14d4f-1630-4c6a-b594-1069410a5272" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/gap.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academics/migrations/__init__.py" afterDir="false" />
+    <list default="true" id="37f14d4f-1630-4c6a-b594-1069410a5272" name="Changes" comment="patch 1.2.0 - academics:enrollment 1.0&#10;&#10;- crud">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/academicyear/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/academicyear/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/enrollment/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/enrollment/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/schoolclass/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/schoolclass/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/student/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/student/forms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/student/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/student/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/subject/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/subject/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/teacher/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/teacher/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/templates/academics/enrollments/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/academics/templates/academics/enrollments/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/templates/academics/enrollments/form.html" beforeDir="false" afterPath="$PROJECT_DIR$/academics/templates/academics/enrollments/form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/templates/academics/schoolclass/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/academics/templates/academics/schoolclass/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/templates/academics/students/detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/templates/academics/students/form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/templates/academics/students/list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/templates/academics/teachers/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/academics/templates/academics/teachers/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gap/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/gap/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gap/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/gap/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/includes/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/includes/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/theme/static/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static/css/dist/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +42,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="Python Script" />
       </list>
     </option>
@@ -28,6 +50,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "adeebatgithub"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/adeebatgithub/gap.git",
+    "accountId": "72525f90-254e-4000-bdcf-4dff0307d9ed"
+  }
+}]]></component>
   <component name="ProjectColorInfo"><![CDATA[{
   "associatedIndex": 4
 }]]></component>
@@ -39,11 +73,13 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "Django Server.gap.executor": "Run",
     "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "D:/adeeb/projects/gap/academics/teacher",
+    "django.template.preview.state": "SHOW_EDITOR",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "D:/adeeb/projects/gap/teacher/templates",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -53,6 +89,20 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\adeeb\projects\gap\teacher\templates" />
+      <recent name="D:\adeeb\projects\gap\teacher\schoolclass" />
+      <recent name="D:\adeeb\projects\gap\teacher\templates\teacher\sessions" />
+      <recent name="D:\adeeb\projects\gap\teacher\attendance" />
+      <recent name="D:\adeeb\projects\gap\teacher" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\adeeb\projects\gap\teacher\templates\teacher" />
+      <recent name="D:\adeeb\projects\gap\academics\school_class" />
+      <recent name="D:\adeeb\projects\gap\theme" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="gap" type="Python.DjangoServer" factoryName="Django server">
       <module name="gap" />
@@ -64,13 +114,14 @@
         <env name="DJANGO_SETTINGS_MODULE" value="gap.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.13 (gap)" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="launchJavascriptDebuger" value="false" />
       <option name="port" value="8000" />
-      <option name="host" value="" />
+      <option name="host" value="0.0.0.0" />
       <option name="additionalOptions" value="" />
       <option name="browserUrl" value="" />
       <option name="runTestServer" value="false" />
@@ -96,11 +147,91 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1771649622751</updated>
-      <workItem from="1771649623765" duration="336000" />
+      <workItem from="1771649623765" duration="40808000" />
     </task>
+    <task id="LOCAL-00001" summary="patch 1.0.0 - inital setup">
+      <option name="closed" value="true" />
+      <created>1771656762167</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1771656762167</updated>
+    </task>
+    <task id="LOCAL-00002" summary="patch 1.1.0 - academicd:teacher 1.0&#10;&#10;- crud">
+      <option name="closed" value="true" />
+      <created>1771659701618</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1771659701618</updated>
+    </task>
+    <task id="LOCAL-00003" summary="patch 1.2.0 - academics:class 1.0&#10;&#10;- crud">
+      <option name="closed" value="true" />
+      <created>1771661876078</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1771661876078</updated>
+    </task>
+    <task id="LOCAL-00004" summary="patch 1.2.0 - academics:subject 1.0&#10;&#10;- crud&#10;- mobile first, responsive">
+      <option name="closed" value="true" />
+      <created>1771663791663</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1771663791663</updated>
+    </task>
+    <task id="LOCAL-00005" summary="patch 1.2.0 - academics:student 1.0&#10;&#10;- crud">
+      <option name="closed" value="true" />
+      <created>1771664554477</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1771664554477</updated>
+    </task>
+    <task id="LOCAL-00006" summary="patch 1.2.0 - academics:enrollment 1.0&#10;&#10;- crud">
+      <option name="closed" value="true" />
+      <created>1771675182210</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1771675182210</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="patch 1.0.0 - inital setup" />
+    <MESSAGE value="patch 1.1.0 - academicd:teacher 1.0&#10;&#10;- crud" />
+    <MESSAGE value="patch 1.2.0 - academics:class 1.0&#10;&#10;- crud" />
+    <MESSAGE value="patch 1.2.0 - academics:subject 1.0&#10;&#10;- crud&#10;- mobile first, responsive" />
+    <MESSAGE value="patch 1.2.0 - academics:student 1.0&#10;&#10;- crud" />
+    <MESSAGE value="patch 1.2.0 - academics:enrollment 1.0&#10;&#10;- crud" />
+    <option name="LAST_COMMIT_MESSAGE" value="patch 1.2.0 - academics:enrollment 1.0&#10;&#10;- crud" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="django-line">
+          <url>file://$PROJECT_DIR$/academics/templates/academics/teachers/form.html</url>
+          <line>7</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

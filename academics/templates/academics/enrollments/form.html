@@ -5,7 +5,12 @@
 {% endblock %}
 
 {% block navbar_btns %}
-    <a href="{% url 'academics:enrollment:list' %}"
+    {% if request.GET.schoolclass %}
+        {% url 'academics:schoolclass:detail' pk=request.GET.schoolclass as back_destination %}
+    {% else %}
+        {% url 'academics:enrollment:list' as back_destination %}
+    {% endif %}
+    <a href="{{ back_destination }}"
        class="hidden sm:inline-flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
         <i class="bi bi-arrow-left"></i> Back to List
     </a>
@@ -33,9 +38,13 @@
             </div>
 
             <div class="p-4 sm:p-6">
-                {% url 'academics:enrollment:list' as cancel_destination %}
+                {% if request.GET.schoolclass %}
+                    {% url 'academics:schoolclass:detail' pk=request.GET.schoolclass as back_destination %}
+                {% else %}
+                    {% url 'academics:enrollment:list' as back_destination %}
+                {% endif %}
 
-                {% include 'includes/form.html' with form=form show_secondary_btn=True secondary_btn_url=cancel_destination secondary_btn_label="Cancel" %}
+                {% include 'includes/form.html' with form=form show_secondary_btn=True secondary_btn_url=back_destination secondary_btn_label="Cancel" %}
             </div>
 
         </div>

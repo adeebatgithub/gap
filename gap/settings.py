@@ -9,12 +9,18 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+import os
 from pathlib import Path
+
+from environ import Env
+
+env = Env()
+env.read_env(
+    DEBUG=(bool, False)
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -29,6 +35,7 @@ ALLOWED_HOSTS = ["*"]
 
 PROJECT_NAME = "GAP"
 
+AUTH_USER_MODEL = 'users.User'
 
 # Application definition
 
@@ -39,13 +46,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'academics.apps.AcademicsConfig',
+    'users.apps.UsersConfig',
 
     'widget_tweaks',
 
-    #----- TailWindCSS ------#
+    # ----- TailWindCSS ------#
     'tailwind',
     'theme',
+    'teacher.apps.TeacherConfig'
 ]
 
 TAILWIND_APP_NAME = 'theme'
@@ -58,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'academics.middlewares.CheckForAcademicYearMiddleware',
 ]
 
 ROOT_URLCONF = 'gap.urls'
@@ -82,7 +93,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'gap.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
@@ -93,6 +103,14 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    "users.backends.UsernameAuthBackend",
+    # "users.backends.EmailAuthBackend",
+]
+
+PASSWORD_HASHERS = [
+    'users.utilities.hashers.argon2.Hasher',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -112,20 +130,69 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = "users:login"  # URL to the login page
+LOGIN_REDIRECT_URL = "users:redirect-user"  # URL to redirect post-login
+
+SECOND_FACTOR_VERIFICATION_URL = "users:email-factor"
+
+LOCK_USER = False
+
+AUTO_LOGOUT_DELAY = 1209600
+
+MIN_LOGIN_ATTEMPT_LIMIT = 5
+MAX_LOGIN_ATTEMPT_LIMIT = 20
+
+DEFAULT_USER_GROUP_NAME = 'users'  # Add new users to this default group
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")  # Your Gmail ID
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")  # Google app password (use an app-specific password)
+EMAIL_USE_TLS = True
+
+EMAIL_OTP_NOT_LINK = True
+
+# Token expiry configuration in minutes, hours, etc.
+TOKEN_EXPIRY = {
+    "minutes": 10  # Default is 10 minutes
+}
+
+OTP_LENGTH = 6  # Preferred length of OTP (4 or 6 digits)
+OTP_EXPIRY = {
+    "seconds": 30,
+}
+
+if DEBUG:
+    # Use in development only (not recommended for production)
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
+GOOGLE_AUTH = {
+    'client_id': env("GOOGLE_CLIENT_ID"),  # Client ID from Google API
+    'client_secret_file': BASE_DIR / "django_auth/client_secret.json",  # JSON file from Google API
+    'redirect_uri': 'http://127.0.0.1:8000/accounts/google/login/callback/',  # Redirect URI registered with Google API
+    'scopes': [
+        "openid",
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile'
+    ],  # Google scope URLs for required permissions
+    'access_type': 'online',  # Access type, e.g online
+}

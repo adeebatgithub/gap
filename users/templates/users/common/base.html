@@ -1,0 +1,82 @@
+{% load static %}
+{% load tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}My App{% endblock %}</title>
+
+    {% tailwind_css %}
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="h-full font-sans antialiased text-gray-900">
+
+<div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            {% block heading %}{% endblock %}
+        </h2>
+        <p class="mt-2 text-center text-sm text-gray-600">
+            {% block subheading %}{% endblock %}
+        </p>
+    </div>
+
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-gray-100">
+            {% block content %}{% endblock %}
+        </div>
+
+        <div class="mt-6 text-center text-sm text-gray-500">
+            {% block footer_links %}{% endblock %}
+        </div>
+    </div>
+
+</div>
+
+<div class="fixed bottom-4 right-4 z-50 flex flex-col gap-3 pointer-events-none" id="toast-container">
+    {% if not request.resolver_match.url_name == "alert" %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="toast-alert pointer-events-auto flex items-center justify-between w-full max-w-xs p-4 rounded-lg shadow-lg text-white transition-opacity duration-300
+                    {% if message.tags == 'error' %}bg-red-500{% elif message.tags == 'success' %}bg-green-500{% elif message.tags == 'warning' %}bg-yellow-500{% else %}bg-blue-600{% endif %}"
+                     role="alert">
+                    <div class="text-sm font-medium">{{ message }}</div>
+                    <button type="button" class="close-toast ml-4 text-white hover:text-gray-200 focus:outline-none">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+</div>
+
+{% block scripts %}{% endblock %}
+
+<script>
+    // --- Vanilla JS Toast Logic ---
+    document.querySelectorAll('.toast-alert').forEach(function (toast) {
+        setTimeout(function () {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+
+        const closeBtn = toast.querySelector('.close-toast');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function () {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            });
+        }
+    });
+</script>
+</body>
+</html>
