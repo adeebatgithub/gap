@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'academics.apps.AcademicsConfig',
     'users.apps.UsersConfig',
 
+    'controller.apps.ControllerConfig',
+
     'widget_tweaks',
 
     # ----- TailWindCSS ------#

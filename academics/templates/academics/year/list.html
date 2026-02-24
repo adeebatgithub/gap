@@ -42,6 +42,13 @@
                         <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 pt-3 sm:pt-4 text-right">
                             <div class="flex items-center justify-between sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
 
+                                <a href="{% url 'academics:academicyear:set' academic_year.pk %}"
+                                   onclick="return confirm('Are you sure')"
+                                   class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-md transition-colors"
+                                   title="Set as Active">
+                                    <i class="bi bi-check-circle"></i> Set as Active
+                                </a>
+
                                 <a href="{% url 'academics:academicyear:update' academic_year.pk %}"
                                    class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md transition-colors"
                                    title="Edit Academic Year">

@@ -18,6 +18,8 @@ class RedirectUserView(base_views.RedirectUserView):
     Users Redirect View, redirect logged-in user
     """
 
+    redirect_superuser_to_admin = True
+
     def get_group_and_url(self):
         return {
             "Admin": reverse_lazy("academics:dashboard"),

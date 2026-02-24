@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block navbar_btns %}
-    <a href="{% url 'academics:subject:list' %}"
+    <a href="{% url 'teacher:attendance:list' %}"
        class="hidden sm:inline-flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
         <i class="bi bi-arrow-left"></i> Back to List
     </a>
@@ -33,7 +33,7 @@
             </div>
 
             <div class="p-4 sm:p-6">
-                {% url 'academics:subject:list' as cancel_destination %}
+                {% url 'teacher:attendance:list' as cancel_destination %}
 
                 {% include 'includes/form.html' with form=form show_secondary_btn=True secondary_btn_url=cancel_destination secondary_btn_label="Cancel" %}
             </div>

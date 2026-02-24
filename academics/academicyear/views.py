@@ -1,5 +1,7 @@
+from django.db import transaction
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from .forms import AcademicYearForm
@@ -38,3 +40,21 @@ class AcademicYearDeleteView(PermissionRequiredMixin, DeleteView):
     http_method_names = ("post",)
     model = AcademicYear
     success_url = reverse_lazy('academics:academicyear:list')
+
+
+class AcademicYearSetActive(View):
+    def get_object(self):
+        return AcademicYear.objects.get(pk=self.kwargs["pk"])
+
+    def get(self, request, *args, **kwargs):
+        with transaction.atomic():
+            current_active = AcademicYear.objects.get(is_active=True)
+            current_active.is_active = False
+            current_active.save()
+
+            new_academic_year = self.get_object()
+            new_academic_year.is_active = True
+            new_academic_year.save()
+
+        return redirect(reverse_lazy('academics:academicyear:list'))
+
