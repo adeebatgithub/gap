@@ -182,19 +182,3 @@ OTP_LENGTH = 6  # Preferred length of OTP (4 or 6 digits)
 OTP_EXPIRY = {
     "seconds": 30,
 }
-
-if DEBUG:
-    # Use in development only (not recommended for production)
-    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-
-GOOGLE_AUTH = {
-    'client_id': env("GOOGLE_CLIENT_ID"),  # Client ID from Google API
-    'client_secret_file': BASE_DIR / "django_auth/client_secret.json",  # JSON file from Google API
-    'redirect_uri': 'http://127.0.0.1:8000/accounts/google/login/callback/',  # Redirect URI registered with Google API
-    'scopes': [
-        "openid",
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/userinfo.profile'
-    ],  # Google scope URLs for required permissions
-    'access_type': 'online',  # Access type, e.g online
-}
