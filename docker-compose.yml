@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:16
+    container_name: gap_postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: gap_db
+      POSTGRES_USER: gap_db_user
+      POSTGRES_PASSWORD: 17k[6K4FE#f1
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    container_name: gap_web
+    restart: always
+    command: gunicorn gap.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/app/static
+    depends_on:
+      - db
+    environment:
+      - SECRET_KEY=
+      - DEBUG=0
+      - ALLOWED_HOSTS=*
+      - PROJECT_NAME=GAP
+      - DB_NAME=gap_db
+      - DB_USER=gap_db_user
+      - DB_PASSWORD=17k[6K4FE#f1
+      - DB_HOST=db
+      - DB_PORT=5432
+      - EMAIL_HOST_USER=adeebdanish063@gmail.com
+      - EMAIL_HOST_PASSWORD=ygkh vwur pvwh wyxw
+    expose:
+      - 8000
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/app/static
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
+  static_volume:
