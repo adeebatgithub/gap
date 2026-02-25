@@ -29,7 +29,7 @@ services:
       - SECRET_KEY=${SECRET_KEY}
       - DEBUG=False
       - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost}
-      - PROJECT_NAME=GAP
+      - PROJECT_NAME=${PROJECT_NAME}
       - DB_NAME=gap_db
       - DB_USER=gap_db_user
       - DB_PASSWORD=${DB_PASSWORD}
