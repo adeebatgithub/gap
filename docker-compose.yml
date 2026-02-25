@@ -6,31 +6,37 @@ services:
     environment:
       POSTGRES_DB: gap_db
       POSTGRES_USER: gap_db_user
-      POSTGRES_PASSWORD: 17k[6K4FE#f1
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U gap_db_user -d gap_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   web:
     build: .
     container_name: gap_web
     restart: always
-    command: gunicorn gap.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/app/static
+      - media_volume:/app/media
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
-      - SECRET_KEY=django-insecure-%f@w4h=rj#kk7n3rqmv*8*xcr6v83b@h9icr@cy=feus@2#b1^
+      - SECRET_KEY=${SECRET_KEY}
       - DEBUG=False
-      - ALLOWED_HOSTS=*
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost}
       - PROJECT_NAME=GAP
       - DB_NAME=gap_db
       - DB_USER=gap_db_user
-      - DB_PASSWORD=17k[6K4FE#f1
+      - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=db
       - DB_PORT=5432
-      - EMAIL_HOST_USER=adeebdanish063@gmail.com
-      - EMAIL_HOST_PASSWORD=ygkh vwur pvwh wyxw
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
     expose:
       - 8000
 
@@ -41,11 +47,13 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - static_volume:/app/static
+      - media_volume:/app/media
     depends_on:
       - web
 
 volumes:
   postgres_data:
   static_volume:
+  media_volume:
