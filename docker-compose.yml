@@ -20,8 +20,8 @@ services:
     depends_on:
       - db
     environment:
-      - SECRET_KEY=
-      - DEBUG=0
+      - SECRET_KEY=django-insecure-%f@w4h=rj#kk7n3rqmv*8*xcr6v83b@h9icr@cy=feus@2#b1^
+      - DEBUG=False
       - ALLOWED_HOSTS=*
       - PROJECT_NAME=GAP
       - DB_NAME=gap_db
