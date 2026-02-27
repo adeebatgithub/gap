@@ -29,6 +29,10 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-x-hidden">
 
+{% if request.session.is_academic_year_set == 0 and not request.user.is_superuser %}
+    {% include 'includes/blocker.html' %}
+{% endif %}
+
 <div class="flex min-h-screen relative">
 
     <div id="sidebar-backdrop"
@@ -47,7 +51,7 @@
                 </button>
             </div>
 
-            {% if request.user|has_group:"Admin" %}
+            {% if request.user|has_group:"Admin" or request.user.is_superuser %}
                 {% include 'includes/navbar-admin.html' %}
             {% elif request.user|has_group:"Teacher" %}
                 {% include 'includes/navbar-teacher.html' %}
