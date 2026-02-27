@@ -19,7 +19,7 @@
         </p>
     </div>
 
-    <a href="{% url 'teacher:dashboard' request.user.pk|get_teacher_id %}"
+    <a href="{% url 'teacher:dashboard' %}"
        class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
               {% if request.resolver_match.url_name == 'dashboard' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
         <i class="bi bi-speedometer2 text-lg transition-transform duration-200 {% if request.resolver_match.url_name != 'dashboard' %}group-hover:scale-110{% endif %}"></i>
