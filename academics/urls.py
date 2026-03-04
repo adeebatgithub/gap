@@ -14,4 +14,5 @@ urlpatterns = [
     path('enrolments/', include('academics.enrollment.urls')),
     path('assignments/', include('academics.assignment.urls')),
     path('academicyear/', include('academics.academicyear.urls')),
+    path('assessments/', include('academics.assessment.urls')),
 ]

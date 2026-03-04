@@ -1,0 +1,35 @@
+{% load teacher_tags %}
+<nav class="flex flex-col gap-1 h-full">
+
+    <div class="mb-4 px-2">
+        <div class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-3 flex items-center gap-3">
+            <div class="bg-indigo-100 text-indigo-600 h-8 w-8 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="bi bi-calendar-event"></i>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-0.5">Current Session</p>
+                <p class="text-sm font-bold text-indigo-900 leading-none">{{ ACADEMIC_YEAR }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2 mb-1 px-3">
+        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center">
+            Overview
+        </p>
+    </div>
+
+    <a href="{% url 'academics:assessment:list' %}"
+       class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+              {% if request.resolver_match.app_name == 'academics:assessment' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+        <i class="bi bi-clipboard-check text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'academics:assessment' %}group-hover:scale-110{% endif %}"></i>
+        Assessment
+    </a>
+
+    <a href="{% url 'users:logout' %}" onclick="return confirm('Are you sure you want to log out?')"
+       class="group mt-auto flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-200">
+        <i class="bi bi-box-arrow-right text-lg transition-transform duration-200 group-hover:translate-x-1"></i>
+        <span>Logout</span>
+    </a>
+
+</nav>

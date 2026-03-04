@@ -55,6 +55,8 @@
                 {% include 'includes/navbar-admin.html' %}
             {% elif request.user|has_group:"Teacher" %}
                 {% include 'includes/navbar-teacher.html' %}
+            {% elif request.user|has_group:"Exam" %}
+                {% include 'includes/navbar-exam.html' %}
             {% endif %}
 
         </div>

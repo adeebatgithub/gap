@@ -22,17 +22,23 @@
         <div class="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
 
             <div class="px-5 py-6 sm:px-10 sm:py-8 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+
                 <div class="flex-shrink-0">
-                    <div class="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-indigo-100 border-4 border-white shadow-sm flex items-center justify-center text-indigo-600">
-                        <i class="bi bi-person-badge text-4xl sm:text-5xl"></i>
-                    </div>
+                    {% if enrollment.student.photo %}
+                        <img src="{{ enrollment.student.photo.url }}" alt="{{ enrollment.student.name }}"
+                             class="h-20 w-20 sm:h-24 sm:w-24 rounded-full object-cover border-4 border-white shadow-sm">
+                    {% else %}
+                        <div class="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-indigo-100 border-4 border-white shadow-sm flex items-center justify-center text-indigo-600">
+                            <i class="bi bi-person-badge text-4xl sm:text-5xl"></i>
+                        </div>
+                    {% endif %}
                 </div>
 
                 <div class="text-center sm:text-left flex-1 mt-1 sm:mt-2">
                     <h2 class="text-xl sm:text-2xl font-bold text-gray-900">{{ enrollment.student.name }}</h2>
                     <p class="text-sm font-medium text-gray-500 mt-1 flex items-center justify-center sm:justify-start gap-2">
-                        <i class="bi bi-hash"></i> Roll No: <span
-                            class="text-gray-900 font-semibold">{{ student.roll_number|default:"TBD" }}</span>
+                        <i class="bi bi-hash"></i> Reg No: <span
+                            class="text-gray-900 font-semibold">{{ enrollment.student.reg_number }}</span>
                     </p>
 
                     <div class="mt-3 sm:mt-4 flex flex-wrap justify-center sm:justify-start gap-2">
@@ -60,72 +66,113 @@
                             <dt class="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-1.5 sm:gap-2">
                                 <i class="bi bi-gender-ambiguous text-gray-400"></i> Gender
                             </dt>
-                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">{{ student.gender|default:"Not specified" }}</dd>
+                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">{{ enrollment.student.get_gender_display }}</dd>
                         </div>
 
                         <div class="flex justify-between sm:block sm:justify-start items-center">
                             <dt class="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-1.5 sm:gap-2">
                                 <i class="bi bi-calendar-event text-gray-400"></i> Date of Birth
                             </dt>
-                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">{{ student.date_of_birth|date:"M d, Y"|default:"Not provided" }}</dd>
+                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">{{ enrollment.student.dob|date:"M d, Y" }}</dd>
                         </div>
 
                         <div class="flex justify-between sm:block sm:justify-start items-center">
                             <dt class="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-1.5 sm:gap-2">
                                 <i class="bi bi-calendar-check text-gray-400"></i> Admission Date
                             </dt>
-                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">{{ student.admission_date|date:"M d, Y"|default:"Not recorded" }}</dd>
+                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">{{ enrollment.student.admission_date|date:"M d, Y" }}</dd>
+                        </div>
+
+                        <div class="flex justify-between sm:block sm:justify-start items-center">
+                            <dt class="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-1.5 sm:gap-2">
+                                <i class="bi bi-phone text-gray-400"></i> Personal Phone
+                            </dt>
+                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">
+                                {% if enrollment.student.phone %}
+                                    <a href="tel:{{ enrollment.student.phone }}"
+                                       class="text-blue-600 hover:underline">{{ enrollment.student.phone }}</a>
+                                {% else %}
+                                    <span class="text-gray-400">N/A</span>
+                                {% endif %}
+                            </dd>
+                        </div>
+
+                        <div class="flex justify-between sm:block sm:justify-start items-center">
+                            <dt class="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-1.5 sm:gap-2">
+                                <i class="bi bi-envelope text-gray-400"></i> Student Email
+                            </dt>
+                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">
+                                {% if enrollment.student.email %}
+                                    <a href="mailto:{{ enrollment.student.email }}"
+                                       class="text-blue-600 hover:underline">{{ enrollment.student.email }}</a>
+                                {% else %}
+                                    <span class="text-gray-400">N/A</span>
+                                {% endif %}
+                            </dd>
+                        </div>
+
+                    </dl>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-base font-semibold text-gray-900 mb-4 border-b border-gray-100 pb-2">Family
+                        Details</h3>
+                    <dl class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 sm:gap-y-6">
+
+                        <div class="flex justify-between sm:block sm:justify-start items-center">
+                            <dt class="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-1.5 sm:gap-2">
+                                <i class="bi bi-person text-gray-400"></i> Father's Name
+                            </dt>
+                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">{{ enrollment.student.father_name }}</dd>
+                        </div>
+
+                        <div class="flex justify-between sm:block sm:justify-start items-center">
+                            <dt class="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-1.5 sm:gap-2">
+                                <i class="bi bi-telephone text-gray-400"></i> Father's Phone
+                            </dt>
+                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">
+                                <a href="tel:{{ enrollment.student.father_phone }}"
+                                   class="text-blue-600 hover:underline">{{ enrollment.student.father_phone }}</a>
+                            </dd>
+                        </div>
+
+                        <div class="flex justify-between sm:block sm:justify-start items-center">
+                            <dt class="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-1.5 sm:gap-2">
+                                <i class="bi bi-person text-gray-400"></i> Mother's Name
+                            </dt>
+                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">{{ enrollment.student.mother_name }}</dd>
+                        </div>
+
+                        <div class="sm:col-span-2 lg:col-span-3 flex flex-col justify-start mt-2">
+                            <dt class="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-1.5 sm:gap-2">
+                                <i class="bi bi-geo-alt text-gray-400"></i> Home Address
+                            </dt>
+                            <dd class="mt-1 sm:mt-1.5 text-sm text-gray-900 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                {{ enrollment.student.address }}
+                            </dd>
                         </div>
 
                     </dl>
                 </div>
 
                 <div>
-                    <h3 class="text-base font-semibold text-gray-900 mb-4 border-b border-gray-100 pb-2">Guardian &
-                        Contact Details</h3>
+                    <h3 class="text-base font-semibold text-gray-900 mb-4 border-b border-gray-100 pb-2">Medical
+                        Information</h3>
                     <dl class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 sm:gap-y-6">
 
                         <div class="flex justify-between sm:block sm:justify-start items-center">
                             <dt class="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-1.5 sm:gap-2">
-                                <i class="bi bi-people text-gray-400"></i> Parent / Guardian
+                                <i class="bi bi-droplet text-red-400"></i> Blood Group
                             </dt>
-                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">{{ student.parent_name|default:"Not provided" }}</dd>
+                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900 font-semibold text-red-600">{{ enrollment.student.get_blood_group_display }}</dd>
                         </div>
 
-                        <div class="flex justify-between sm:block sm:justify-start items-center">
+                        <div class="sm:col-span-2 lg:col-span-2 flex flex-col justify-start">
                             <dt class="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-1.5 sm:gap-2">
-                                <i class="bi bi-telephone text-gray-400"></i> Emergency Contact
+                                <i class="bi bi-heart-pulse text-gray-400"></i> Health Issues / Allergies
                             </dt>
-                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">
-                                {% if student.parent_phone %}
-                                    <a href="tel:{{ student.parent_phone }}"
-                                       class="text-blue-600 hover:underline">{{ student.parent_phone }}</a>
-                                {% else %}
-                                    Not provided
-                                {% endif %}
-                            </dd>
-                        </div>
-
-                        <div class="flex justify-between sm:block sm:justify-start items-center">
-                            <dt class="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-1.5 sm:gap-2">
-                                <i class="bi bi-envelope text-gray-400"></i> Email Address
-                            </dt>
-                            <dd class="mt-0 sm:mt-1 text-sm text-gray-900">
-                                {% if student.email %}
-                                    <a href="mailto:{{ student.email }}"
-                                       class="text-blue-600 hover:underline">{{ student.email }}</a>
-                                {% else %}
-                                    Not provided
-                                {% endif %}
-                            </dd>
-                        </div>
-
-                        <div class="sm:col-span-2 lg:col-span-3 flex flex-col justify-start">
-                            <dt class="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-1.5 sm:gap-2">
-                                <i class="bi bi-geo-alt text-gray-400"></i> Home Address
-                            </dt>
-                            <dd class="mt-1 sm:mt-1.5 text-sm text-gray-900 bg-gray-50 p-3 rounded-lg border border-gray-100">
-                                {{ student.address|default:"No address on file." }}
+                            <dd class="mt-1 sm:mt-1.5 text-sm {% if enrollment.student.health_issues %}text-gray-900 bg-red-50 border border-red-100 p-3 rounded-lg{% else %}text-gray-400 italic{% endif %}">
+                                {{ enrollment.student.health_issues|default:"None reported" }}
                             </dd>
                         </div>
 
@@ -138,14 +185,14 @@
         <div class="bg-transparent sm:bg-white sm:shadow-sm rounded-xl sm:overflow-hidden sm:border sm:border-gray-100">
 
             <div class="bg-white shadow-sm sm:shadow-none rounded-xl sm:rounded-none px-5 py-4 sm:px-6 sm:py-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 mb-4 sm:mb-0">
-                <div class="w-full sm:w-auto text-center sm:text-left">
+                <div class="w-full sm:w-auto text-center sm:text-left flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
                     <h3 class="text-lg font-semibold text-gray-900 flex items-center justify-center sm:justify-start gap-2">
-                        Attendance
+                        Recent Attendance
                         <span class="bg-gray-100 text-gray-600 py-0.5 px-2.5 rounded-full text-xs font-bold border border-gray-200">
                             {{ attendances|length }}
                         </span>
                     </h3>
-                    <small>{{ TODAY }}</small>
+                    <small class="text-gray-500 font-medium">{{ TODAY }}</small>
                 </div>
             </div>
 
@@ -153,8 +200,8 @@
                 <table class="w-full text-sm text-left text-gray-500 block sm:table">
                     <thead class="hidden sm:table-header-group text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-100">
                     <tr class="sm:table-row">
-                        <th scope="col" class="px-6 py-3 font-semibold tracking-wider w-40 text-center">
-                            Subject Name
+                        <th scope="col" class="px-6 py-3 font-semibold tracking-wider">
+                            Subject Session
                         </th>
                         <th scope="col" class="px-6 py-3 font-semibold tracking-wider">
                             Status
@@ -169,19 +216,27 @@
                     {% for attendance in attendances %}
                         <tr class="block sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-4 sm:p-0 hover:bg-gray-50 transition-colors duration-150 group">
 
-                            <td class="flex sm:table-cell justify-between items-center sm:text-center px-2 sm:px-6 py-2 sm:py-3 border-b border-gray-50 sm:border-0 font-medium text-gray-600">
-                                <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Roll No</span>
-                                <span>{{ attendance.session.subject.name|title }}</span>
+                            <td class="flex sm:table-cell justify-between items-center px-2 sm:px-6 py-2 sm:py-3 border-b border-gray-50 sm:border-0 font-medium text-gray-900">
+                                <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Session</span>
+                                <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-right sm:text-left">
+                                    <div class="hidden sm:flex h-8 w-8 rounded-full bg-blue-50 items-center justify-center text-blue-600 flex-shrink-0">
+                                        <i class="bi bi-book"></i>
+                                    </div>
+                                    <div>
+                                        <span>{{ attendance.session.subject.name|title }}</span>
+                                        <div class="text-xs text-gray-500 font-normal">{{ attendance.session.date|date:"M d, Y" }}</div>
+                                    </div>
+                                </div>
                             </td>
 
-                            <td class="flex sm:table-cell justify-between items-center px-2 sm:px-6 py-3 sm:py-3 border-b border-gray-50 sm:border-0 font-medium text-gray-900">
-                                <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Student</span>
-                                <div class="flex items-center gap-3 text-right sm:text-left">
-                                    <div class="hidden sm:flex h-8 w-8 rounded-full bg-gray-200 items-center justify-center text-gray-600 flex-shrink-0 overflow-hidden">
-                                        <i class="bi bi-person-fill"></i>
-                                    </div>
+                            <td class="flex sm:table-cell justify-between items-center px-2 sm:px-6 py-3 sm:py-3 border-b border-gray-50 sm:border-0 font-medium">
+                                <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                    {% if attendance.status == 1 %}bg-green-100 text-green-800
+                                    {% elif attendance.status == 2 %}bg-red-100 text-red-800
+                                    {% else %}bg-gray-100 text-gray-800{% endif %}">
                                     {{ attendance.get_status_display }}
-                                </div>
+                                </span>
                             </td>
 
                             <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-3 pt-4 sm:pt-3">
@@ -198,7 +253,6 @@
                                           class="flex-1 sm:flex-none inline-block m-0 p-0"
                                           onsubmit="return confirm('Remove Attendance?');">
                                         {% csrf_token %}
-                                        <input type="hidden" name="teacher" value="{{ teacher.pk }}">
                                         <button type="submit"
                                                 class="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 px-2.5 py-2 sm:py-1 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded transition-colors cursor-pointer"
                                                 title="Remove Attendance">
@@ -211,13 +265,13 @@
                         </tr>
                     {% empty %}
                         <tr class="block sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-4 sm:p-0">
-                            <td colspan="4" class="block sm:table-cell px-6 py-12 text-center text-gray-500">
+                            <td colspan="3" class="block sm:table-cell px-6 py-12 text-center text-gray-500">
                                 <div class="flex flex-col items-center justify-center">
                                     <div class="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
-                                        <i class="bi bi-people text-3xl text-gray-400"></i>
+                                        <i class="bi bi-calendar-x text-3xl text-gray-400"></i>
                                     </div>
-                                    <p class="text-base font-medium text-gray-900">No students enrolled yet</p>
-                                    <p class="text-sm mt-1">Students assigned to this class will appear here.</p>
+                                    <p class="text-base font-medium text-gray-900">No attendance records found</p>
+                                    <p class="text-sm mt-1">This student has no attendance marked yet.</p>
                                 </div>
                             </td>
                         </tr>
@@ -231,18 +285,18 @@
         <div class="bg-red-50 border border-red-100 rounded-xl overflow-hidden p-5 sm:p-8 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left">
             <div class="flex-1">
                 <h3 class="text-base font-semibold text-red-800">Danger Zone</h3>
-                <p class="text-sm text-red-600 mt-1">Deleting this student will permanently remove their records,
+                <p class="text-sm text-red-600 mt-1">Deleting this enrollment will permanently remove their records,
                     enrollment status, and history from the system. This action cannot be undone.</p>
             </div>
 
             <div class="flex-shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
                 <form method="POST" action="{% url 'academics:enrollment:delete' enrollment.pk %}?back_to=list"
                       class="w-full"
-                      onsubmit="return confirm('Are you sure you want to completely delete {{ student }}? All associated records will be lost.');">
+                      onsubmit="return confirm('Are you sure you want to completely delete {{ enrollment.student.name }}? All associated records will be lost.');">
                     {% csrf_token %}
                     <button type="submit"
                             class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-red-50">
-                        <i class="bi bi-person-x"></i> Delete Student
+                        <i class="bi bi-person-x"></i> Delete Enrollment
                     </button>
                 </form>
             </div>

@@ -23,7 +23,8 @@ class RedirectUserView(base_views.RedirectUserView):
     def get_group_and_url(self):
         return {
             "Admin": reverse_lazy("academics:dashboard"),
-            "Teacher": reverse_lazy("teacher:dashboard", kwargs={"pk": get_teacher_id(self.request.user)}),
+            "Teacher": reverse_lazy("teacher:dashboard"),
+            "Exam": reverse_lazy("academics:assessment:list"),
         }
 
 

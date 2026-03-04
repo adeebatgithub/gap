@@ -1,11 +1,13 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.db import transaction
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from academics.models import Enrollment, SchoolClass, Attendance, Student
 from controller.mixins import RedirectToDetail
 from .forms import EnrollmentForm
-from academics.models import Enrollment, SchoolClass, Attendance
 
 
 class EnrollmentListView(PermissionRequiredMixin, ListView):
@@ -36,7 +38,7 @@ class EnrollmentDetailView(PermissionRequiredMixin, DetailView):
 
 class EnrollmentCreateView(PermissionRequiredMixin, CreateView):
     permission_required = "academics.add_enrollment"
-    model = Enrollment
+    model = Student
     form_class = EnrollmentForm
     template_name = 'academics/enrollments/form.html'
     success_url = reverse_lazy('academics:enrollment:list')
@@ -54,13 +56,29 @@ class EnrollmentCreateView(PermissionRequiredMixin, CreateView):
             return reverse_lazy('academics:schoolclass:detail', kwargs={'pk': self.request.GET.get('schoolclass')})
         return super().get_success_url()
 
+    def form_valid(self, form):
+        with transaction.atomic():
+            self.object = form.save()
+            Enrollment.objects.create(
+                school_class=form.cleaned_data['school_class'],
+                student=self.object,
+            )
+        return redirect(self.get_success_url())
+
 
 class EnrollmentUpdateView(PermissionRequiredMixin, RedirectToDetail, UpdateView):
     permission_required = "academics.change_enrollment"
-    model = Enrollment
+    model = Student
     form_class = EnrollmentForm
     template_name = 'academics/enrollments/form.html'
     success_url = reverse_lazy('academics:enrollment:list')
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial.update({
+            "school_class": SchoolClass.objects.get(id=Enrollment.objects.get(student=self.object).school_class.id),
+        })
+        return initial
 
     def get_detail_url(self):
         return reverse_lazy('academics:enrollment:detail', kwargs={'pk': self.object.pk})

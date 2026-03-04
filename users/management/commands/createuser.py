@@ -23,6 +23,7 @@ class Command(BaseCommand):
         d = {
             'admin': self.create_account,
             'teacher': self.create_account,
+            'exam': self.create_account,
         }
         if role not in ['root', *d.keys()]:
             raise CommandError(f"role not found: {role}")
@@ -30,7 +31,8 @@ class Command(BaseCommand):
 
     def create_superuser(self):
         if not USER_MODEL.objects.filter(username='root').exists():
-            USER_MODEL.objects.create_superuser(username='root', password='root')
+            superuser = USER_MODEL.objects.create_superuser(username='root', password='root')
+            superuser.groups.add(Group.objects.get(name='Admin'))
             self.stdout.write(self.style.SUCCESS('Successfully created superuser: root'))
         else:
             self.stdout.write(self.style.WARNING('Superuser "root" already exists'))

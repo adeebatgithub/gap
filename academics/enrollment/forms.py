@@ -1,30 +1,15 @@
 from django import forms
 
-from academics.models import Enrollment, Student, SchoolClass, AcademicYear
+from academics.models import Student, SchoolClass, Enrollment
 
 
 class EnrollmentForm(forms.ModelForm):
-    name = forms.CharField(max_length=100)
+    school_class = forms.ModelChoiceField(queryset=SchoolClass.objects.all())
 
     class Meta:
-        model = Enrollment
-        fields = ('school_class', )
-
-    def __init__(self, *args, **kwargs):
-        self.instance_student = kwargs.get('instance').student if kwargs.get('instance') else None
-        super().__init__(*args, **kwargs)
-        if self.instance_student:
-            self.fields['name'].initial = self.instance_student.name
-
-    def save(self, commit=True):
-        enrollment = super().save(commit=False)
-        if self.instance_student:
-            student = self.instance_student
-        else:
-            student = Student()
-        student.name = self.cleaned_data['name']
-        if commit:
-            student.save()
-            enrollment.student = student
-            enrollment.save()
-        return enrollment
+        model = Student
+        fields = "__all__"
+        widgets = {
+            "dob": forms.DateInput(attrs={"type": "date"}),
+            "admission_date": forms.DateInput(attrs={"type": "date"}),
+        }

@@ -21,6 +21,7 @@ class User(AbstractUser):
     )
 
     email_verified = models.BooleanField(default=False)
+    phone = models.CharField(max_length=20, blank=True, null=True)
 
     login_attempts = models.PositiveSmallIntegerField(default=0)
     lock_status = models.PositiveSmallIntegerField(default=0, choices=LOCK_STATUS)

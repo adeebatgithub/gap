@@ -14,6 +14,10 @@ class Command(BaseCommand):
             "academics.Enrollment": ["view"],
             "academics.Teacher": ["view"],
             "academics.SchoolClass": ["view"],
+        },
+        "Exam": {
+            "academics.assessment": ["add", "change", "delete", "view"],
+            "academics.Grade": ["add", "change", "delete", "view"],
         }
     }
 

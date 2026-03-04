@@ -5,31 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37f14d4f-1630-4c6a-b594-1069410a5272" name="Changes" comment="patch 1.2.0 - academics:enrollment 1.0&#10;&#10;- crud">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/academicyear/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/academicyear/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gap.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gap.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/enrollment/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/enrollment/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/academics/enrollment/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/enrollment/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/migrations/__init__.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/academics/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/schoolclass/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/schoolclass/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/student/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/student/forms.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/student/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/student/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/subject/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/subject/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/teacher/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/teacher/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/teacher/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/teacher/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/academics/templates/academics/enrollments/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/academics/templates/academics/enrollments/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/templates/academics/enrollments/form.html" beforeDir="false" afterPath="$PROJECT_DIR$/academics/templates/academics/enrollments/form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/templates/academics/schoolclass/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/academics/templates/academics/schoolclass/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/templates/academics/students/detail.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/templates/academics/students/form.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/templates/academics/students/list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academics/templates/academics/enrollments/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/academics/templates/academics/enrollments/list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/academics/templates/academics/teachers/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/academics/templates/academics/teachers/detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/academics/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gap/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/gap/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gap/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/gap/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/includes/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/includes/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/theme/static/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static/css/dist/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/includes/navbar-admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/includes/navbar-admin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/apks/general/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/apks/general/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/management/commands/createuser.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/management/commands/createuser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/management/commands/setupgroupsandpermissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/management/commands/setupgroupsandpermissions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,52 +43,53 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "adeebatgithub"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;adeebatgithub&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/adeebatgithub/gap.git",
-    "accountId": "72525f90-254e-4000-bdcf-4dff0307d9ed"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/adeebatgithub/gap.git&quot;,
+    &quot;accountId&quot;: &quot;ae7b193b-6b0e-48bf-85eb-ea1fb94eed8b&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="39xtbghIYomAJFG5b8CMwc30lje" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Django Server.gap.executor": "Run",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "django.template.preview.state": "SHOW_EDITOR",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/adeeb/projects/gap/teacher/templates",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "terminal",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Django Server.gap.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Adeeb/project/gap/templates/includes&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.python.django.customization.DjangoModulesConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Adeeb\project\gap\templates\includes" />
+      <recent name="D:\Adeeb\project\gap\academics\templates\academics\assessments" />
+      <recent name="D:\Adeeb\project\gap\academics\Assessment" />
       <recent name="D:\adeeb\projects\gap\teacher\templates" />
       <recent name="D:\adeeb\projects\gap\teacher\schoolclass" />
-      <recent name="D:\adeeb\projects\gap\teacher\templates\teacher\sessions" />
-      <recent name="D:\adeeb\projects\gap\teacher\attendance" />
-      <recent name="D:\adeeb\projects\gap\teacher" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\adeeb\projects\gap\teacher\templates\teacher" />
@@ -114,14 +108,14 @@
         <env name="DJANGO_SETTINGS_MODULE" value="gap.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.13 (gap)" />
+      <option name="SDK_NAME" value="Python 3.10 (gap)" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="launchJavascriptDebuger" value="false" />
       <option name="port" value="8000" />
-      <option name="host" value="0.0.0.0" />
+      <option name="host" value="localhost" />
       <option name="additionalOptions" value="" />
       <option name="browserUrl" value="" />
       <option name="runTestServer" value="false" />
@@ -134,8 +128,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-PY-243.26053.29" />
-        <option value="bundled-python-sdk-b1dbf8ef85a6-4df51de95216-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.26053.29" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.19072.16" />
+        <option value="bundled-python-sdk-8336bb23522e-2767605e8bc2-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.19072.16" />
       </set>
     </attachedChunks>
   </component>
@@ -148,6 +142,11 @@
       <option name="presentableId" value="Default" />
       <updated>1771649622751</updated>
       <workItem from="1771649623765" duration="40808000" />
+      <workItem from="1772274862371" duration="2580000" />
+      <workItem from="1772423197552" duration="87000" />
+      <workItem from="1772423623049" duration="4977000" />
+      <workItem from="1772538280736" duration="1593000" />
+      <workItem from="1772616133856" duration="2763000" />
     </task>
     <task id="LOCAL-00001" summary="patch 1.0.0 - inital setup">
       <option name="closed" value="true" />
