@@ -73,6 +73,9 @@ class SubjectClass(TimeStampedModel):
     school_class = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.subject} - {self.teacher}"
+
 
 def student_photo_path(instance, filename):
     return f"students/photos/{instance.name}/{filename}"
@@ -100,6 +103,12 @@ class Student(TimeStampedModel):
 
     def __str__(self):
         return self.name
+
+    @property
+    def health_issue_list(self):
+        if not self.health_issues:
+            return []
+        return [e.strip() for e in self.health_issues.split(',') if e.strip()]
 
 
 class AcademicYear(TimeStampedModel):

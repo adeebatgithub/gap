@@ -1,0 +1,323 @@
+{% extends 'includes/base.html' %}
+
+{% block navbar_title %}
+    Master Timetable
+{% endblock %}
+
+{% block navbar_btns %}
+    <a href="{% url 'academics:dashboard' %}"
+       class="hidden sm:inline-flex justify-center items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+        <i class="bi bi-arrow-left"></i> Back to Dashboard
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="max-w-full mx-auto space-y-4 sm:space-y-6 pb-20 sm:pb-0">
+
+        <div class="bg-white shadow-sm rounded-xl border border-gray-100 p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="text-center sm:text-left">
+                <h2 class="text-lg font-bold text-gray-900">Timetable Builder</h2>
+                <p class="text-sm text-gray-500 mt-1">Add or remove periods and classes to build your schedule.</p>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-2 w-full sm:w-auto">
+                <button type="button" id="btn-add-col"
+                        class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                    <i class="bi bi-layout-three-columns"></i> Add Class (Col)
+                </button>
+
+                <button type="button" id="btn-add-row"
+                        class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                    <i class="bi bi-list-task"></i> Add Period (Row)
+                </button>
+            </div>
+        </div>
+
+        <form method="POST" action="{% url 'timetable:create' %}" id="timetable-form"
+              class="bg-white shadow-sm rounded-xl border border-gray-100 overflow-hidden">
+            {% csrf_token %}
+
+            {% if timetable %}
+                <input type="hidden" name="timetable_id" value="{{ timetable.id }}">
+            {% endif %}
+
+            <div class="overflow-x-auto w-full">
+                <table class="w-full text-sm text-left border-collapse" id="timetable">
+
+                    <thead class="bg-gray-50 text-gray-700 border-b border-gray-200">
+                    <tr id="timetable-head-row">
+                        <th class="p-3 border-r border-gray-200 min-w-[220px] w-56 bg-gray-100 sticky left-0 z-10 shadow-[1px_0_0_0_#e5e7eb]">
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Period \ Class</span>
+                        </th>
+
+                        {% if timetable and timetable.classes.all %}
+                            {% for t_class in timetable.classes.all %}
+                                <th class="p-3 border-r border-gray-100 min-w-[180px] group">
+                                    <div class="flex items-center gap-2">
+                                        <i class="bi bi-easel text-gray-400"></i>
+                                        <select name="class_names[]"
+                                                class="block w-full border-0 bg-transparent p-1 text-sm font-bold text-gray-900 focus:ring-0 cursor-pointer">
+                                            <option value="">-- Select Class --</option>
+                                            {% for s_class in school_classes %}
+                                                <option value="{{ s_class.pk }}"
+                                                        {% if t_class.school_class.pk == s_class.pk %}selected{% endif %}>
+                                                    {{ s_class.name }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="button"
+                                                class="btn-remove-col opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity focus:opacity-100 p-1 rounded"
+                                                title="Remove Class">
+                                            <i class="bi bi-x-circle-fill text-base"></i>
+                                        </button>
+                                    </div>
+                                </th>
+                            {% endfor %}
+                        {% else %}
+                            <th class="p-3 border-r border-gray-100 min-w-[180px] group">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-easel text-gray-400"></i>
+                                    <select name="class_names[]"
+                                            class="block w-full border-0 bg-transparent p-1 text-sm font-bold text-gray-900 focus:ring-0 cursor-pointer">
+                                        <option value="">-- Select Class --</option>
+                                        {% for s_class in school_classes %}
+                                            <option value="{{ s_class.pk }}">{{ s_class.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="button"
+                                            class="btn-remove-col opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity focus:opacity-100 p-1 rounded"
+                                            title="Remove Class">
+                                        <i class="bi bi-x-circle-fill text-base"></i>
+                                    </button>
+                                </div>
+                            </th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+
+                    <tbody id="timetable-body" class="divide-y divide-gray-100">
+
+                    {% if timetable and timetable.periods.all %}
+                        {% for period in timetable.periods.all %}
+                            <tr class="hover:bg-gray-50/50 transition-colors">
+                                <td class="p-3 border-r border-gray-200 bg-white sticky left-0 z-10 shadow-[1px_0_0_0_#e5e7eb] group">
+                                    <div class="flex items-center gap-2">
+                                        <input type="number" name="period_numbers[]" placeholder="#"
+                                               value="{{ period.number }}" min="1"
+                                               class="block w-12 border border-gray-200 rounded-md bg-gray-50 p-1 text-center text-sm font-bold text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                               title="Period Number">
+
+                                        <input type="text" name="period_names[]" placeholder="09:00 - 10:00"
+                                               value="{{ period.time_range }}"
+                                               class="block w-full border-0 bg-transparent p-1 text-sm font-semibold text-gray-700 placeholder-gray-400 focus:ring-0"
+                                               title="Period Time">
+
+                                        <button type="button"
+                                                class="btn-remove-row opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity focus:opacity-100 p-1 rounded flex-shrink-0"
+                                                title="Remove Period">
+                                            <i class="bi bi-x-circle-fill text-base"></i>
+                                        </button>
+                                    </div>
+                                </td>
+
+                                {% for t_class in timetable.classes.all %}
+                                    <td class="p-3 border-r border-gray-100">
+                                        <select name="timetable_cells[]"
+                                                class="block w-full rounded-lg border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-colors cursor-pointer">
+                                            <option value="">-- Free Period --</option>
+                                            {% for subject in subjects %}
+                                                <option value="{{ subject.pk }}"
+                                                        {% for cell in timetable.cells.all %}
+                                                            {% if cell.period_number == period.number and cell.school_class == t_class.school_class and cell.subject_class.pk == subject.subject.pk %}
+                                                        selected
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                >
+                                                    {{ subject }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+
+                    {% else %}
+                        <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="p-3 border-r border-gray-200 bg-white sticky left-0 z-10 shadow-[1px_0_0_0_#e5e7eb] group">
+                                <div class="flex items-center gap-2">
+                                    <input type="number" name="period_numbers[]" placeholder="#" value="1" min="1"
+                                           class="block w-12 border border-gray-200 rounded-md bg-gray-50 p-1 text-center text-sm font-bold text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                           title="Period Number">
+
+                                    <input type="text" name="period_names[]" placeholder="09:00 - 10:00"
+                                           class="block w-full border-0 bg-transparent p-1 text-sm font-semibold text-gray-700 placeholder-gray-400 focus:ring-0"
+                                           title="Period Time">
+
+                                    <button type="button"
+                                            class="btn-remove-row opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity focus:opacity-100 p-1 rounded flex-shrink-0"
+                                            title="Remove Period">
+                                        <i class="bi bi-x-circle-fill text-base"></i>
+                                    </button>
+                                </div>
+                            </td>
+
+                            <td class="p-3 border-r border-gray-100">
+                                <select name="timetable_cells[]"
+                                        class="block w-full rounded-lg border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-colors cursor-pointer">
+                                    <option value="">-- Free Period --</option>
+                                    {% for subject in subjects %}
+                                        <option value="{{ subject.pk }}">{{ subject }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="bg-gray-50/80 border-t border-gray-100 p-4 sm:px-6 sm:py-4 flex justify-end">
+                <button type="submit"
+                        class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 sm:py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-md">
+                    <i class="bi bi-save"></i> Save Timetable
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const btnAddRow = document.getElementById('btn-add-row');
+            const btnAddCol = document.getElementById('btn-add-col');
+            const theadRow = document.getElementById('timetable-head-row');
+            const tbody = document.getElementById('timetable-body');
+
+            // Subject dropdown for inner cells
+            const selectHTML = `
+            <select name="timetable_cells[]" class="block w-full rounded-lg border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-colors cursor-pointer">
+                <option value="">-- Free Period --</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject.pk }}">{{ subject|escapejs }}</option>
+                {% endfor %}
+            </select>
+        `;
+
+            // Class dropdown for dynamically added columns
+            const classSelectDropdownHTML = `
+            <select name="class_names[]" class="block w-full border-0 bg-transparent p-1 text-sm font-bold text-gray-900 focus:ring-0 cursor-pointer">
+                <option value="">-- Select Class --</option>
+                {% for s_class in school_classes %}
+                    <option value="{{ s_class.pk }}">{{ s_class.name|escapejs }}</option>
+                {% endfor %}
+            </select>
+        `;
+
+            // --- Add Column (Class) Logic ---
+            btnAddCol.addEventListener('click', function () {
+                const newTh = document.createElement('th');
+                newTh.className = "p-3 border-r border-gray-100 min-w-[180px] group";
+                newTh.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="bi bi-easel text-gray-400"></i>
+                    ${classSelectDropdownHTML}
+                    <button type="button" class="btn-remove-col opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity focus:opacity-100 p-1 rounded" title="Remove Class">
+                        <i class="bi bi-x-circle-fill text-base"></i>
+                    </button>
+                </div>
+            `;
+                theadRow.appendChild(newTh);
+
+                const rows = tbody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const newTd = document.createElement('td');
+                    newTd.className = "p-3 border-r border-gray-100";
+                    newTd.innerHTML = selectHTML;
+                    row.appendChild(newTd);
+                });
+
+                newTh.querySelector('select').focus();
+            });
+
+            // --- Add Row (Period) Logic ---
+            btnAddRow.addEventListener('click', function () {
+                const numCols = theadRow.children.length - 1;
+                const newTr = document.createElement('tr');
+                newTr.className = "hover:bg-gray-50/50 transition-colors";
+
+                // Determine the next Period Number automatically
+                const periodNumInputs = tbody.querySelectorAll('input[name="period_numbers[]"]');
+                let nextPeriodNum = 1;
+                if (periodNumInputs.length > 0) {
+                    const lastNum = parseInt(periodNumInputs[periodNumInputs.length - 1].value);
+                    nextPeriodNum = isNaN(lastNum) ? 1 : lastNum + 1;
+                }
+
+                let rowHTML = `
+                <td class="p-3 border-r border-gray-200 bg-white sticky left-0 z-10 shadow-[1px_0_0_0_#e5e7eb] group">
+                    <div class="flex items-center gap-2">
+                        <input type="number" name="period_numbers[]" placeholder="#" value="${nextPeriodNum}" min="1"
+                               class="block w-12 border border-gray-200 rounded-md bg-gray-50 p-1 text-center text-sm font-bold text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" title="Period Number">
+
+                        <input type="text" name="period_names[]" placeholder="09:00 - 10:00"
+                               class="block w-full border-0 bg-transparent p-1 text-sm font-semibold text-gray-700 placeholder-gray-400 focus:ring-0" title="Period Time">
+
+                        <button type="button" class="btn-remove-row opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity focus:opacity-100 p-1 rounded flex-shrink-0" title="Remove Period">
+                            <i class="bi bi-x-circle-fill text-base"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+
+                for (let i = 0; i < numCols; i++) {
+                    rowHTML += `
+                    <td class="p-3 border-r border-gray-100">
+                        ${selectHTML}
+                    </td>
+                `;
+                }
+
+                newTr.innerHTML = rowHTML;
+                tbody.appendChild(newTr);
+                newTr.querySelector('input[name="period_names[]"]').focus();
+            });
+
+            // --- Remove Column (Class) Logic via Event Delegation ---
+            theadRow.addEventListener('click', function (e) {
+                const removeBtn = e.target.closest('.btn-remove-col');
+                if (removeBtn) {
+                    const th = removeBtn.closest('th');
+                    const colIndex = Array.from(th.parentNode.children).indexOf(th);
+
+                    if (confirm('Are you sure you want to remove this class column?')) {
+                        th.remove();
+
+                        const rows = tbody.querySelectorAll('tr');
+                        rows.forEach(row => {
+                            if (row.children[colIndex]) {
+                                row.children[colIndex].remove();
+                            }
+                        });
+                    }
+                }
+            });
+
+            // --- Remove Row (Period) Logic via Event Delegation ---
+            tbody.addEventListener('click', function (e) {
+                const removeBtn = e.target.closest('.btn-remove-row');
+                if (removeBtn) {
+                    const tr = removeBtn.closest('tr');
+                    if (confirm('Are you sure you want to remove this period row?')) {
+                        tr.remove();
+                    }
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

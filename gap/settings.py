@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'academics.apps.AcademicsConfig',
+    'teacher.apps.TeacherConfig',
+    "timetable.apps.TimetableConfig",
     'users.apps.UsersConfig',
 
     'controller.apps.ControllerConfig',
@@ -57,7 +59,6 @@ INSTALLED_APPS = [
     # ----- TailWindCSS ------#
     'tailwind',
     'theme',
-    'teacher.apps.TeacherConfig'
 ]
 
 TAILWIND_APP_NAME = 'theme'

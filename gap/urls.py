@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('academics/', include('academics.urls')),
     path('teacher/', include('teacher.urls')),
+    path('timetable/', include('timetable.urls')),
     path('accounts/', include('users.urls')),
     path('', RedirectView.as_view(url=reverse_lazy("users:redirect-user"))),
 ]
