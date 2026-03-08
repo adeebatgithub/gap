@@ -1,0 +1,138 @@
+{% extends 'includes/base.html' %}
+
+{% block navbar_title %}
+    Timetable
+{% endblock %}
+
+{% block navbar_btns %}
+    <a href="{% url 'academics:dashboard' %}"
+       class="hidden sm:inline-flex justify-center items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+        <i class="bi bi-arrow-left"></i> Back to Dashboard
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="max-w-full mx-auto space-y-4 sm:space-y-6 pb-20 sm:pb-0 h-[calc(100vh-100px)] flex flex-col min-w-0">
+
+        <div class="bg-white shadow-sm rounded-xl border border-gray-100 p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-center gap-4 flex-shrink-0">
+
+            <div class="text-center sm:text-left w-full flex flex-col sm:flex-row justify-between items-center">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 justify-center sm:justify-start">
+                    <h2 class="text-lg font-bold text-gray-900">Current Schedule</h2>
+                    <span class="inline-flex items-center justify-center gap-1.5 bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-md text-xs font-semibold border border-indigo-100 w-fit mx-auto sm:mx-0">
+                        <i class="bi bi-calendar-event"></i>
+                        {% if timetable %}
+                            {{ timetable.created_at|date:"d-m-Y" }}
+                        {% else %}
+                            {% now "d-m-Y" %}
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bg-white shadow-sm rounded-xl border border-gray-100 overflow-hidden flex flex-col flex-1 min-h-[500px] isolate relative w-full min-w-0">
+
+            <div class="overflow-auto w-full flex-1 relative custom-scrollbar z-0">
+                <table class="w-full text-sm text-left border-collapse min-w-max" id="timetable">
+
+                    <thead class="bg-gray-50 text-gray-700 sticky top-0 z-20 shadow-[0_1px_0_0_#e5e7eb]">
+                    <tr>
+                        <th class="p-4 border-r border-gray-200 min-w-[200px] w-48 bg-gray-100 sticky left-0 top-0 z-30 shadow-[1px_0_0_0_#e5e7eb]">
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Period \ Class</span>
+                        </th>
+
+                        {% if timetable and timetable.classes.all %}
+                            {% for t_class in timetable.classes.all %}
+                                <th class="p-4 border-r border-gray-100 min-w-[160px] text-center bg-gray-50">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <i class="bi bi-easel text-indigo-400"></i>
+                                        <span class="text-sm font-bold text-gray-900">{{ t_class.school_class.name }}</span>
+                                    </div>
+                                </th>
+                            {% endfor %}
+                        {% else %}
+                            <th class="p-4 border-r border-gray-100 text-center text-gray-500 italic bg-gray-50">
+                                No classes configured.
+                            </th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-gray-100">
+                    {% if timetable and timetable.periods.all %}
+                        {% for period in timetable.periods.all %}
+                            <tr class="hover:bg-gray-50/50 transition-colors">
+
+                                <td class="p-4 border-r border-gray-200 bg-white sticky left-0 z-10 shadow-[1px_0_0_0_#e5e7eb]">
+                                    <div class="flex items-center gap-3">
+                                        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 font-bold text-xs border border-indigo-100">
+                                            {{ period.number }}
+                                        </span>
+                                        <span class="text-sm font-semibold text-gray-700">
+                                            <i class="bi bi-clock text-gray-400 mr-1"></i> {{ period.time_range }}
+                                        </span>
+                                    </div>
+                                </td>
+
+                                {% for t_class in timetable.classes.all %}
+                                    <td class="p-3 border-r border-gray-100 text-center align-middle h-full bg-white">
+                                        <div class="w-full h-full flex items-center justify-center">
+                                            {% for cell in timetable.cells.all %}
+                                                {% if cell.period_number == period.number and cell.school_class == t_class.school_class %}
+                                                    <div class="inline-flex flex-col items-center justify-center px-3 py-1.5 rounded-lg bg-green-50 border border-green-100 text-green-800 w-full min-h-[44px]">
+                                                        <span class="text-sm font-semibold">{{ cell.subject_class.name|default:cell.subject_class }}</span>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                {% endfor %}
+
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="100%" class="px-6 py-12 text-center text-gray-500">
+                                <div class="flex flex-col items-center justify-center">
+                                    <div class="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
+                                        <i class="bi bi-calendar-x text-3xl text-gray-400"></i>
+                                    </div>
+                                    <p class="text-base font-medium text-gray-900">No Timetable Available</p>
+                                    <p class="text-sm mt-1">A schedule has not been generated or published yet.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <style>
+        /* Optional: Makes the scrollbar look elegant on webkit browsers */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+{% endblock %}

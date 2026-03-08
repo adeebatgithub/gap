@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -54,4 +55,5 @@ class TimetableUpsertView(View):
                         subject_class_id=cells[cell_index]
                     )
 
+        messages.success(request, "Timetable Saved")
         return redirect(f"{reverse_lazy('timetable:index')}?tid={timetable_id}")

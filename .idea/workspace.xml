@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37f14d4f-1630-4c6a-b594-1069410a5272" name="Changes" comment="patch 1.8.5 - academics:assessment 1.0&#10;&#10;- student 1.1 - detail&#10;- teacher 1.1 - detail">
+    <list default="true" id="37f14d4f-1630-4c6a-b594-1069410a5272" name="Changes" comment="patch 1.9.5 - timetable builder">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/academics/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academics/templates/academics/enrollments/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/academics/templates/academics/enrollments/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gap/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/gap/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gap/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/gap/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/includes/navbar-admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/includes/navbar-admin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teacher/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/teacher/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teacher/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/teacher/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/includes/navbar-teacher.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/includes/navbar-teacher.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/theme/static/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static/css/dist/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/templatetags/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/templatetags/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/timetable/templates/timetable/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/timetable/templates/timetable/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/timetable/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/timetable/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,25 +53,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Django Server.gap.executor": "Run",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
-    "django.template.preview.state": "SHOW_EDITOR",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/Adeeb/project/gap/timetable",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.intellij.python.django.customization.DjangoModulesConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Django Server.gap.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Adeeb/project/gap/timetable&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.python.django.customization.DjangoModulesConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Adeeb\project\gap\timetable" />
@@ -139,7 +138,8 @@
       <workItem from="1772538280736" duration="1593000" />
       <workItem from="1772616133856" duration="3285000" />
       <workItem from="1772796155903" duration="37000" />
-      <workItem from="1772945504326" duration="6717000" />
+      <workItem from="1772945504326" duration="6888000" />
+      <workItem from="1772960629297" duration="2392000" />
     </task>
     <task id="LOCAL-00001" summary="patch 1.0.0 - inital setup">
       <option name="closed" value="true" />
@@ -197,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772619265045</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="patch 1.9.5 - timetable builder">
+      <option name="closed" value="true" />
+      <created>1772952444817</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1772952444817</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -222,7 +230,8 @@
     <MESSAGE value="patch 1.2.0 - academics:student 1.0&#10;&#10;- crud" />
     <MESSAGE value="patch 1.2.0 - academics:enrollment 1.0&#10;&#10;- crud" />
     <MESSAGE value="patch 1.8.5 - academics:assessment 1.0&#10;&#10;- student 1.1 - detail&#10;- teacher 1.1 - detail" />
-    <option name="LAST_COMMIT_MESSAGE" value="patch 1.8.5 - academics:assessment 1.0&#10;&#10;- student 1.1 - detail&#10;- teacher 1.1 - detail" />
+    <MESSAGE value="patch 1.9.5 - timetable builder" />
+    <option name="LAST_COMMIT_MESSAGE" value="patch 1.9.5 - timetable builder" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

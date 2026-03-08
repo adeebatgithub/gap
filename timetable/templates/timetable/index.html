@@ -1,23 +1,35 @@
 {% extends 'includes/base.html' %}
 
 {% block navbar_title %}
-    Master Timetable
+    Timetable
 {% endblock %}
 
 {% block navbar_btns %}
-    <a href="{% url 'academics:dashboard' %}"
-       class="hidden sm:inline-flex justify-center items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
-        <i class="bi bi-arrow-left"></i> Back to Dashboard
-    </a>
+    {% if timetable %}
+        {{ timetable.created_at|date:"d-m-Y" }}
+    {% else %}
+        {% now "d-m-Y" %}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-    <div class="max-w-full mx-auto space-y-4 sm:space-y-6 pb-20 sm:pb-0">
+    <div class="max-w-full mx-auto space-y-4 sm:space-y-6 pb-20 sm:pb-0 h-[calc(100vh-100px)] flex flex-col min-w-0">
 
-        <div class="bg-white shadow-sm rounded-xl border border-gray-100 p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="bg-white shadow-sm rounded-xl border border-gray-100 p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-center gap-4 flex-shrink-0">
+
             <div class="text-center sm:text-left">
-                <h2 class="text-lg font-bold text-gray-900">Timetable Builder</h2>
-                <p class="text-sm text-gray-500 mt-1">Add or remove periods and classes to build your schedule.</p>
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 justify-center sm:justify-start">
+                    <h2 class="text-lg font-bold text-gray-900">Timetable Builder</h2>
+                    <span class="inline-flex items-center justify-center gap-1.5 bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-md text-xs font-semibold border border-indigo-100 w-fit mx-auto sm:mx-0">
+                        <i class="bi bi-calendar-event"></i>
+                        {% if timetable %}
+                            {{ timetable.created_at|date:"d-m-Y" }}
+                        {% else %}
+                            {% now "d-m-Y" %}
+                        {% endif %}
+                    </span>
+                </div>
+                <p class="text-sm text-gray-500 mt-1.5">Add or remove periods and classes to build your schedule.</p>
             </div>
 
             <div class="flex flex-wrap items-center justify-center gap-2 w-full sm:w-auto">
@@ -34,25 +46,21 @@
         </div>
 
         <form method="POST" action="{% url 'timetable:create' %}" id="timetable-form"
-              class="bg-white shadow-sm rounded-xl border border-gray-100 overflow-hidden">
+              class="bg-white shadow-sm rounded-xl border border-gray-100 overflow-hidden flex flex-col flex-1 min-h-[500px] isolate relative w-full min-w-0">
             {% csrf_token %}
 
-            {% if timetable %}
-                <input type="hidden" name="timetable_id" value="{{ timetable.id }}">
-            {% endif %}
+            <div class="overflow-auto w-full flex-1 relative custom-scrollbar z-0">
+                <table class="w-full text-sm text-left border-collapse min-w-max" id="timetable">
 
-            <div class="overflow-x-auto w-full">
-                <table class="w-full text-sm text-left border-collapse" id="timetable">
-
-                    <thead class="bg-gray-50 text-gray-700 border-b border-gray-200">
+                    <thead class="bg-gray-50 text-gray-700 sticky top-0 z-20 shadow-[0_1px_0_0_#e5e7eb]">
                     <tr id="timetable-head-row">
-                        <th class="p-3 border-r border-gray-200 min-w-[220px] w-56 bg-gray-100 sticky left-0 z-10 shadow-[1px_0_0_0_#e5e7eb]">
+                        <th class="p-3 border-r border-gray-200 min-w-[220px] w-56 bg-gray-100 sticky left-0 top-0 z-30 shadow-[1px_0_0_0_#e5e7eb]">
                             <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Period \ Class</span>
                         </th>
 
                         {% if timetable and timetable.classes.all %}
                             {% for t_class in timetable.classes.all %}
-                                <th class="p-3 border-r border-gray-100 min-w-[180px] group">
+                                <th class="p-3 border-r border-gray-100 min-w-[180px] bg-gray-50 group">
                                     <div class="flex items-center gap-2">
                                         <i class="bi bi-easel text-gray-400"></i>
                                         <select name="class_names[]"
@@ -74,7 +82,7 @@
                                 </th>
                             {% endfor %}
                         {% else %}
-                            <th class="p-3 border-r border-gray-100 min-w-[180px] group">
+                            <th class="p-3 border-r border-gray-100 min-w-[180px] bg-gray-50 group">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-easel text-gray-400"></i>
                                     <select name="class_names[]"
@@ -121,14 +129,14 @@
                                 </td>
 
                                 {% for t_class in timetable.classes.all %}
-                                    <td class="p-3 border-r border-gray-100">
+                                    <td class="p-3 border-r border-gray-100 bg-white">
                                         <select name="timetable_cells[]"
                                                 class="block w-full rounded-lg border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-colors cursor-pointer">
                                             <option value="">-- Free Period --</option>
                                             {% for subject in subjects %}
                                                 <option value="{{ subject.pk }}"
                                                         {% for cell in timetable.cells.all %}
-                                                            {% if cell.period_number == period.number and cell.school_class == t_class.school_class and cell.subject_class.pk == subject.subject.pk %}
+                                                            {% if cell.period_number == period.number and cell.school_class == t_class.school_class and cell.subject_class.pk == subject.pk %}
                                                         selected
                                                             {% endif %}
                                                         {% endfor %}
@@ -162,7 +170,7 @@
                                 </div>
                             </td>
 
-                            <td class="p-3 border-r border-gray-100">
+                            <td class="p-3 border-r border-gray-100 bg-white">
                                 <select name="timetable_cells[]"
                                         class="block w-full rounded-lg border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-colors cursor-pointer">
                                     <option value="">-- Free Period --</option>
@@ -177,7 +185,7 @@
                 </table>
             </div>
 
-            <div class="bg-gray-50/80 border-t border-gray-100 p-4 sm:px-6 sm:py-4 flex justify-end">
+            <div class="bg-gray-50/80 border-t border-gray-100 p-4 sm:px-6 sm:py-4 flex justify-end flex-shrink-0 relative z-40">
                 <button type="submit"
                         class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 sm:py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-md">
                     <i class="bi bi-save"></i> Save Timetable
@@ -190,6 +198,26 @@
 {% endblock %}
 
 {% block extra_js %}
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
@@ -198,7 +226,6 @@
             const theadRow = document.getElementById('timetable-head-row');
             const tbody = document.getElementById('timetable-body');
 
-            // Subject dropdown for inner cells
             const selectHTML = `
             <select name="timetable_cells[]" class="block w-full rounded-lg border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-colors cursor-pointer">
                 <option value="">-- Free Period --</option>
@@ -208,7 +235,6 @@
             </select>
         `;
 
-            // Class dropdown for dynamically added columns
             const classSelectDropdownHTML = `
             <select name="class_names[]" class="block w-full border-0 bg-transparent p-1 text-sm font-bold text-gray-900 focus:ring-0 cursor-pointer">
                 <option value="">-- Select Class --</option>
@@ -218,10 +244,9 @@
             </select>
         `;
 
-            // --- Add Column (Class) Logic ---
             btnAddCol.addEventListener('click', function () {
                 const newTh = document.createElement('th');
-                newTh.className = "p-3 border-r border-gray-100 min-w-[180px] group";
+                newTh.className = "p-3 border-r border-gray-100 min-w-[180px] bg-gray-50 group";
                 newTh.innerHTML = `
                 <div class="flex items-center gap-2">
                     <i class="bi bi-easel text-gray-400"></i>
@@ -236,7 +261,7 @@
                 const rows = tbody.querySelectorAll('tr');
                 rows.forEach(row => {
                     const newTd = document.createElement('td');
-                    newTd.className = "p-3 border-r border-gray-100";
+                    newTd.className = "p-3 border-r border-gray-100 bg-white";
                     newTd.innerHTML = selectHTML;
                     row.appendChild(newTd);
                 });
@@ -244,13 +269,11 @@
                 newTh.querySelector('select').focus();
             });
 
-            // --- Add Row (Period) Logic ---
             btnAddRow.addEventListener('click', function () {
                 const numCols = theadRow.children.length - 1;
                 const newTr = document.createElement('tr');
                 newTr.className = "hover:bg-gray-50/50 transition-colors";
 
-                // Determine the next Period Number automatically
                 const periodNumInputs = tbody.querySelectorAll('input[name="period_numbers[]"]');
                 let nextPeriodNum = 1;
                 if (periodNumInputs.length > 0) {
@@ -276,7 +299,7 @@
 
                 for (let i = 0; i < numCols; i++) {
                     rowHTML += `
-                    <td class="p-3 border-r border-gray-100">
+                    <td class="p-3 border-r border-gray-100 bg-white">
                         ${selectHTML}
                     </td>
                 `;
@@ -287,7 +310,6 @@
                 newTr.querySelector('input[name="period_names[]"]').focus();
             });
 
-            // --- Remove Column (Class) Logic via Event Delegation ---
             theadRow.addEventListener('click', function (e) {
                 const removeBtn = e.target.closest('.btn-remove-col');
                 if (removeBtn) {
@@ -307,7 +329,6 @@
                 }
             });
 
-            // --- Remove Row (Period) Logic via Event Delegation ---
             tbody.addEventListener('click', function (e) {
                 const removeBtn = e.target.closest('.btn-remove-row');
                 if (removeBtn) {

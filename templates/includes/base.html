@@ -15,6 +15,12 @@
 
     {% block extra_css %}{% endblock %}
 
+    <script>
+        if (localStorage.getItem('sidebar-collapsed') === 'true') {
+            document.documentElement.classList.add('sidebar-collapsed');
+        }
+    </script>
+
     <style>
         /* Hide scrollbar for the sidebar but allow scrolling */
         .no-scrollbar::-webkit-scrollbar {
@@ -24,6 +30,17 @@
         .no-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
+        }
+
+        /* Desktop Collapse Logic */
+        @media (min-width: 1024px) {
+            .sidebar-collapsed #sidebar {
+                transform: translateX(-150%) !important;
+            }
+
+            .sidebar-collapsed #main-content {
+                margin-left: 0 !important;
+            }
         }
     </style>
 </head>
@@ -62,13 +79,14 @@
         </div>
     </aside>
 
-    <main class="flex-1 w-full ml-0 lg:ml-[280px] p-4 min-h-screen max-w-full transition-all duration-300">
+    <main id="main-content"
+          class="flex-1 w-full ml-0 lg:ml-[280px] p-4 min-h-screen max-w-full transition-all duration-300">
 
         <nav class="bg-white shadow-sm rounded-xl mb-6 px-4 sm:px-6 py-4 flex flex-wrap justify-between items-center gap-4">
 
             <div class="flex items-center gap-3">
-                <button id="mobile-menu-btn"
-                        class="lg:hidden p-1.5 -ml-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors">
+                <button id="sidebar-toggle-btn"
+                        class="p-1.5 -ml-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors">
                     <i class="bi bi-list text-2xl"></i>
                 </button>
 
@@ -120,22 +138,37 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        // --- Mobile Sidebar Toggle Logic ---
+        // --- Multi-environment Sidebar Toggle Logic ---
         const sidebar = document.getElementById('sidebar');
         const backdrop = document.getElementById('sidebar-backdrop');
-        const openBtn = document.getElementById('mobile-menu-btn');
+        const toggleBtn = document.getElementById('sidebar-toggle-btn');
         const closeBtn = document.getElementById('close-sidebar-btn');
 
-        function toggleSidebar() {
-            sidebar.classList.toggle('-translate-x-full');
-            backdrop.classList.toggle('hidden');
-            // Prevent body scroll when sidebar is open on mobile
-            document.body.classList.toggle('overflow-hidden');
+        function handleSidebarToggle() {
+            if (window.innerWidth >= 1024) {
+                // Desktop Behavior: Slide off canvas and expand main content
+                document.documentElement.classList.toggle('sidebar-collapsed');
+
+                // Save state to localStorage
+                const isCollapsed = document.documentElement.classList.contains('sidebar-collapsed');
+                localStorage.setItem('sidebar-collapsed', isCollapsed);
+            } else {
+                // Mobile Behavior: Slide in canvas and show backdrop
+                sidebar.classList.toggle('-translate-x-full');
+                backdrop.classList.toggle('hidden');
+                document.body.classList.toggle('overflow-hidden');
+            }
         }
 
-        if (openBtn) openBtn.addEventListener('click', toggleSidebar);
-        if (closeBtn) closeBtn.addEventListener('click', toggleSidebar);
-        if (backdrop) backdrop.addEventListener('click', toggleSidebar);
+        function closeMobileSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        if (toggleBtn) toggleBtn.addEventListener('click', handleSidebarToggle);
+        if (closeBtn) closeBtn.addEventListener('click', closeMobileSidebar);
+        if (backdrop) backdrop.addEventListener('click', closeMobileSidebar);
 
         // --- Vanilla JS Toast Logic ---
         document.querySelectorAll('.toast-alert').forEach(function (toast) {
@@ -144,9 +177,9 @@
                 setTimeout(() => toast.remove(), 300);
             }, 4000);
 
-            const closeBtn = toast.querySelector('.close-toast');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', function () {
+            const toastCloseBtn = toast.querySelector('.close-toast');
+            if (toastCloseBtn) {
+                toastCloseBtn.addEventListener('click', function () {
                     toast.style.opacity = '0';
                     setTimeout(() => toast.remove(), 300);
                 });
