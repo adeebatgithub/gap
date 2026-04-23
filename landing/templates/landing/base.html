@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+{% load tailwind_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Green Valley Academy | Modern Education | Manjeri</title>
+    <meta name="description"
+          content="Green Valley Academy – shaping young minds since 1993 with integrated learning, vocational training, and holistic development in Manjeri, Kerala.">
+    <meta name="keywords"
+          content="Green Valley Academy, Manjeri, integrated learning, vocational training, NIOS, Islamic studies, degree programs">
+
+    <!-- Favicon & OG Tags -->
+    <link rel="icon" href="resources/assets/img/favicon.png">
+    <meta property="og:title" content="Green Valley Academy">
+    <meta property="og:description"
+          content="Shaping young, multi-talented individuals since 1993 with modern academics & Islamic values.">
+    <meta property="og:image" content="https://greenvalleyacademy.in/resources/assets/img/image-og.png">
+    <meta property="og:type" content="website">
+
+    <!-- Tailwind CSS + Font Awesome + Google Fonts -->
+    {% tailwind_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap"
+          rel="stylesheet">
+    <!-- Swiper JS (lightweight gallery) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .hero-bg {
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.3s ease;
+        }
+
+        .counter-number {
+            transition: all 0.2s ease;
+        }
+
+        .floating-whatsapp, .floating-call {
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-whatsapp:hover, .floating-call:hover {
+            transform: scale(1.08);
+        }
+
+        .marquee-text {
+            animation: scroll 18s linear infinite;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .blink {
+            animation: blink 1.2s step-start infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+
+        .gradient-border-bottom {
+            border-bottom: 3px solid #10b981;
+        }
+
+        .slick-prev-custom, .slick-next-custom {
+            background: #10b981;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .slick-prev-custom:hover, .slick-next-custom:hover {
+            background: #047857;
+        }
+
+        @media (max-width: 768px) {
+            .slick-prev-custom, .slick-next-custom {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+
+<!-- TOP BAR: Contact + CTA (mobile first) -->
+<div class="bg-emerald-800 text-white text-sm py-2 px-4 flex flex-col md:flex-row justify-between items-center gap-2">
+    <div class="flex flex-wrap justify-center gap-4">
+        <a href="mailto:greenvalleymanjeri@gmail.com" class="flex items-center gap-1 hover:text-emerald-200 transition"><i
+                class="fas fa-envelope"></i> greenvalleymanjeri@gmail.com</a>
+        <a href="tel:+914832944429" class="flex items-center gap-1 hover:text-emerald-200 transition"><i
+                class="fas fa-phone-alt"></i> +91 483 2944429</a>
+    </div>
+    <div class="flex gap-3">
+        <a href="apply.html"
+           class="bg-white text-emerald-800 px-4 py-1 rounded-full text-sm font-semibold shadow flex items-center gap-1 hover:bg-emerald-100"><i
+                class="fas fa-user-graduate"></i> Apply Now</a>
+        <a href="downloads.html"
+           class="bg-emerald-700 text-white px-4 py-1 rounded-full text-sm font-semibold flex items-center gap-1 hover:bg-emerald-600"><i
+                class="fas fa-download"></i> Downloads</a>
+    </div>
+</div>
+
+<!-- MODERN HEADER (sticky) -->
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-md border-b border-gray-100">
+    <div class="container mx-auto px-4 py-3 flex flex-wrap items-center justify-between">
+        <a href="index.html" class="flex items-center">
+            <img src="resources/assets/img/logo-main-1.png" alt="Green Valley Academy" class="h-12 md:h-14 w-auto">
+        </a>
+        <!-- Mobile menu button -->
+        <button id="menuToggle" class="block md:hidden text-emerald-800 text-2xl focus:outline-none"><i
+                class="fas fa-bars"></i></button>
+        <!-- Navigation -->
+        <nav id="mainNav"
+             class="hidden md:flex w-full md:w-auto flex-col md:flex-row gap-4 md:gap-6 mt-4 md:mt-0 bg-white md:bg-transparent rounded-2xl p-4 md:p-0 shadow-md md:shadow-none">
+            <a href="https://greenvalleyacademy.in/" class="font-medium hover:text-emerald-700 transition">Home</a>
+            <a href="about.html" class="font-medium hover:text-emerald-700 transition">About Us</a>
+            <div class="relative group">
+                <button class="font-medium hover:text-emerald-700 flex items-center gap-1">Academics <i
+                        class="fas fa-chevron-down text-xs"></i></button>
+                <div class="absolute left-0 top-full hidden group-hover:block bg-white shadow-lg rounded-lg py-2 w-48 z-20">
+                    <a href="integrated-learning-programm.html" class="block px-4 py-2 text-sm hover:bg-emerald-50">Integrated
+                        Learning Program</a>
+                    <a href="ba-with-ils.html" class="block px-4 py-2 text-sm hover:bg-emerald-50">B.A with ILS</a>
+                </div>
+            </div>
+            <a href="admission.html" class="font-medium hover:text-emerald-700 transition">Admission</a>
+            <div class="relative group">
+                <button class="font-medium hover:text-emerald-700 flex items-center gap-1">Students <i
+                        class="fas fa-chevron-down text-xs"></i></button>
+                <div class="absolute left-0 top-full hidden group-hover:block bg-white shadow-lg rounded-lg py-2 w-40">
+                    <a href="activities.html" class="block px-4 py-2 text-sm hover:bg-emerald-50">Activities</a>
+                    <a href="examination.html" class="block px-4 py-2 text-sm hover:bg-emerald-50">Examination</a>
+                </div>
+            </div>
+            <a href="womens-academy.html" class="font-medium hover:text-emerald-700 transition">Women's Academy</a>
+            <a href="contact-us.html" class="font-medium hover:text-emerald-700 transition">Contact Us</a>
+        </nav>
+    </div>
+</header>
+
+<!-- HERO SECTION (CAROUSEL with manual fallback) -->
+<section class="relative w-full overflow-hidden">
+    <div id="heroCarousel" class="relative h-[60vh] md:h-[85vh] w-full">
+        <div class="swiper-container h-full w-full" id="heroSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide hero-bg"
+                     style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('uploadpics/Banner_1711128518.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="swiper-slide hero-bg"
+                     style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('uploadpics/Banner_1711127928.jpg'); background-size: cover;">
+                    <div class="absolute bottom-1/4 left-6 md:left-12 text-white max-w-xl"><h1
+                            class="text-3xl md:text-5xl font-bold"><span
+                            class="text-emerald-300">Islamic Life Solutions</span></h1></div>
+                </div>
+                <div class="swiper-slide hero-bg"
+                     style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('uploadpics/Banner_1663668610.png'); background-size: cover;">
+                    <div class="absolute bottom-1/4 left-6 md:left-12 text-white"><h2
+                            class="text-2xl md:text-4xl font-bold">GET READY <span class="text-emerald-300">TO DISCOVER GREENVALLEY</span>
+                    </h2></div>
+                </div>
+                <div class="swiper-slide hero-bg"
+                     style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('uploadpics/Banner_1663668951.png'); background-size: cover;">
+                    <div class="absolute bottom-1/4 left-6 md:left-12 text-white"><h2
+                            class="text-2xl md:text-4xl font-bold">GET READY <span class="text-emerald-300">TO DISCOVER GREENVALLEY</span>
+                    </h2></div>
+                </div>
+            </div>
+            <div class="swiper-pagination !bottom-4"></div>
+            <div class="swiper-button-prev !text-white after:!text-2xl"></div>
+            <div class="swiper-button-next !text-white after:!text-2xl"></div>
+        </div>
+    </div>
+</section>
+
+<main class="overflow-hidden">
+    <!-- Featured cards: Vision, Campus, Management -->
+    <div class="container mx-auto px-4 py-16 md:py-20 relative">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 -mt-16 md:-mt-20 relative z-10">
+            <div class="bg-white rounded-2xl shadow-xl p-6 text-center border-t-4 border-emerald-500 transition hover:-translate-y-1">
+                <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4"><i
+                        class="fas fa-eye text-2xl text-emerald-700"></i></div>
+                <h3 class="text-xl font-bold mb-2">VISION</h3>
+                <p class="text-gray-600">To bring out a generation of energetic, resourceful individuals with skill sets
+                    that match...</p>
+            </div>
+            <div class="bg-white rounded-2xl shadow-xl p-6 text-center border-t-4 border-emerald-500 transition hover:-translate-y-1">
+                <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4"><i
+                        class="fas fa-building-columns text-2xl text-emerald-700"></i></div>
+                <h3 class="text-xl font-bold mb-2">CAMPUS</h3>
+                <p class="text-gray-600">Nestled in verdant hillside in Manjeri, serene campus encompassing the best
+                    learning environment.</p>
+            </div>
+            <div class="bg-white rounded-2xl shadow-xl p-6 text-center border-t-4 border-emerald-500 transition hover:-translate-y-1">
+                <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4"><i
+                        class="fas fa-users-gear text-2xl text-emerald-700"></i></div>
+                <h3 class="text-xl font-bold mb-2">MANAGEMENT</h3>
+                <p class="text-gray-600">Professionally managed by Green Valley Foundation Trust, 7 member educational
+                    trust.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 flex flex-col lg:flex-row gap-12 items-center">
+            <div class="lg:w-1/2 relative">
+                <img src="resources/assets/img/about.png" alt="About Greenvalley" class="rounded-2xl shadow-2xl w-full">
+                <a href="https://www.youtube.com/watch?v=UfpBRSV8KRE&t=1s" target="_blank"
+                   class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/90 rounded-full p-4 shadow-2xl hover:scale-110 transition"><i
+                        class="fab fa-youtube text-red-600 text-3xl"></i></a>
+            </div>
+            <div class="lg:w-1/2">
+                <span class="text-emerald-600 font-semibold tracking-wide">OUR LEGACY</span>
+                <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4">About Us</h2>
+                <p class="text-gray-700 leading-relaxed">Every individual is blessed with infinite potential. Green
+                    Valley Academy, established in 1993, shapes young multi-talented individuals for social and cultural
+                    renaissance. Beyond classrooms, we identify unique talents and develop outstanding skill sets. <a
+                            href="about.html"
+                            class="text-emerald-700 font-semibold inline-flex items-center gap-1 mt-2">Read More <i
+                            class="fas fa-arrow-right text-sm"></i></a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integrated Learning Program Card (unique) -->
+    <div class="container mx-auto px-4 py-16">
+        <div class="bg-gradient-to-r from-emerald-50 to-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row">
+            <div class="md:w-2/5 bg-emerald-800 p-8 flex items-center justify-center"><img
+                    src="resources/assets/img/icons/cap1.png" alt="Cap" class="w-28 opacity-80"></div>
+            <div class="md:w-3/5 p-8 md:p-12">
+                <h5 class="text-emerald-600 font-bold">5 YEARS</h5>
+                <h2 class="text-2xl md:text-3xl font-bold text-emerald-800 mt-1">INTEGRATED LEARNING PROGRAM</h2>
+                <p class="mt-4 text-gray-700">Comprehensive five-year course combining Islamic studies with secular
+                    streams. Senior Secondary (NIOS) + Graduation (IGNOU) with prestigious Islamic degree. <a
+                            href="academics.html" class="inline-block mt-4 text-emerald-700 font-semibold">Read More
+                        →</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- VOCATIONAL TRAINING (SLICK slider but using swiper for consistency, modern) -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Vocational Training</h2>
+                <p class="text-gray-600 mt-2">Five different NIOS vocational courses to pursue professional careers.</p>
+            </div>
+            <div class="swiper vocationalSwiper pb-12">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="bg-white rounded-xl shadow-lg p-6 h-full"><img
+                                src="resources/assets/img/vocational/c-application.png" class="h-20 mx-auto mb-4">
+                            <h3 class="font-bold text-xl">Computer Application</h3>
+                            <p class="text-sm text-gray-600 mt-2">MS Office, C, Photoshop, Corel Draw, Video
+                                editing.</p></div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="bg-white rounded-xl shadow-lg p-6 h-full"><img
+                                src="resources/assets/img/vocational/c-hardware.png" class="h-20 mx-auto mb-4">
+                            <h3 class="font-bold text-xl">Hardware & Assembly</h3>
+                            <p class="text-sm text-gray-600">Computer components, hardware servicing, software
+                                maintenance.</p></div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="bg-white rounded-xl shadow-lg p-6 h-full"><img
+                                src="resources/assets/img/vocational/electrical.png" class="h-20 mx-auto mb-4">
+                            <h3 class="font-bold text-xl">Electrical Technician</h3>
+                            <p class="text-sm text-gray-600">House wiring, motor winding, electrical engineering
+                                basics.</p></div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="bg-white rounded-xl shadow-lg p-6 h-full"><img
+                                src="resources/assets/img/vocational/syllabus.png" class="h-20 mx-auto mb-4">
+                            <h3 class="font-bold text-xl">Modern Secretarial</h3>
+                            <p class="text-sm text-gray-600">MS Office, management principles, leadership skills.</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="bg-white rounded-xl shadow-lg p-6 h-full"><img
+                                src="resources/assets/img/vocational/food.png" class="h-20 mx-auto mb-4">
+                            <h3 class="font-bold text-xl">Food Processing</h3>
+                            <p class="text-sm text-gray-600">Jams, pickles, cakes, biscuits, state-of-art lab.</p></div>
+                    </div>
+                </div>
+                <div class="swiper-pagination !relative mt-6"></div>
+                <div class="swiper-button-prev !text-emerald-700 after:!text-2xl"></div>
+                <div class="swiper-button-next !text-emerald-700 after:!text-2xl"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admission Process Steps -->
+    <section class="py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-10">Admission Process</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white shadow-md rounded-2xl p-6 border-b-4 border-emerald-500">
+                    <div class="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4"><i
+                            class="fas fa-lightbulb text-emerald-700 text-xl"></i></div>
+                    <h3 class="text-xl font-semibold">Primary Evaluation Test</h3></div>
+                <div class="bg-white shadow-md rounded-2xl p-6 border-b-4 border-emerald-500">
+                    <div class="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4"><i
+                            class="fas fa-user-pen text-emerald-700 text-xl"></i></div>
+                    <h3 class="text-xl font-semibold">Selection Camp & Interview</h3></div>
+                <div class="bg-white shadow-md rounded-2xl p-6 border-b-4 border-emerald-500">
+                    <div class="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4"><i
+                            class="fas fa-list-check text-emerald-700 text-xl"></i></div>
+                    <h3 class="text-xl font-semibold">Final Selection</h3></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Buttons -->
+    <div class="bg-emerald-50 py-12">
+        <div class="container mx-auto px-4 flex flex-wrap justify-center gap-6">
+            <a href="contact-us.html"
+               class="bg-emerald-700 text-white px-8 py-3 rounded-full font-semibold shadow hover:bg-emerald-800 transition"><i
+                    class="fas fa-info-circle mr-2"></i> REQUEST MORE INFO</a>
+            <a href="apply.html"
+               class="bg-white border-2 border-emerald-700 text-emerald-700 px-8 py-3 rounded-full font-semibold hover:bg-emerald-700 hover:text-white transition"><i
+                    class="fas fa-pen-alt mr-2"></i> APPLY NOW</a>
+            <a href="academics.html"
+               class="bg-emerald-700 text-white px-8 py-3 rounded-full font-semibold shadow hover:bg-emerald-800 transition"><i
+                    class="fas fa-graduation-cap mr-2"></i> EXPLORE PROGRAMS</a>
+        </div>
+    </div>
+
+    <!-- Counters (dynamic) -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div><i class="fas fa-graduation-cap text-4xl text-emerald-600"></i>
+                <div class="counter-number text-4xl font-bold mt-2" data-target="5">0</div>
+                <span class="text-gray-600">COURSES</span></div>
+            <div><i class="fas fa-user-graduate text-4xl text-emerald-600"></i>
+                <div class="counter-number text-4xl font-bold mt-2" data-target="380">0</div>
+                <span class="text-gray-600">STUDENTS</span></div>
+            <div><i class="fas fa-chalkboard-user text-4xl text-emerald-600"></i>
+                <div class="counter-number text-4xl font-bold mt-2" data-target="24">0</div>
+                <span class="text-gray-600">FACULTIES</span></div>
+            <div><i class="fas fa-trophy text-4xl text-emerald-600"></i>
+                <div class="counter-number text-4xl font-bold mt-2" data-target="28">0</div>
+                <span class="text-gray-600">ACHIEVEMENTS</span></div>
+        </div>
+    </section>
+
+    <!-- Gallery Section (modern swiper) -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-10">Gallery</h2>
+            <div class="swiper gallerySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="http://greenvalleyacademy.in/source/Files/Home Gallery/1.jpg"
+                                                   class="rounded-xl shadow-md w-full h-64 object-cover"></div>
+                    <div class="swiper-slide"><img src="http://greenvalleyacademy.in/source/Files/Home Gallery/2.jpg"
+                                                   class="rounded-xl shadow-md w-full h-64 object-cover"></div>
+                    <div class="swiper-slide"><img src="http://greenvalleyacademy.in/source/Files/Home Gallery/3.jpg"
+                                                   class="rounded-xl shadow-md w-full h-64 object-cover"></div>
+                    <div class="swiper-slide"><img src="http://greenvalleyacademy.in/source/Files/Home Gallery/4.jpg"
+                                                   class="rounded-xl shadow-md w-full h-64 object-cover"></div>
+                    <div class="swiper-slide"><img src="http://greenvalleyacademy.in/source/Files/Home Gallery/5.jpg"
+                                                   class="rounded-xl shadow-md w-full h-64 object-cover"></div>
+                    <div class="swiper-slide"><img
+                            src="http://greenvalleyacademy.in/source/Files/Home Gallery/slide1.png"
+                            class="rounded-xl shadow-md w-full h-64 object-cover"></div>
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev !text-emerald-700"></div>
+                <div class="swiper-button-next !text-emerald-700"></div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-300 pt-12 pb-6">
+    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div><h3 class="text-white text-xl font-bold mb-4">GREENVALLEY</h3>
+            <p><i class="fas fa-map-marker-alt mr-2 text-emerald-400"></i> Pulpatta P.O, Manjeri, Malappuram, Kerala -
+                676123</p>
+            <p class="mt-2"><i class="fas fa-phone-alt mr-2 text-emerald-400"></i> +91 4832944429</p>
+            <p><i class="fas fa-envelope mr-2 text-emerald-400"></i> greenvalleymanjeri@gmail.com</p>
+            <div class="flex gap-4 mt-4"><a href="#" class="hover:text-emerald-400"><i
+                    class="fab fa-youtube text-xl"></i></a><a href="#" class="hover:text-emerald-400"><i
+                    class="fab fa-instagram text-xl"></i></a><a href="#" class="hover:text-emerald-400"><i
+                    class="fab fa-facebook text-xl"></i></a></div>
+        </div>
+        <div><h4 class="text-white font-semibold mb-3">COURSES</h4>
+            <ul class="space-y-2">
+                <li><a href="#" class="hover:text-emerald-400">Computer Application</a></li>
+                <li><a href="#" class="hover:text-emerald-400">Hardware & Assembly</a></li>
+                <li><a href="#" class="hover:text-emerald-400">Electrical Technician</a></li>
+                <li><a href="#" class="hover:text-emerald-400">Modern Secretarial Practice</a></li>
+                <li><a href="#" class="hover:text-emerald-400">Food Processing</a></li>
+            </ul>
+        </div>
+        <div><h4 class="text-white font-semibold mb-3">INFRASTRUCTURE</h4>
+            <ul>
+                <li>Library</li>
+                <li>Labs</li>
+                <li>Hostel</li>
+                <li>Canteen</li>
+                <li>Sports</li>
+            </ul>
+        </div>
+        <div><h4 class="text-white font-semibold mb-3">SUPPORT</h4>
+            <ul>
+                <li><a href="contact-us.html" class="hover:text-emerald-400">Contact Us</a></li>
+                <li><a href="downloads.html" class="hover:text-emerald-400">Downloads</a></li>
+                <li><a href="apply.html" class="hover:text-emerald-400">Admission</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm">© Copyright 2025 Greenvalley Academy. All
+        Rights Reserved. Designed by Datastone Solutions
+    </div>
+</footer>
+
+<!-- Floating WhatsApp & Call -->
+<a href="https://api.whatsapp.com/send?phone=+919074015548&text=hi"
+   class="fixed bottom-24 right-4 z-40 bg-green-500 rounded-full p-3 shadow-lg floating-whatsapp" target="_blank"><i
+        class="fab fa-whatsapp text-white text-2xl"></i></a>
+<a href="tel:9074015548"
+   class="fixed bottom-4 right-4 z-40 bg-emerald-700 rounded-full p-3 shadow-lg floating-call"><img
+        src="resources/assets/img/icons/call.png" class="w-6 h-6" alt="call"></a>
+<a href="#"
+   class="fixed bottom-24 right-4 md:bottom-8 md:right-8 bg-gray-800 rounded-full p-2 z-40 shadow-lg hover:bg-emerald-700 transition"
+   id="backToTop"><i class="fas fa-arrow-up text-white"></i></a>
+
+<!-- Scripts: Swiper + Counters + Mobile Menu -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    // Hero Swiper
+    new Swiper('#heroSwiper', {
+        loop: true,
+        autoplay: {delay: 5000},
+        pagination: {el: '.swiper-pagination', clickable: true},
+        navigation: {nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev'}
+    });
+    // Vocational Swiper
+    new Swiper('.vocationalSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        breakpoints: {768: {slidesPerView: 2}, 1024: {slidesPerView: 3}},
+        pagination: {el: '.swiper-pagination', clickable: true},
+        navigation: {nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev'}
+    });
+    // Gallery Swiper
+    new Swiper('.gallerySwiper', {
+        slidesPerView: 1,
+        spaceBetween: 16,
+        breakpoints: {640: {slidesPerView: 2}, 1024: {slidesPerView: 3}},
+        pagination: {el: '.swiper-pagination', clickable: true},
+        navigation: {nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev'}
+    });
+    // Counter animation on scroll
+    const counters = document.querySelectorAll('.counter-number');
+    const startCounters = () => {
+        counters.forEach(c => {
+            const target = +c.dataset.target;
+            if (!c.innerText || c.innerText == '0') {
+                let current = 0;
+                const step = Math.ceil(target / 40);
+                const update = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        c.innerText = target;
+                        clearInterval(update);
+                    } else c.innerText = current;
+                }, 20);
+            }
+        });
+    };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                startCounters();
+                observer.disconnect();
+            }
+        });
+    }, {threshold: 0.2});
+    if (counters.length) observer.observe(document.querySelector('.counter-number')?.parentElement || counters[0]);
+    // Mobile menu toggle
+    document.getElementById('menuToggle')?.addEventListener('click', () => {
+        document.getElementById('mainNav').classList.toggle('hidden');
+    });
+    // Back to top
+    const backBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) backBtn.style.display = 'flex'; else backBtn.style.display = 'none';
+    });
+    backBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+    // news marquee simulation (manual removal of old marquee but adding elegant update)
+    const newsBar = document.querySelector('.scrolling-bar');
+    if (newsBar) newsBar.style.display = 'none';
+    // optional small marquee notice
+    const notifDiv = document.createElement('div');
+    notifDiv.className = 'bg-amber-100 text-amber-800 text-sm py-2 px-4 text-center';
+    notifDiv.innerHTML = '<i class="fas fa-bullhorn mr-2"></i> Latest: Results of even semester examination May 2023 published!';
+    document.body.insertBefore(notifDiv, document.querySelector('header'));
+</script>
+</body>
+</html>

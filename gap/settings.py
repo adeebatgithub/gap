@@ -47,21 +47,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'academics.apps.AcademicsConfig',
-    'teacher.apps.TeacherConfig',
-    "timetable.apps.TimetableConfig",
-    'users.apps.UsersConfig',
-
     'controller.apps.ControllerConfig',
-
     'widget_tweaks',
 
     # ----- TailWindCSS ------#
     'tailwind',
     'theme',
+
+    'academics.apps.AcademicsConfig',
+    'teacher.apps.TeacherConfig',
+    "timetable.apps.TimetableConfig",
+    'users.apps.UsersConfig',
+    "landing.apps.LandingConfig",
 ]
 
 TAILWIND_APP_NAME = 'theme'
+NPM_BIN_PATH = r"D:\Adeeb\programfiles\node\npm.cmd"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

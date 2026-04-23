@@ -1,138 +1,365 @@
 {% extends 'includes/base.html' %}
 
-{% block navbar_title %}
-    Timetable
-{% endblock %}
+{% block navbar_title %}Timetable{% endblock %}
 
 {% block navbar_btns %}
-    <a href="{% url 'academics:dashboard' %}"
-       class="hidden sm:inline-flex justify-center items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
-        <i class="bi bi-arrow-left"></i> Back to Dashboard
-    </a>
+    {% if timetable %}
+        {{ timetable.created_at|date:"d-m-Y" }}
+    {% else %}
+        {% now "d-m-Y" %}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-    <div class="max-w-full mx-auto space-y-4 sm:space-y-6 pb-20 sm:pb-0 h-[calc(100vh-100px)] flex flex-col min-w-0">
+    <style>
+        /* =========================================
+           1. Variables & Global Resets
+        ========================================= */
+        :root {
+            --tt-border: #b0b8c1;
+            --tt-header-bg: #e8eaed;
+            --tt-subheader-bg: #f0f2f5;
+            --tt-cell-bg: #ffffff;
+            --tt-free-bg: #f7f8fa;
+            --tt-study-bg: #fff8f8;
+            --tt-fashion-bg: #f5f0ff;
+            --tt-red: #d32f2f;
+            --tt-text: #1a1a2e;
+            --tt-muted: #5a6478;
+            --tt-accent: #1565c0;
+        }
 
-        <div class="bg-white shadow-sm rounded-xl border border-gray-100 p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-center gap-4 flex-shrink-0">
+        html, body {
+            height: 100%;
+        }
 
-            <div class="text-center sm:text-left w-full flex flex-col sm:flex-row justify-between items-center">
-                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 justify-center sm:justify-start">
-                    <h2 class="text-lg font-bold text-gray-900">Current Schedule</h2>
-                    <span class="inline-flex items-center justify-center gap-1.5 bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-md text-xs font-semibold border border-indigo-100 w-fit mx-auto sm:mx-0">
-                        <i class="bi bi-calendar-event"></i>
-                        {% if timetable %}
-                            {{ timetable.created_at|date:"d-m-Y" }}
-                        {% else %}
-                            {% now "d-m-Y" %}
-                        {% endif %}
-                    </span>
-                </div>
-            </div>
+        /* =========================================
+           2. Layout Containers
+        ========================================= */
+        #tt-outer {
+            height: calc(100vh - 12rem);
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #f0f2f5;
+            border-radius: 0.75rem;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
 
-        </div>
+        #tt-table-wrapper {
+            flex: 1 1 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 4px;
+        }
 
-        <div class="bg-white shadow-sm rounded-xl border border-gray-100 overflow-hidden flex flex-col flex-1 min-h-[500px] isolate relative w-full min-w-0">
+        #timetable-form {
+            flex: 1 1 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            display: contents; /* Allows scaling container to fit properly */
+        }
 
-            <div class="overflow-auto w-full flex-1 relative custom-scrollbar z-0">
-                <table class="w-full text-sm text-left border-collapse min-w-max" id="timetable">
+        #tt-scale-outer {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
 
-                    <thead class="bg-gray-50 text-gray-700 sticky top-0 z-20 shadow-[0_1px_0_0_#e5e7eb]">
-                    <tr>
-                        <th class="p-4 border-r border-gray-200 min-w-[200px] w-48 bg-gray-100 sticky left-0 top-0 z-30 shadow-[1px_0_0_0_#e5e7eb]">
-                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Period \ Class</span>
-                        </th>
+        #tt-scale-inner {
+            transform-origin: top left;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
 
-                        {% if timetable and timetable.classes.all %}
-                            {% for t_class in timetable.classes.all %}
-                                <th class="p-4 border-r border-gray-100 min-w-[160px] text-center bg-gray-50">
-                                    <div class="flex items-center justify-center gap-2">
-                                        <i class="bi bi-easel text-indigo-400"></i>
-                                        <span class="text-sm font-bold text-gray-900">{{ t_class.school_class.name }}</span>
-                                    </div>
+        /* =========================================
+           3. Table Structure & Typography
+        ========================================= */
+        #timetable {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+            background: #fff;
+            border: 1.5px solid var(--tt-border);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10);
+            background: var(--tt-header-bg);
+            font-weight: 700;
+            color: #1a2744;
+            font-size: 0.6rem;
+            white-space: nowrap;
+        }
+
+        #timetable th,
+        #timetable td {
+            border: 1px solid var(--tt-border);
+            vertical-align: middle;
+            text-align: center;
+            padding: 2px 3px;
+            font-size: 0.62rem;
+            line-height: 1.2;
+            word-break: break-word;
+            hyphens: auto;
+        }
+
+        /* Headers */
+        #timetable .tt-title-row th {
+            background: #dce3f0;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #1a2744;
+            padding: 4px;
+        }
+
+        #timetable thead tr:nth-child(2) th,
+        #timetable-head-row th {
+            background: var(--tt-header-bg);
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #1a2744;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #timetable-head-row th:first-child {
+            background: #c5cfe3;
+            font-size: 0.58rem;
+        }
+
+        #timetable-head-row th .th-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+            position: relative;
+        }
+
+        .period-title-text {
+            font-size: 0.55rem;
+            color: #5a6478;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        /* Body Cells */
+        #timetable tbody td {
+            background: var(--tt-cell-bg);
+            font-size: 0.58rem;
+            font-weight: 600;
+            color: var(--tt-text);
+            min-width: 0;
+        }
+
+        #timetable tbody tr:hover td {
+            background: #f0f4ff;
+        }
+
+        /* Specific Row States */
+        #timetable tr.tt-row-study td {
+            background: var(--tt-study-bg);
+            font-size: 0.58rem;
+            color: var(--tt-red);
+            font-weight: 700;
+        }
+
+        #timetable tr.tt-row-fashion td {
+            background: var(--tt-fashion-bg);
+        }
+
+        #timetable .period-cell {
+            background: var(--tt-header-bg) !important;
+            min-width: 90px;
+        }
+
+        #timetable .period-cell .period-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+        }
+
+        #timetable .period-cell p {
+            border-radius: 3px;
+            text-align: center;
+        }
+
+        /* =========================================
+           4. Mobile Optimization (Lower Font Sizes)
+        ========================================= */
+        @media (max-width: 768px) {
+            #timetable th,
+            #timetable td {
+                font-size: 0.25rem; /* Scaled down */
+                padding: 1px 2px; /* Tighter padding for mobile */
+            }
+
+            #timetable .tt-title-row th {
+                font-size: 0.35rem; /* Scaled down */
+            }
+
+            #timetable thead tr:nth-child(2) th,
+            #timetable-head-row th {
+                font-size: 0.25rem; /* Scaled down */
+            }
+
+            #timetable-head-row th:first-child {
+                font-size: 0.22rem; /* Scaled down */
+            }
+
+            .period-title-text {
+                font-size: 0.2rem; /* Scaled down */
+            }
+
+            #timetable tbody td {
+                font-size: 0.22rem; /* Scaled down */
+            }
+
+            #timetable tr.tt-row-study td {
+                font-size: 0.22rem; /* Scaled down */
+            }
+
+            #timetable .period-cell {
+                min-width: 45px; /* Reduced to save horizontal space */
+            }
+        }
+    </style>
+
+    <div id="tt-outer">
+        <div id="tt-table-wrapper">
+            <form method="POST" action="{% url 'timetable:create' %}" id="timetable-form">
+                {% csrf_token %}
+
+                <div id="tt-scale-outer">
+                    <div id="tt-scale-inner">
+                        <table id="timetable">
+
+                            <thead>
+                            <tr class="tt-title-row" id="tt-title-row">
+                                <th colspan="1" id="tt-title-cell">
+                                    WEDNESDAY &nbsp;
+                                    {% if timetable %}
+                                        {{ timetable.created_at|date:"d-m-Y" }}
+                                    {% else %}
+                                        {% now "d-m-Y" %}
+                                    {% endif %}
                                 </th>
-                            {% endfor %}
-                        {% else %}
-                            <th class="p-4 border-r border-gray-100 text-center text-gray-500 italic bg-gray-50">
-                                No classes configured.
-                            </th>
-                        {% endif %}
-                    </tr>
-                    </thead>
+                            </tr>
 
-                    <tbody class="divide-y divide-gray-100">
-                    {% if timetable and timetable.periods.all %}
-                        {% for period in timetable.periods.all %}
-                            <tr class="hover:bg-gray-50/50 transition-colors">
+                            <tr id="timetable-head-row">
+                                <th>
+                                    <span class="period-title-text">PRD &nbsp;/&nbsp; TIME</span>
+                                </th>
 
-                                <td class="p-4 border-r border-gray-200 bg-white sticky left-0 z-10 shadow-[1px_0_0_0_#e5e7eb]">
-                                    <div class="flex items-center gap-3">
-                                        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 font-bold text-xs border border-indigo-100">
-                                            {{ period.number }}
-                                        </span>
-                                        <span class="text-sm font-semibold text-gray-700">
-                                            <i class="bi bi-clock text-gray-400 mr-1"></i> {{ period.time_range }}
-                                        </span>
-                                    </div>
-                                </td>
+                                {% if timetable and timetable.classes.all %}
+                                    {% for t_class in timetable.classes.all %}
+                                        <th>
+                                            <div class="th-inner">
+                                                {{ t_class.school_class.name }}
+                                            </div>
+                                        </th>
+                                    {% endfor %}
+                                {% endif %}
+                            </tr>
+                            </thead>
 
-                                {% for t_class in timetable.classes.all %}
-                                    <td class="p-3 border-r border-gray-100 text-center align-middle h-full bg-white">
-                                        <div class="w-full h-full flex items-center justify-center">
+                            <tbody id="timetable-body">
+                            {% if timetable and timetable.periods.all %}
+                                {% for period in timetable.periods.all %}
+                                    <tr>
+                                        <td class="period-cell">
+                                            <div class="period-inner">
+                                                <p style="margin:0;">{{ period.number }}</p>
+                                                <p style="margin:0;">{{ period.time_range }}</p>
+                                            </div>
+                                        </td>
+
+                                        {% for t_class in timetable.classes.all %}
                                             {% for cell in timetable.cells.all %}
                                                 {% if cell.period_number == period.number and cell.school_class == t_class.school_class %}
-                                                    <div class="inline-flex flex-col items-center justify-center px-3 py-1.5 rounded-lg bg-green-50 border border-green-100 text-green-800 w-full min-h-[44px]">
-                                                        <span class="text-sm font-semibold">{{ cell.subject_class.name|default:cell.subject_class }}</span>
-                                                    </div>
+                                                    <td {% if cell.is_marked %}style="background-color: green;color: white"{% endif %}>
+                                                        <a href="{% url 'teacher:attendance:upsert' cell.pk %}">{{ cell.subject_class }}</a>
+                                                    </td>
                                                 {% endif %}
                                             {% endfor %}
-                                        </div>
-                                    </td>
+                                        {% endfor %}
+                                    </tr>
                                 {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="100%"
+                                        style="padding: 2rem; color: var(--tt-muted); font-style: italic;">
+                                        — Free —
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
 
-                            </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="100%" class="px-6 py-12 text-center text-gray-500">
-                                <div class="flex flex-col items-center justify-center">
-                                    <div class="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
-                                        <i class="bi bi-calendar-x text-3xl text-gray-400"></i>
-                                    </div>
-                                    <p class="text-base font-medium text-gray-900">No Timetable Available</p>
-                                    <p class="text-sm mt-1">A schedule has not been generated or published yet.</p>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endif %}
-                    </tbody>
-                </table>
-            </div>
+                        </table>
+                    </div>
+                </div>
+            </form>
         </div>
-
     </div>
 {% endblock %}
 
 {% block extra_js %}
-    <style>
-        /* Optional: Makes the scrollbar look elegant on webkit browsers */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 4px;
-        }
+            /* ─── Scale-to-fit logic ─────────────────────────────────────── */
+            const outer = document.getElementById('tt-scale-outer');
+            const inner = document.getElementById('tt-scale-inner');
+            const table = document.getElementById('timetable');
 
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
+            const fitTable = () => {
+                // Reset scale first to measure natural size
+                inner.style.transform = 'scale(1)';
+                inner.style.width = '';
+                inner.style.height = '';
 
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-    </style>
+                const naturalW = table.offsetWidth;
+                const naturalH = table.offsetHeight;
+                const availW = outer.clientWidth;
+                const availH = outer.clientHeight;
+
+                if (naturalW === 0 || naturalH === 0) return;
+
+                const scaleX = availW / naturalW;
+                const scaleY = availH / naturalH;
+                const scale = Math.min(scaleX, scaleY, 1); // never upscale
+
+                inner.style.transform = `scale(${scale})`;
+                inner.style.transformOrigin = 'top left';
+
+                // Keep outer div aware of scaled size
+                inner.style.width = `${naturalW}px`;
+                inner.style.height = `${naturalH}px`;
+            };
+
+            // Run on load and on resize
+            fitTable();
+            const ro = new ResizeObserver(fitTable);
+            ro.observe(outer);
+
+            /* ─── Dynamically update colspan on title row ────────────────── */
+            const updateTitleColspan = () => {
+                const headRow = document.getElementById('timetable-head-row');
+                const titleCell = document.getElementById('tt-title-cell');
+
+                if (headRow && titleCell) {
+                    const cols = headRow.children.length || 2;
+                    titleCell.setAttribute('colspan', cols);
+                }
+            };
+
+            updateTitleColspan();
+        });
+    </script>
 {% endblock %}

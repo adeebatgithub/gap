@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+{% load tailwind_tags %}
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Valley Academy | Redesign</title>
+
+    {% tailwind_css %}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <style>
+        /* --- Variables --- */
+        :root {
+            /* Colors */
+            --color-brand-light: #10b981;
+            --color-brand: #059669;
+            --color-brand-dark: #047857;
+            --color-accent: #f59e0b;
+
+            /* Font Family */
+            --font-sans: 'Poppins', sans-serif;
+        }
+
+        /* --- Base Typography --- */
+        body, .font-sans {
+            font-family: var(--font-sans);
+        }
+
+        /* --- Color Utilities --- */
+        /* Text Colors */
+        .text-brand-light {
+            color: var(--color-brand-light);
+        }
+
+        .text-brand {
+            color: var(--color-brand);
+        }
+
+        .text-brand-dark {
+            color: var(--color-brand-dark);
+        }
+
+        .text-accent {
+            color: var(--color-accent);
+        }
+
+        /* Background Colors */
+        .bg-brand-light {
+            background-color: var(--color-brand-light);
+        }
+
+        .bg-brand {
+            background-color: var(--color-brand);
+        }
+
+        .bg-brand-dark {
+            background-color: var(--color-brand-dark);
+        }
+
+        .bg-accent {
+            background-color: var(--color-accent);
+        }
+
+        /* --- Keyframes --- */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* --- Animation Utilities --- */
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .animate-marquee {
+            animation: marquee 25s linear infinite;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Smooth hover underline for nav links */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #059669;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Hide scrollbar for gallery but keep functionality */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-700 bg-gray-50 antialiased overflow-x-hidden">
+
+<div class="bg-brand-dark text-white text-sm py-2 px-4 flex items-center relative z-50">
+    <div class="font-bold shrink-0 mr-4 flex items-center gap-2 animate-pulse">
+        <i class="fa-solid fa-bullhorn"></i> News Updates:
+    </div>
+    <div class="overflow-hidden whitespace-nowrap w-full">
+        <div class="inline-block animate-marquee">
+            <a href="#" class="hover:text-accent transition-colors duration-300">Results of even semester examination
+                May 2023 published! | Admission open for 2024-2025 academic year.</a>
+        </div>
+    </div>
+</div>
+
+<header class="bg-white shadow-md sticky top-0 z-40">
+    <div class="hidden md:flex justify-between items-center px-8 py-2 border-b border-gray-100 text-sm">
+        <div class="flex gap-6">
+            <a href="mailto:greenvalleymanjeri@gmail.com" class="hover:text-brand transition-colors"><i
+                    class="fa-solid fa-envelope mr-2 text-brand"></i>greenvalleymanjeri@gmail.com</a>
+            <a href="tel:+914832944429" class="hover:text-brand transition-colors"><i
+                    class="fa-solid fa-phone mr-2 text-brand"></i>+91 483 294 4429</a>
+        </div>
+        <div class="flex gap-4">
+            <a href="#"
+               class="bg-brand text-white px-4 py-1 rounded hover:bg-brand-dark transition-all duration-300 shadow-sm"><i
+                    class="fa-solid fa-user mr-2"></i>Apply Now</a>
+            <a href="#"
+               class="bg-gray-800 text-white px-4 py-1 rounded hover:bg-gray-900 transition-all duration-300 shadow-sm"><i
+                    class="fa-solid fa-download mr-2"></i>Downloads</a>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <a href="#" class="flex items-center gap-2 text-2xl font-bold text-brand">
+            <i class="fa-solid fa-leaf text-3xl"></i>
+            <span class="tracking-tight">Green Valley</span>
+        </a>
+
+        <nav class="hidden lg:flex gap-8 font-medium text-gray-800 items-center">
+            <a href="#" class="nav-link relative text-brand">Home</a>
+            <a href="#about" class="nav-link relative hover:text-brand transition-colors">About Us</a>
+
+            <div class="relative group">
+                <button class="nav-link relative hover:text-brand transition-colors flex items-center gap-1">Academics
+                    <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                <div class="absolute top-full left-0 mt-2 w-56 bg-white shadow-xl rounded border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                    <a href="#"
+                       class="block px-4 py-3 hover:bg-green-50 hover:text-brand transition-colors border-b border-gray-50">Integrated
+                        Learning</a>
+                    <a href="#" class="block px-4 py-3 hover:bg-green-50 hover:text-brand transition-colors">B.A with
+                        ILS</a>
+                </div>
+            </div>
+
+            <a href="#admission" class="nav-link relative hover:text-brand transition-colors">Admission</a>
+            <a href="#" class="nav-link relative hover:text-brand transition-colors">Students</a>
+            <a href="#" class="nav-link relative hover:text-brand transition-colors">Women's Academy</a>
+            <a href="#contact" class="nav-link relative hover:text-brand transition-colors">Contact</a>
+        </nav>
+
+        <button id="mobile-menu-btn" class="lg:hidden text-2xl text-gray-800 focus:outline-none">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl">
+        <div class="flex flex-col px-4 py-2 text-gray-800 font-medium space-y-2 pb-6">
+            <a href="#" class="block py-2 text-brand border-b border-gray-50">Home</a>
+            <a href="#about" class="block py-2 hover:text-brand border-b border-gray-50">About Us</a>
+            <a href="#" class="block py-2 hover:text-brand border-b border-gray-50">Academics</a>
+            <a href="#admission" class="block py-2 hover:text-brand border-b border-gray-50">Admission</a>
+            <a href="#" class="block py-2 hover:text-brand border-b border-gray-50">Women's Academy</a>
+            <a href="#contact" class="block py-2 hover:text-brand">Contact</a>
+            <div class="flex gap-2 mt-4">
+                <a href="#" class="bg-brand text-white px-4 py-2 rounded text-center w-1/2">Apply</a>
+                <a href="#" class="bg-gray-800 text-white px-4 py-2 rounded text-center w-1/2">Downloads</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 w-full h-full bg-gray-900">
+        <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+             alt="Campus Banner"
+             class="w-full h-full object-cover opacity-40 mix-blend-overlay transform scale-105 hover:scale-100 transition-transform duration-[10s] ease-out">
+    </div>
+
+    <div class="relative z-10 text-center text-white px-4 max-w-4xl opacity-0 animate-fade-in-up">
+        <span class="bg-brand text-white text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-full mb-6 inline-block">Since 1993</span>
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-lg">Islamic Life Solutions</h1>
+        <p class="text-lg md:text-2xl mb-10 font-light drop-shadow-md">Get ready to discover Green Valley Academy</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="#about"
+               class="px-8 py-3 bg-brand hover:bg-brand-dark text-white rounded-md font-medium transition-all duration-300 shadow-lg hover:-translate-y-1">Discover
+                More</a>
+            <a href="#contact"
+               class="px-8 py-3 bg-white hover:bg-gray-100 text-brand rounded-md font-medium transition-all duration-300 shadow-lg hover:-translate-y-1">Contact
+                Us</a>
+        </div>
+    </div>
+</section>
+
+<section class="relative z-20 -mt-16 container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-xl shadow-xl p-8 transform transition duration-500 hover:-translate-y-2 hover:shadow-2xl border-t-4 border-brand group">
+            <div class="w-14 h-14 bg-green-50 text-brand rounded-full flex items-center justify-center text-2xl mb-6 group-hover:bg-brand group-hover:text-white transition-colors duration-300">
+                <i class="fa-solid fa-eye"></i>
+            </div>
+            <h4 class="text-xl font-bold mb-3 text-gray-800">Vision</h4>
+            <p class="text-gray-600 leading-relaxed text-sm">To bring out a generation of energetic, resourceful and
+                formally educated individuals who have acquired skill sets that match modern requirements.</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-xl p-8 transform transition duration-500 hover:-translate-y-2 hover:shadow-2xl border-t-4 border-brand group">
+            <div class="w-14 h-14 bg-green-50 text-brand rounded-full flex items-center justify-center text-2xl mb-6 group-hover:bg-brand group-hover:text-white transition-colors duration-300">
+                <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <h4 class="text-xl font-bold mb-3 text-gray-800">Campus</h4>
+            <p class="text-gray-600 leading-relaxed text-sm">Green Valley Academy is nestled in a verdant hillside in
+                Manjeri, Malappuram. The serene campus encompasses modern educational facilities.</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-xl p-8 transform transition duration-500 hover:-translate-y-2 hover:shadow-2xl border-t-4 border-brand group">
+            <div class="w-14 h-14 bg-green-50 text-brand rounded-full flex items-center justify-center text-2xl mb-6 group-hover:bg-brand group-hover:text-white transition-colors duration-300">
+                <i class="fa-solid fa-users-gear"></i>
+            </div>
+            <h4 class="text-xl font-bold mb-3 text-gray-800">Management</h4>
+            <p class="text-gray-600 leading-relaxed text-sm">Professionally managed by a seven-member educational and
+                charitable trust named Green Valley Foundation Trust.</p>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="py-20 bg-gray-50 overflow-hidden relative">
+    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-green-100 rounded-full blur-3xl opacity-50"></div>
+
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col lg:flex-row items-center gap-12">
+            <div class="w-full lg:w-1/2 relative group">
+                <div class="absolute inset-0 bg-brand rounded-2xl transform rotate-3 scale-105 opacity-20 transition duration-500 group-hover:rotate-6"></div>
+                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                     alt="Students learning" class="relative rounded-2xl shadow-lg object-cover h-[400px] w-full z-10">
+                <a href="#"
+                   class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 w-16 h-16 bg-white text-brand rounded-full flex items-center justify-center text-2xl shadow-xl hover:scale-110 transition duration-300 animate-float">
+                    <i class="fa-solid fa-play ml-1"></i>
+                </a>
+            </div>
+
+            <div class="w-full lg:w-1/2">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="w-8 h-[2px] bg-accent"></span>
+                    <h5 class="text-accent font-semibold uppercase tracking-wider text-sm">Who We Are</h5>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800">Unleashing Infinite Potential Since
+                    1993</h2>
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    Every individual is blessed with infinite potential. An ocean of abilities brims within us. We only
+                    need to open ourselves to new knowledge and practices to unleash our abilities and achieve our life
+                    goals.
+                </p>
+                <p class="text-gray-600 mb-8 leading-relaxed">
+                    The institution inspires students to think creatively, explore the lesser known realms of life and
+                    work for social empowerment. Apart from classroom tutoring, we identify and nourish unique talents
+                    in students.
+                </p>
+                <a href="#"
+                   class="inline-flex items-center gap-2 font-medium text-brand hover:text-brand-dark transition-colors group">
+                    Read More <i
+                        class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition duration-300"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 bg-brand text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10"
+         style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 32px 32px;"></div>
+
+    <div class="container mx-auto px-4 relative z-10 text-center max-w-4xl">
+        <span class="text-accent font-bold tracking-widest uppercase text-sm mb-4 block">( 5 Years Program )</span>
+        <h2 class="text-3xl md:text-5xl font-bold mb-8">Integrated Learning Program</h2>
+        <p class="text-lg text-green-50 mb-10 leading-relaxed font-light">
+            A comprehensive, five year course that combines Islamic studies with secular streams of knowledge. The
+            program has been bifurcated into Senior Secondary and Graduation levels, partnering with NIOS and IGNOU to
+            provide a prestigious Islamic degree alongside standard certification.
+        </p>
+        <a href="#"
+           class="px-8 py-3 bg-white text-brand hover:bg-gray-100 rounded-md font-semibold transition-all shadow-lg hover:shadow-xl inline-block hover:-translate-y-1 duration-300">Explore
+            Curriculum</a>
+    </div>
+</section>
+
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <div class="flex justify-center items-center gap-2 mb-2">
+                <span class="w-8 h-[2px] bg-brand"></span>
+                <h5 class="text-brand font-semibold uppercase tracking-wider text-sm">Programs</h5>
+                <span class="w-8 h-[2px] bg-brand"></span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Vocational Training</h2>
+            <p class="text-gray-500">Five different vocational courses of National Institute of Open Schooling (NIOS)
+                are offered here, equipping students for professional careers.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group border-b-4 border-transparent hover:border-brand">
+                <div class="h-48 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Computer Application"
+                         class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                </div>
+                <div class="p-6">
+                    <h3 class="font-bold text-lg mb-3 text-gray-800 group-hover:text-brand transition duration-300">
+                        Computer Application</h3>
+                    <p class="text-sm text-gray-600 mb-4 line-clamp-3">Fundamentals of computer - MS Office, C Language,
+                        Photoshop, Corel Draw, Video editing are the salient features of this course.</p>
+                    <hr class="mb-4 border-gray-200">
+                    <a href="#"
+                       class="text-brand font-medium text-sm inline-flex items-center group-hover:text-brand-dark">Read
+                        More
+                        <i class="fa-solid fa-arrow-right ml-2 transform group-hover:translate-x-1 transition duration-300"></i></a>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group border-b-4 border-transparent hover:border-brand">
+                <div class="h-48 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Hardware"
+                         class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="p-6">
+                    <h3 class="font-bold text-lg mb-3 text-gray-800 group-hover:text-brand transition duration-300">
+                        Hardware & Assembly</h3>
+                    <p class="text-sm text-gray-600 mb-4 line-clamp-3">Basic training is provided in computer
+                        components, hardware servicing, software maintenance etc. Lab access included.</p>
+                    <hr class="mb-4 border-gray-200">
+                    <a href="#"
+                       class="text-brand font-medium text-sm inline-flex items-center group-hover:text-brand-dark">Read
+                        More
+                        <i class="fa-solid fa-arrow-right ml-2 transform group-hover:translate-x-1 transition duration-300"></i></a>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group border-b-4 border-transparent hover:border-brand">
+                <div class="h-48 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Electrical Technician"
+                         class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="p-6">
+                    <h3 class="font-bold text-lg mb-3 text-gray-800 group-hover:text-brand transition duration-300">
+                        Electrical Technician</h3>
+                    <p class="text-sm text-gray-600 mb-4 line-clamp-3">Basic knowledge and training of house wiring,
+                        motor winding, basics of Electrical Engineering are vital parts of this program.</p>
+                    <hr class="mb-4 border-gray-200">
+                    <a href="#"
+                       class="text-brand font-medium text-sm inline-flex items-center group-hover:text-brand-dark">Read
+                        More
+                        <i class="fa-solid fa-arrow-right ml-2 transform group-hover:translate-x-1 transition duration-300"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="admission" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Admission Process</h2>
+            <p class="text-gray-500 max-w-2xl mx-auto">A transparent and structured approach to bringing the best
+                talents into our institution.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+            <div class="hidden md:block absolute top-12 left-1/6 right-1/6 h-[2px] bg-gray-200 z-0 w-2/3 mx-auto"></div>
+
+            <div class="relative z-10 text-center group">
+                <div class="w-24 h-24 mx-auto bg-white border-4 border-gray-100 rounded-full flex items-center justify-center text-3xl text-brand shadow-lg mb-6 group-hover:border-brand group-hover:scale-110 transition duration-300">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Primary Evaluation</h3>
+                <p class="text-gray-500 text-sm">Initial assessment test to gauge foundational knowledge and
+                    aptitude.</p>
+            </div>
+
+            <div class="relative z-10 text-center group mt-8 md:mt-0">
+                <div class="w-24 h-24 mx-auto bg-white border-4 border-gray-100 rounded-full flex items-center justify-center text-3xl text-brand shadow-lg mb-6 group-hover:border-brand group-hover:scale-110 transition duration-300">
+                    <i class="fa-solid fa-user-pen"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Selection Camp</h3>
+                <p class="text-gray-500 text-sm">Interactive sessions and personal interviews to understand the
+                    student's vision.</p>
+            </div>
+
+            <div class="relative z-10 text-center group mt-8 md:mt-0">
+                <div class="w-24 h-24 mx-auto bg-white border-4 border-gray-100 rounded-full flex items-center justify-center text-3xl text-brand shadow-lg mb-6 group-hover:border-brand group-hover:scale-110 transition duration-300">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Final Selection</h3>
+                <p class="text-gray-500 text-sm">Merit-based list generation and final onboarding procedures.</p>
+            </div>
+        </div>
+
+        <div class="mt-20 flex flex-col sm:flex-row justify-center items-center gap-6">
+            <a href="#"
+               class="px-8 py-3 w-full sm:w-auto text-center border-2 border-brand text-brand font-medium rounded hover:bg-brand hover:text-white transition duration-300 shadow-sm">Request
+                Info</a>
+            <a href="#"
+               class="px-8 py-3 w-full sm:w-auto text-center bg-brand text-white font-medium rounded hover:bg-brand-dark transition duration-300 shadow-lg hover:-translate-y-1">Apply
+                Now</a>
+            <a href="#"
+               class="px-8 py-3 w-full sm:w-auto text-center border-2 border-brand text-brand font-medium rounded hover:bg-brand hover:text-white transition duration-300 shadow-sm">Explore
+                Programs</a>
+        </div>
+    </div>
+</section>
+
+<section
+        class="py-16 bg-gray-900 text-white bg-[url('https://images.unsplash.com/photo-1513258496099-48168024aec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center bg-fixed bg-blend-overlay">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-gray-700">
+            <div class="p-4 hover:-translate-y-2 transition duration-300">
+                <i class="fa-solid fa-graduation-cap text-4xl text-brand mb-4"></i>
+                <div class="text-4xl font-bold mb-2">5</div>
+                <span class="text-gray-300 uppercase tracking-wide text-sm">Courses</span>
+            </div>
+            <div class="p-4 hover:-translate-y-2 transition duration-300">
+                <i class="fa-solid fa-user-graduate text-4xl text-brand mb-4"></i>
+                <div class="text-4xl font-bold mb-2">100+</div>
+                <span class="text-gray-300 uppercase tracking-wide text-sm">Students</span>
+            </div>
+            <div class="p-4 hover:-translate-y-2 transition duration-300">
+                <i class="fa-solid fa-chalkboard-user text-4xl text-brand mb-4"></i>
+                <div class="text-4xl font-bold mb-2">20+</div>
+                <span class="text-gray-300 uppercase tracking-wide text-sm">Faculties</span>
+            </div>
+            <div class="p-4 hover:-translate-y-2 transition duration-300">
+                <i class="fa-solid fa-trophy text-4xl text-brand mb-4"></i>
+                <div class="text-4xl font-bold mb-2">20+</div>
+                <span class="text-gray-300 uppercase tracking-wide text-sm">Achievements</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Gallery</h2>
+        </div>
+
+        <div class="flex overflow-x-auto gap-4 pb-8 hide-scrollbar snap-x md:grid md:grid-cols-4 md:gap-4 md:overflow-visible">
+            <div class="snap-center shrink-0 w-[80vw] md:w-auto h-64 rounded-lg overflow-hidden group cursor-pointer relative">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+                     alt="Gallery"
+                     class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white text-3xl">
+                    <i class="fa-solid fa-expand"></i></div>
+            </div>
+            <div class="snap-center shrink-0 w-[80vw] md:w-auto h-64 rounded-lg overflow-hidden group cursor-pointer relative">
+                <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+                     alt="Gallery"
+                     class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white text-3xl">
+                    <i class="fa-solid fa-expand"></i></div>
+            </div>
+            <div class="snap-center shrink-0 w-[80vw] md:w-auto h-64 rounded-lg overflow-hidden group cursor-pointer relative">
+                <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+                     alt="Gallery"
+                     class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white text-3xl">
+                    <i class="fa-solid fa-expand"></i></div>
+            </div>
+            <div class="snap-center shrink-0 w-[80vw] md:w-auto h-64 rounded-lg overflow-hidden group cursor-pointer relative">
+                <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+                     alt="Gallery"
+                     class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white text-3xl">
+                    <i class="fa-solid fa-expand"></i></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer id="contact" class="bg-gray-900 text-gray-300 pt-16 pb-8 border-t-4 border-brand">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+
+            <div>
+                <h3 class="text-white text-xl font-bold mb-6 flex items-center gap-2"><i
+                        class="fa-solid fa-leaf text-brand"></i> GREENVALLEY</h3>
+                <ul class="space-y-4 text-sm leading-relaxed">
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-location-dot mt-1 text-brand"></i>
+                        <span>Green Valley Academy<br>Pulpatta P.O, Manjeri<br>Malappuram, Kerala - 676123</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fa-solid fa-phone text-brand"></i>
+                        <span>+91 483 294 4429</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fa-solid fa-envelope text-brand"></i>
+                        <a href="mailto:greenvalleymanjeri@gmail.com" class="hover:text-white transition">greenvalleymanjeri@gmail.com</a>
+                    </li>
+                </ul>
+                <div class="flex gap-4 mt-6">
+                    <a href="#"
+                       class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand hover:text-white transition duration-300"><i
+                            class="fa-brands fa-youtube"></i></a>
+                    <a href="#"
+                       class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand hover:text-white transition duration-300"><i
+                            class="fa-brands fa-instagram"></i></a>
+                    <a href="#"
+                       class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand hover:text-white transition duration-300"><i
+                            class="fa-brands fa-facebook-f"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Courses</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Computer Application</a></li>
+                    <li><a href="#" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Hardware & Assembly</a></li>
+                    <li><a href="#" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Electrical Technician</a></li>
+                    <li><a href="#" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Secretarial Practice</a></li>
+                    <li><a href="#" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Food Processing</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Infrastructure</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Library</a></li>
+                    <li><a href="#" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Labs</a></li>
+                    <li><a href="#" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Hostel</a></li>
+                    <li><a href="#" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Canteen</a></li>
+                    <li><a href="#" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Sports</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Support</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Help & Support</a></li>
+                    <li><a href="#contact" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Contact Us</a></li>
+                    <li><a href="#" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Downloads</a></li>
+                    <li><a href="#admission" class="hover:text-brand transition flex items-center gap-2"><i
+                            class="fa-solid fa-angle-right text-xs"></i> Admission Info</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs">
+            <p>&copy; 2024 <strong class="text-white">Greenvalley Academy</strong>. All Rights Reserved.</p>
+            <p class="mt-4 md:mt-0">Designed elegantly with Tailwind CSS.</p>
+        </div>
+    </div>
+</footer>
+
+<div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
+    <a href="https://api.whatsapp.com/send?phone=+919074015548&text=Hi" target="_blank"
+       class="w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center text-3xl shadow-lg hover:scale-110 transition transform animate-float"
+       style="animation-delay: 0.5s;">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <a href="tel:9074015548"
+       class="w-14 h-14 bg-blue-500 text-white rounded-full flex items-center justify-center text-2xl shadow-lg hover:scale-110 transition transform animate-float">
+        <i class="fa-solid fa-phone"></i>
+    </a>
+</div>
+
+<a href="#"
+   class="fixed bottom-6 left-6 w-10 h-10 bg-gray-800 text-white rounded text-center leading-10 shadow-lg opacity-70 hover:opacity-100 hover:-translate-y-1 transition duration-300 z-50">
+    <i class="fa-solid fa-arrow-up"></i>
+</a>
+
+<script>
+    // Simple mobile menu toggle
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+
+    btn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+    });
+</script>
+</body>
+</html>

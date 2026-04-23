@@ -4,7 +4,7 @@ from academics.models import *
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
-    list_display = ('user__first_name',)
+    list_display = ('code','user__first_name')
 
 
 @admin.register(SchoolClass)
@@ -14,7 +14,7 @@ class SchoolClassAdmin(admin.ModelAdmin):
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('code', 'name')
 
 
 @admin.register(SubjectClass)

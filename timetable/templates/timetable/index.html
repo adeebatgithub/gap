@@ -13,330 +13,619 @@
 {% endblock %}
 
 {% block content %}
-    <div class="max-w-full mx-auto space-y-4 sm:space-y-6 pb-20 sm:pb-0 h-[calc(100vh-100px)] flex flex-col min-w-0">
+    <style>
+        /* Override any base layout padding/margins so table can use full viewport */
+        :root {
+            --tt-border: #b0b8c1;
+            --tt-header-bg: #e8eaed;
+            --tt-subheader-bg: #f0f2f5;
+            --tt-cell-bg: #ffffff;
+            --tt-free-bg: #f7f8fa;
+            --tt-study-bg: #fff8f8;
+            --tt-fashion-bg: #f5f0ff;
+            --tt-red: #d32f2f;
+            --tt-text: #1a1a2e;
+            --tt-muted: #5a6478;
+            --tt-accent: #1565c0;
+        }
 
-        <div class="bg-white shadow-sm rounded-xl border border-gray-100 p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-center gap-4 flex-shrink-0">
+        /* Kill any overflow on parent containers */
+        html, body {
+            height: 100%;
+        }
 
-            <div class="text-center sm:text-left">
-                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 justify-center sm:justify-start">
-                    <h2 class="text-lg font-bold text-gray-900">Timetable Builder</h2>
-                    <span class="inline-flex items-center justify-center gap-1.5 bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-md text-xs font-semibold border border-indigo-100 w-fit mx-auto sm:mx-0">
-                        <i class="bi bi-calendar-event"></i>
-                        {% if timetable %}
-                            {{ timetable.created_at|date:"d-m-Y" }}
-                        {% else %}
-                            {% now "d-m-Y" %}
-                        {% endif %}
-                    </span>
-                </div>
-                <p class="text-sm text-gray-500 mt-1.5">Add or remove periods and classes to build your schedule.</p>
+        #tt-outer {
+            height: calc(100vh - 12rem);
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #f0f2f5;
+            border-radius: 0.75rem;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        /* ─── Top toolbar ─── */
+        #tt-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 8px;
+            background: #1a2744;
+            color: #fff;
+            flex-shrink: 0;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        #tt-toolbar .tt-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+            color: #e8edf5;
+        }
+
+        #tt-toolbar .tt-date-badge {
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            padding: 1px 7px;
+            color: #c5d3e8;
+            white-space: nowrap;
+        }
+
+        .tt-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+
+        .tt-btn-col {
+            background: #2962ff;
+            color: #fff;
+        }
+
+        .tt-btn-col:hover {
+            background: #1a4fcc;
+        }
+
+        .tt-btn-row {
+            background: #00897b;
+            color: #fff;
+        }
+
+        .tt-btn-row:hover {
+            background: #006b5e;
+        }
+
+        .tt-btn-save {
+            background: #f57c00;
+            color: #fff;
+        }
+
+        .tt-btn-save:hover {
+            background: #c96200;
+        }
+
+        /* ─── Table wrapper: fills remaining height, NO scroll ─── */
+        #tt-table-wrapper {
+            flex: 1 1 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 4px;
+        }
+
+        /* The form fills its wrapper */
+        #timetable-form {
+            flex: 1 1 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ─── Scale container: shrinks table to fit ─── */
+        #tt-scale-outer {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+
+        #tt-scale-inner {
+            /* JS will set transform-origin + scale to fit */
+            transform-origin: top left;
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* width/height set by JS */
+        }
+
+        /* ─── The actual table ─── */
+        #timetable {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+            background: #fff;
+            border: 1.5px solid var(--tt-border);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10);
+        }
+
+        #timetable th,
+        #timetable td {
+            border: 1px solid var(--tt-border);
+            vertical-align: middle;
+            text-align: center;
+            padding: 2px 3px;
+            font-size: 0.62rem;
+            line-height: 1.2;
+            word-break: break-word;
+            hyphens: auto;
+        }
+
+        /* Title row */
+        #timetable .tt-title-row th {
+            background: #dce3f0;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #1a2744;
+            padding: 4px;
+        }
+
+        /* Column header row */
+        #timetable thead tr:nth-child(2) th,
+        #timetable-head-row th {
+            background: var(--tt-header-bg);
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #1a2744;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Period label column */
+        #timetable .td-period-label {
+            background: var(--tt-header-bg);
+            font-weight: 700;
+            color: #1a2744;
+            font-size: 0.6rem;
+            white-space: nowrap;
+        }
+
+        /* Regular cells */
+        #timetable tbody td {
+            background: var(--tt-cell-bg);
+            font-size: 0.58rem;
+            font-weight: 600;
+            color: var(--tt-text);
+            min-width: 0;
+        }
+
+        #timetable tbody tr:hover td {
+            background: #f0f4ff;
+        }
+
+        /* Supervised / study rows */
+        #timetable tr.tt-row-study td {
+            background: var(--tt-study-bg);
+            font-size: 0.58rem;
+            color: var(--tt-red);
+            font-weight: 700;
+        }
+
+        #timetable tr.tt-row-fashion td {
+            background: var(--tt-fashion-bg);
+        }
+
+        /* Selects inside header & cells */
+        #timetable select {
+            width: 100%;
+            border: 1px solid #d0d7e3;
+            border-radius: 3px;
+            background: #f7f9ff;
+            font-size: 0.58rem;
+            font-weight: 600;
+            color: var(--tt-text);
+            padding: 1px 2px;
+            cursor: pointer;
+            outline: none;
+            text-align: center;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        #timetable select:focus {
+            border-color: #2962ff;
+            background: #fff;
+            box-shadow: 0 0 0 2px rgba(41, 98, 255, 0.15);
+        }
+
+        /* Period inputs in first sticky column */
+        #timetable .period-cell {
+            background: var(--tt-header-bg) !important;
+            min-width: 90px;
+        }
+
+        #timetable .period-cell .period-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+        }
+
+        #timetable .period-cell input[type="number"] {
+            width: 26px;
+            border: 1px solid #bbc4d4;
+            border-radius: 3px;
+            background: #fff;
+            font-size: 0.6rem;
+            font-weight: 800;
+            text-align: center;
+            padding: 1px;
+            color: #1a2744;
+        }
+
+        #timetable .period-cell input[type="text"] {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 0.58rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--tt-muted);
+            padding: 0 1px;
+        }
+
+        #timetable .period-cell input[type="number"]:focus,
+        #timetable .period-cell input[type="text"]:focus {
+            outline: 1px solid #2962ff;
+            border-radius: 2px;
+        }
+
+        /* Remove buttons */
+        .btn-remove-col,
+        .btn-remove-row {
+            display: none;
+            background: none;
+            border: none;
+            color: #ef5350;
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.65rem;
+            line-height: 1;
+        }
+
+        th:hover .btn-remove-col,
+        .period-cell:hover .btn-remove-row,
+        th:focus-within .btn-remove-col,
+        .period-cell:focus-within .btn-remove-row {
+            display: inline-flex;
+        }
+
+        /* Column header th layout */
+        #timetable-head-row th .th-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+            position: relative;
+        }
+
+        #timetable-head-row th:first-child {
+            background: #c5cfe3;
+            font-size: 0.58rem;
+            font-weight: 700;
+            color: #1a2744;
+        }
+    </style>
+
+    <div id="tt-outer">
+
+        <!-- Toolbar -->
+        <div id="tt-toolbar">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <span class="tt-title">&#128197; Timetable Builder</span>
+                <span class="tt-date-badge">
+                {% if timetable %}{{ timetable.created_at|date:"l d-m-Y" }}{% else %}{% now "l d-m-Y" %}{% endif %}
+            </span>
             </div>
-
-            <div class="flex flex-wrap items-center justify-center gap-2 w-full sm:w-auto">
-                <button type="button" id="btn-add-col"
-                        class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
-                    <i class="bi bi-layout-three-columns"></i> Add Class (Col)
+            <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
+                <button type="button" id="btn-add-col" class="tt-btn tt-btn-col">
+                    <i class="bi bi-layout-three-columns"></i> Add Class
                 </button>
-
-                <button type="button" id="btn-add-row"
-                        class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
-                    <i class="bi bi-list-task"></i> Add Period (Row)
+                <button type="button" id="btn-add-row" class="tt-btn tt-btn-row">
+                    <i class="bi bi-list-task"></i> Add Period
+                </button>
+                <button type="submit" form="timetable-form" class="tt-btn tt-btn-save">
+                    <i class="bi bi-save"></i> Save
                 </button>
             </div>
         </div>
 
-        <form method="POST" action="{% url 'timetable:create' %}" id="timetable-form"
-              class="bg-white shadow-sm rounded-xl border border-gray-100 overflow-hidden flex flex-col flex-1 min-h-[500px] isolate relative w-full min-w-0">
-            {% csrf_token %}
-
-            <div class="overflow-auto w-full flex-1 relative custom-scrollbar z-0">
-                <table class="w-full text-sm text-left border-collapse min-w-max" id="timetable">
-
-                    <thead class="bg-gray-50 text-gray-700 sticky top-0 z-20 shadow-[0_1px_0_0_#e5e7eb]">
-                    <tr id="timetable-head-row">
-                        <th class="p-3 border-r border-gray-200 min-w-[220px] w-56 bg-gray-100 sticky left-0 top-0 z-30 shadow-[1px_0_0_0_#e5e7eb]">
-                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Period \ Class</span>
-                        </th>
-
-                        {% if timetable and timetable.classes.all %}
-                            {% for t_class in timetable.classes.all %}
-                                <th class="p-3 border-r border-gray-100 min-w-[180px] bg-gray-50 group">
-                                    <div class="flex items-center gap-2">
-                                        <i class="bi bi-easel text-gray-400"></i>
-                                        <select name="class_names[]"
-                                                class="block w-full border-0 bg-transparent p-1 text-sm font-bold text-gray-900 focus:ring-0 cursor-pointer">
-                                            <option value="">-- Select Class --</option>
-                                            {% for s_class in school_classes %}
-                                                <option value="{{ s_class.pk }}"
-                                                        {% if t_class.school_class.pk == s_class.pk %}selected{% endif %}>
-                                                    {{ s_class.name }}
-                                                </option>
-                                            {% endfor %}
-                                        </select>
-                                        <button type="button"
-                                                class="btn-remove-col opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity focus:opacity-100 p-1 rounded"
-                                                title="Remove Class">
-                                            <i class="bi bi-x-circle-fill text-base"></i>
-                                        </button>
-                                    </div>
+        <!-- Table area -->
+        <div id="tt-table-wrapper">
+            <form method="POST" action="{% url 'timetable:create' %}" id="timetable-form" style="display:contents;">
+                {% csrf_token %}
+                <div id="tt-scale-outer">
+                    <div id="tt-scale-inner">
+                        <table id="timetable">
+                            <thead>
+                            <!-- Title row spanning all columns -->
+                            <tr class="tt-title-row" id="tt-title-row">
+                                <th colspan="99" id="tt-title-cell">
+                                    WEDNESDAY &nbsp;
+                                    {% if timetable %}{{ timetable.created_at|date:"d-m-Y" }}{% else %}
+                                        {% now "d-m-Y" %}{% endif %}
                                 </th>
-                            {% endfor %}
-                        {% else %}
-                            <th class="p-3 border-r border-gray-100 min-w-[180px] bg-gray-50 group">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-easel text-gray-400"></i>
-                                    <select name="class_names[]"
-                                            class="block w-full border-0 bg-transparent p-1 text-sm font-bold text-gray-900 focus:ring-0 cursor-pointer">
-                                        <option value="">-- Select Class --</option>
-                                        {% for s_class in school_classes %}
-                                            <option value="{{ s_class.pk }}">{{ s_class.name }}</option>
+                            </tr>
+                            <!-- Class header row -->
+                            <tr id="timetable-head-row">
+                                <th style="width:90px;">
+                                    <span style="font-size:0.55rem;color:#5a6478;text-transform:uppercase;letter-spacing:.05em;">PRD &nbsp;/&nbsp; TIME</span>
+                                </th>
+
+                                {% if timetable and timetable.classes.all %}
+                                    {% for t_class in timetable.classes.all %}
+                                        <th>
+                                            <div class="th-inner">
+                                                <select name="class_names[]">
+                                                    <option value="">-- Class --</option>
+                                                    {% for s_class in school_classes %}
+                                                        <option value="{{ s_class.pk }}"
+                                                                {% if t_class.school_class.pk == s_class.pk %}selected{% endif %}>
+                                                            {{ s_class.name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                                <button type="button" class="btn-remove-col" title="Remove">
+                                                    <i class="bi bi-x-circle-fill"></i>
+                                                </button>
+                                            </div>
+                                        </th>
+                                    {% endfor %}
+                                {% else %}
+                                    <th>
+                                        <div class="th-inner">
+                                            <select name="class_names[]">
+                                                <option value="">-- Class --</option>
+                                                {% for s_class in school_classes %}
+                                                    <option value="{{ s_class.pk }}">{{ s_class.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <button type="button" class="btn-remove-col" title="Remove">
+                                                <i class="bi bi-x-circle-fill"></i>
+                                            </button>
+                                        </div>
+                                    </th>
+                                {% endif %}
+                            </tr>
+                            </thead>
+
+                            <tbody id="timetable-body">
+                            {% if timetable and timetable.periods.all %}
+                                {% for period in timetable.periods.all %}
+                                    <tr>
+                                        <td class="period-cell">
+                                            <div class="period-inner">
+                                                <input type="number" name="period_numbers[]" value="{{ period.number }}"
+                                                       min="1" placeholder="#">
+                                                <input type="text" name="period_names[]" value="{{ period.time_range }}"
+                                                       placeholder="09:00-10:00">
+                                                <button type="button" class="btn-remove-row" title="Remove">
+                                                    <i class="bi bi-x-circle-fill"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        {% for t_class in timetable.classes.all %}
+                                            <td>
+                                                <select name="timetable_cells[]">
+                                                    <option value="">— Free —</option>
+                                                    {% for subject in subjects %}
+                                                        <option value="{{ subject.pk }}"
+                                                                {% for cell in timetable.cells.all %}
+                                                                {% if cell.period_number == period.number and cell.school_class == t_class.school_class and cell.subject_class.pk == subject.pk %}selected
+                                                                {% endif %}
+                                                                {% endfor %}>
+                                                            {{ subject }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </td>
                                         {% endfor %}
-                                    </select>
-                                    <button type="button"
-                                            class="btn-remove-col opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity focus:opacity-100 p-1 rounded"
-                                            title="Remove Class">
-                                        <i class="bi bi-x-circle-fill text-base"></i>
-                                    </button>
-                                </div>
-                            </th>
-                        {% endif %}
-                    </tr>
-                    </thead>
-
-                    <tbody id="timetable-body" class="divide-y divide-gray-100">
-
-                    {% if timetable and timetable.periods.all %}
-                        {% for period in timetable.periods.all %}
-                            <tr class="hover:bg-gray-50/50 transition-colors">
-                                <td class="p-3 border-r border-gray-200 bg-white sticky left-0 z-10 shadow-[1px_0_0_0_#e5e7eb] group">
-                                    <div class="flex items-center gap-2">
-                                        <input type="number" name="period_numbers[]" placeholder="#"
-                                               value="{{ period.number }}" min="1"
-                                               class="block w-12 border border-gray-200 rounded-md bg-gray-50 p-1 text-center text-sm font-bold text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                               title="Period Number">
-
-                                        <input type="text" name="period_names[]" placeholder="09:00 - 10:00"
-                                               value="{{ period.time_range }}"
-                                               class="block w-full border-0 bg-transparent p-1 text-sm font-semibold text-gray-700 placeholder-gray-400 focus:ring-0"
-                                               title="Period Time">
-
-                                        <button type="button"
-                                                class="btn-remove-row opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity focus:opacity-100 p-1 rounded flex-shrink-0"
-                                                title="Remove Period">
-                                            <i class="bi bi-x-circle-fill text-base"></i>
-                                        </button>
-                                    </div>
-                                </td>
-
-                                {% for t_class in timetable.classes.all %}
-                                    <td class="p-3 border-r border-gray-100 bg-white">
-                                        <select name="timetable_cells[]"
-                                                class="block w-full rounded-lg border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-colors cursor-pointer">
-                                            <option value="">-- Free Period --</option>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td class="period-cell">
+                                        <div class="period-inner">
+                                            <input type="number" name="period_numbers[]" value="1" min="1"
+                                                   placeholder="#">
+                                            <input type="text" name="period_names[]" placeholder="09:00-10:00">
+                                            <button type="button" class="btn-remove-row" title="Remove">
+                                                <i class="bi bi-x-circle-fill"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <select name="timetable_cells[]">
+                                            <option value="">— Free —</option>
                                             {% for subject in subjects %}
-                                                <option value="{{ subject.pk }}"
-                                                        {% for cell in timetable.cells.all %}
-                                                            {% if cell.period_number == period.number and cell.school_class == t_class.school_class and cell.subject_class.pk == subject.pk %}
-                                                        selected
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                >
-                                                    {{ subject }}
-                                                </option>
+                                                <option value="{{ subject.pk }}">{{ subject }}</option>
                                             {% endfor %}
                                         </select>
                                     </td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div><!-- /tt-scale-inner -->
+                </div><!-- /tt-scale-outer -->
+            </form>
+        </div><!-- /tt-table-wrapper -->
 
-                    {% else %}
-                        <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-3 border-r border-gray-200 bg-white sticky left-0 z-10 shadow-[1px_0_0_0_#e5e7eb] group">
-                                <div class="flex items-center gap-2">
-                                    <input type="number" name="period_numbers[]" placeholder="#" value="1" min="1"
-                                           class="block w-12 border border-gray-200 rounded-md bg-gray-50 p-1 text-center text-sm font-bold text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                           title="Period Number">
-
-                                    <input type="text" name="period_names[]" placeholder="09:00 - 10:00"
-                                           class="block w-full border-0 bg-transparent p-1 text-sm font-semibold text-gray-700 placeholder-gray-400 focus:ring-0"
-                                           title="Period Time">
-
-                                    <button type="button"
-                                            class="btn-remove-row opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity focus:opacity-100 p-1 rounded flex-shrink-0"
-                                            title="Remove Period">
-                                        <i class="bi bi-x-circle-fill text-base"></i>
-                                    </button>
-                                </div>
-                            </td>
-
-                            <td class="p-3 border-r border-gray-100 bg-white">
-                                <select name="timetable_cells[]"
-                                        class="block w-full rounded-lg border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-colors cursor-pointer">
-                                    <option value="">-- Free Period --</option>
-                                    {% for subject in subjects %}
-                                        <option value="{{ subject.pk }}">{{ subject }}</option>
-                                    {% endfor %}
-                                </select>
-                            </td>
-                        </tr>
-                    {% endif %}
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="bg-gray-50/80 border-t border-gray-100 p-4 sm:px-6 sm:py-4 flex justify-end flex-shrink-0 relative z-40">
-                <button type="submit"
-                        class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 sm:py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-md">
-                    <i class="bi bi-save"></i> Save Timetable
-                </button>
-            </div>
-
-        </form>
-
-    </div>
+    </div><!-- /tt-outer -->
 {% endblock %}
 
 {% block extra_js %}
-    <style>
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 4px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            const btnAddRow = document.getElementById('btn-add-row');
-            const btnAddCol = document.getElementById('btn-add-col');
-            const theadRow = document.getElementById('timetable-head-row');
-            const tbody = document.getElementById('timetable-body');
+            /* ─── Scale-to-fit logic ─────────────────────────────────────── */
+            const outer = document.getElementById('tt-scale-outer');
+            const inner = document.getElementById('tt-scale-inner');
+            const table = document.getElementById('timetable');
 
+            function fitTable() {
+                // Reset scale first to measure natural size
+                inner.style.transform = 'scale(1)';
+                inner.style.width = '';
+                inner.style.height = '';
+
+                const naturalW = table.offsetWidth;
+                const naturalH = table.offsetHeight;
+                const availW = outer.clientWidth;
+                const availH = outer.clientHeight;
+
+                if (naturalW === 0 || naturalH === 0) return;
+
+                const scaleX = availW / naturalW;
+                const scaleY = availH / naturalH;
+                const scale = Math.min(scaleX, scaleY, 1); // never upscale
+
+                inner.style.transform = `scale(${scale})`;
+                inner.style.transformOrigin = 'top left';
+                // So the outer div doesn't report wrong size after scaling:
+                inner.style.width = naturalW + 'px';
+                inner.style.height = naturalH + 'px';
+            }
+
+            // Run on load and on resize
+            fitTable();
+            const ro = new ResizeObserver(fitTable);
+            ro.observe(outer);
+
+            /* ─── colspan on title row ────────────────────────────────────── */
+            function updateTitleColspan() {
+                const headRow = document.getElementById('timetable-head-row');
+                const cols = headRow ? headRow.children.length : 2;
+                const titleCell = document.getElementById('tt-title-cell');
+                if (titleCell) titleCell.setAttribute('colspan', cols);
+            }
+
+            updateTitleColspan();
+
+            /* ─── Subject select HTML ─────────────────────────────────────── */
             const selectHTML = `
-            <select name="timetable_cells[]" class="block w-full rounded-lg border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-colors cursor-pointer">
-                <option value="">-- Free Period --</option>
-                {% for subject in subjects %}
-                    <option value="{{ subject.pk }}">{{ subject|escapejs }}</option>
-                {% endfor %}
-            </select>
-        `;
+        <select name="timetable_cells[]" style="width:100%;border:1px solid #d0d7e3;border-radius:3px;background:#f7f9ff;font-size:0.58rem;font-weight:600;color:#1a1a2e;padding:1px 2px;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center;">
+            <option value="">— Free —</option>
+            {% for subject in subjects %}
+                <option value="{{ subject.pk }}">{{ subject|escapejs }}</option>
+            {% endfor %}
+        </select>
+    `;
 
-            const classSelectDropdownHTML = `
-            <select name="class_names[]" class="block w-full border-0 bg-transparent p-1 text-sm font-bold text-gray-900 focus:ring-0 cursor-pointer">
-                <option value="">-- Select Class --</option>
-                {% for s_class in school_classes %}
-                    <option value="{{ s_class.pk }}">{{ s_class.name|escapejs }}</option>
-                {% endfor %}
-            </select>
-        `;
+            const classSelectHTML = `
+        <select name="class_names[]" style="width:100%;border:1px solid #d0d7e3;border-radius:3px;background:#f7f9ff;font-size:0.58rem;font-weight:600;color:#1a1a2e;padding:1px 2px;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center;">
+            <option value="">-- Class --</option>
+            {% for s_class in school_classes %}
+                <option value="{{ s_class.pk }}">{{ s_class.name|escapejs }}</option>
+            {% endfor %}
+        </select>
+    `;
 
-            btnAddCol.addEventListener('click', function () {
-                const newTh = document.createElement('th');
-                newTh.className = "p-3 border-r border-gray-100 min-w-[180px] bg-gray-50 group";
-                newTh.innerHTML = `
-                <div class="flex items-center gap-2">
-                    <i class="bi bi-easel text-gray-400"></i>
-                    ${classSelectDropdownHTML}
-                    <button type="button" class="btn-remove-col opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity focus:opacity-100 p-1 rounded" title="Remove Class">
-                        <i class="bi bi-x-circle-fill text-base"></i>
-                    </button>
-                </div>
-            `;
-                theadRow.appendChild(newTh);
+            /* ─── Add Column ──────────────────────────────────────────────── */
+            document.getElementById('btn-add-col').addEventListener('click', function () {
+                const headRow = document.getElementById('timetable-head-row');
+                const tbody = document.getElementById('timetable-body');
 
-                const rows = tbody.querySelectorAll('tr');
-                rows.forEach(row => {
-                    const newTd = document.createElement('td');
-                    newTd.className = "p-3 border-r border-gray-100 bg-white";
-                    newTd.innerHTML = selectHTML;
-                    row.appendChild(newTd);
+                const th = document.createElement('th');
+                th.innerHTML = `
+            <div class="th-inner">
+                ${classSelectHTML}
+                <button type="button" class="btn-remove-col" title="Remove"><i class="bi bi-x-circle-fill"></i></button>
+            </div>`;
+                headRow.appendChild(th);
+
+                tbody.querySelectorAll('tr').forEach(row => {
+                    const td = document.createElement('td');
+                    td.innerHTML = selectHTML;
+                    row.appendChild(td);
                 });
 
-                newTh.querySelector('select').focus();
+                updateTitleColspan();
+                fitTable();
+                th.querySelector('select').focus();
             });
 
-            btnAddRow.addEventListener('click', function () {
-                const numCols = theadRow.children.length - 1;
-                const newTr = document.createElement('tr');
-                newTr.className = "hover:bg-gray-50/50 transition-colors";
+            /* ─── Add Row ─────────────────────────────────────────────────── */
+            document.getElementById('btn-add-row').addEventListener('click', function () {
+                const headRow = document.getElementById('timetable-head-row');
+                const tbody = document.getElementById('timetable-body');
+                const numCols = headRow.children.length - 1;
 
-                const periodNumInputs = tbody.querySelectorAll('input[name="period_numbers[]"]');
-                let nextPeriodNum = 1;
-                if (periodNumInputs.length > 0) {
-                    const lastNum = parseInt(periodNumInputs[periodNumInputs.length - 1].value);
-                    nextPeriodNum = isNaN(lastNum) ? 1 : lastNum + 1;
+                const periodInputs = tbody.querySelectorAll('input[name="period_numbers[]"]');
+                let nextNum = 1;
+                if (periodInputs.length > 0) {
+                    const last = parseInt(periodInputs[periodInputs.length - 1].value);
+                    nextNum = isNaN(last) ? periodInputs.length + 1 : last + 1;
                 }
 
-                let rowHTML = `
-                <td class="p-3 border-r border-gray-200 bg-white sticky left-0 z-10 shadow-[1px_0_0_0_#e5e7eb] group">
-                    <div class="flex items-center gap-2">
-                        <input type="number" name="period_numbers[]" placeholder="#" value="${nextPeriodNum}" min="1"
-                               class="block w-12 border border-gray-200 rounded-md bg-gray-50 p-1 text-center text-sm font-bold text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" title="Period Number">
-
-                        <input type="text" name="period_names[]" placeholder="09:00 - 10:00"
-                               class="block w-full border-0 bg-transparent p-1 text-sm font-semibold text-gray-700 placeholder-gray-400 focus:ring-0" title="Period Time">
-
-                        <button type="button" class="btn-remove-row opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity focus:opacity-100 p-1 rounded flex-shrink-0" title="Remove Period">
-                            <i class="bi bi-x-circle-fill text-base"></i>
-                        </button>
-                    </div>
-                </td>
-            `;
-
+                const tr = document.createElement('tr');
+                let html = `
+            <td class="period-cell">
+                <div class="period-inner">
+                    <input type="number" name="period_numbers[]" value="${nextNum}" min="1" placeholder="#"
+                        style="width:26px;border:1px solid #bbc4d4;border-radius:3px;background:#fff;font-size:0.6rem;font-weight:800;text-align:center;padding:1px;color:#1a2744;">
+                    <input type="text" name="period_names[]" placeholder="09:00-10:00"
+                        style="width:100%;border:none;background:transparent;font-size:0.58rem;font-weight:600;text-align:center;color:#5a6478;padding:0 1px;">
+                    <button type="button" class="btn-remove-row" title="Remove"><i class="bi bi-x-circle-fill"></i></button>
+                </div>
+            </td>`;
                 for (let i = 0; i < numCols; i++) {
-                    rowHTML += `
-                    <td class="p-3 border-r border-gray-100 bg-white">
-                        ${selectHTML}
-                    </td>
-                `;
+                    html += `<td>${selectHTML}</td>`;
                 }
-
-                newTr.innerHTML = rowHTML;
-                tbody.appendChild(newTr);
-                newTr.querySelector('input[name="period_names[]"]').focus();
+                tr.innerHTML = html;
+                tbody.appendChild(tr);
+                fitTable();
+                tr.querySelector('input[name="period_names[]"]').focus();
             });
 
-            theadRow.addEventListener('click', function (e) {
-                const removeBtn = e.target.closest('.btn-remove-col');
-                if (removeBtn) {
-                    const th = removeBtn.closest('th');
-                    const colIndex = Array.from(th.parentNode.children).indexOf(th);
-
-                    if (confirm('Are you sure you want to remove this class column?')) {
-                        th.remove();
-
-                        const rows = tbody.querySelectorAll('tr');
-                        rows.forEach(row => {
-                            if (row.children[colIndex]) {
-                                row.children[colIndex].remove();
-                            }
-                        });
-                    }
-                }
+            /* ─── Remove Column ───────────────────────────────────────────── */
+            document.getElementById('timetable-head-row').addEventListener('click', function (e) {
+                const btn = e.target.closest('.btn-remove-col');
+                if (!btn) return;
+                const th = btn.closest('th');
+                const idx = Array.from(th.parentNode.children).indexOf(th);
+                if (!confirm('Remove this class column?')) return;
+                th.remove();
+                document.getElementById('timetable-body').querySelectorAll('tr').forEach(row => {
+                    if (row.children[idx]) row.children[idx].remove();
+                });
+                updateTitleColspan();
+                fitTable();
             });
 
-            tbody.addEventListener('click', function (e) {
-                const removeBtn = e.target.closest('.btn-remove-row');
-                if (removeBtn) {
-                    const tr = removeBtn.closest('tr');
-                    if (confirm('Are you sure you want to remove this period row?')) {
-                        tr.remove();
-                    }
-                }
+            /* ─── Remove Row ──────────────────────────────────────────────── */
+            document.getElementById('timetable-body').addEventListener('click', function (e) {
+                const btn = e.target.closest('.btn-remove-row');
+                if (!btn) return;
+                const tr = btn.closest('tr');
+                if (!confirm('Remove this period row?')) return;
+                tr.remove();
+                fitTable();
             });
 
         });

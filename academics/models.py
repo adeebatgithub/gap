@@ -20,6 +20,7 @@ BLOOD_GROUP_CHOICES = (
 
 class Teacher(TimeStampedModel):
     uid = models.UUIDField(editable=False)
+    code = models.CharField(max_length=100, null=True, blank=True)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     address = models.TextField()
     qualifications = models.TextField()
@@ -63,6 +64,7 @@ class SchoolClass(TimeStampedModel):
 
 class Subject(TimeStampedModel):
     name = models.CharField(max_length=100)
+    code = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -74,7 +76,7 @@ class SubjectClass(TimeStampedModel):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.subject} - {self.teacher}"
+        return f"{self.subject.code} - {self.teacher.code}"
 
 
 def student_photo_path(instance, filename):
@@ -145,6 +147,7 @@ class Session(TimeStampedModel):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     school_class = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    period = models.IntegerField()
     date = models.DateField()
 
     def save(self, *args, **kwargs):
@@ -157,10 +160,12 @@ class Attendance(TimeStampedModel):
     PENDING = 0
     PRESENT = 1
     ABSENT = 2
+    LEAVE = 3
     STATUS_CHOICES = (
         (PENDING, 'Pending'),
         (PRESENT, 'Present'),
         (ABSENT, 'Absent'),
+        (LEAVE, 'Leave'),
     )
 
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
@@ -169,6 +174,16 @@ class Attendance(TimeStampedModel):
 
 
 class Assessment(TimeStampedModel):
+    CHOICES = (
+        ("sem written exam", "sem written Exam"),
+        ("sem viva exam", "sem viva Exam"),
+
+        ("internal exam", "Internal exam"),
+        ("assignment", "Assignment"),
+        ("project", "Project"),
+        ("viva", "Viva"),
+        ("seminar", "Seminar"),
+    )
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     school_class = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
     academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE)
