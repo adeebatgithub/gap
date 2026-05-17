@@ -58,14 +58,14 @@
                             <div class="flex items-center justify-between sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
 
                                 {% if teacher.user|has_group:"Admin" %}
-                                <a href="{% url 'academics:teacher:detail' teacher.pk %}"
+                                <a href="{% url 'academics:teacher:remove-admin' teacher.pk %}"
                                    onclick="return confirm('Are you sure you want to make this teacher admin?');"
                                    class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
                                    title="Remove Admin privileges">
                                     <i class="bi bi-eye"></i> remove from admin
                                 </a>
                                 {% else %}
-                                <a href="{% url 'academics:teacher:detail' teacher.pk %}"
+                                <a href="{% url 'academics:teacher:add-admin' teacher.pk %}"
                                    onclick="return confirm('Are you sure you want to make this teacher admin?');"
                                    class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
                                    title="Grant Admin privileges">
@@ -74,14 +74,14 @@
                                 {% endif %}
 
                                 {% if teacher.user|has_group:"Exam" %}
-                                <a href="{% url 'academics:teacher:detail' teacher.pk %}"
+                                <a href="{% url 'academics:teacher:remove-exam' teacher.pk %}"
                                    onclick="return confirm('Are you sure you want to make this teacher exam controller?');"
                                    class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
                                    title="Remove Exam privileges">
                                     <i class="bi bi-eye"></i> remove from exam
                                 </a>
                                 {% else %}
-                                <a href="{% url 'academics:teacher:detail' teacher.pk %}"
+                                <a href="{% url 'academics:teacher:add-exam' teacher.pk %}"
                                    onclick="return confirm('Are you sure you want to make this teacher exam controller?');"
                                    class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
                                    title="Grant Exam privileges">

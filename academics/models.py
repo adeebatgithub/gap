@@ -67,7 +67,7 @@ class Subject(TimeStampedModel):
     code = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.code if self.code else self.name
 
 
 class SubjectClass(TimeStampedModel):

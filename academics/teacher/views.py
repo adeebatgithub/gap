@@ -1,9 +1,13 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.models import Group
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from academics.models import Teacher, SubjectClass
 from .forms import TeacherForm
 from controller.mixins import RedirectToDetail
+
 
 class TeacherListView(PermissionRequiredMixin, ListView):
     permission_required = "academics.view_teacher"
@@ -53,3 +57,45 @@ class TeacherDeleteView(PermissionRequiredMixin, RedirectToDetail, DeleteView):
 
     def get_detail_url(self):
         reverse_lazy('academics:teacher:detail', kwargs={'pk': self.object.pk})
+
+
+class AddToGroup(PermissionRequiredMixin, DetailView):
+    permission_required = "academics.change_teacher"
+    model = Teacher
+    group = None
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        user = self.object.user
+        user.groups.add(self.group)
+        user.save()
+        return redirect(reverse_lazy('academics:teacher:list'))
+
+
+class RemoveFromGroup(PermissionRequiredMixin, DetailView):
+    permission_required = "academics.change_teacher"
+    model = Teacher
+    group = None
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        user = self.object.user
+        user.groups.remove(self.group)
+        user.save()
+        return redirect(reverse_lazy('academics:teacher:list'))
+
+
+class AddToAdmin(AddToGroup):
+    group = Group.objects.get(name="Admin")
+
+
+class AddToExam(AddToGroup):
+    group = Group.objects.get(name="Exam")
+
+
+class RemoveFromAdmin(RemoveFromGroup):
+    group = Group.objects.get(name="Admin")
+
+
+class RemoveFromExam(RemoveFromGroup):
+    group = Group.objects.get(name="Exam")
