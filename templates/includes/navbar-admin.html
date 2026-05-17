@@ -1,3 +1,5 @@
+{% load users %}
+
 <nav class="flex flex-col gap-1 h-full">
 
     <div class="mb-4 px-2">
@@ -18,14 +20,23 @@
         </p>
     </div>
 
+    {% if request.user|has_group:"Teacher" %}
+        <a href="{% url 'teacher:dashboard' %}"
+           class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+                  text-gray-600 hover:bg-gray-100 hover:text-gray-900">
+            <i class="bi bi-speedometer2 text-lg transition-transform duration-200 group-hover:scale-110"></i>
+            Teacher Dashboard
+        </a>
+    {% endif %}
+
     <a href="{% url 'academics:dashboard' %}"
        class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
               {% if request.resolver_match.url_name == 'dashboard' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
         <i class="bi bi-speedometer2 text-lg transition-transform duration-200 {% if request.resolver_match.url_name != 'dashboard' %}group-hover:scale-110{% endif %}"></i>
-        Dashboard
+        Academics Dashboard
     </a>
 
-    <a href="{% url 'timetable:index' %}"
+    <a href="{% url 'timetable:preview' %}"
        class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
               {% if request.resolver_match.app_name == 'timetable' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
         <i class="bi bi-calendar-week text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'timetable' %}group-hover:scale-110{% endif %}"></i>

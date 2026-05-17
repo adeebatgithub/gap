@@ -1,4 +1,6 @@
 {% load teacher_tags %}
+{% load users %}
+
 <nav class="flex flex-col gap-1 h-full">
 
     <div class="mb-4 px-2">
@@ -18,6 +20,15 @@
             Overview
         </p>
     </div>
+
+    {% if request.user|has_group:"Admin" %}
+    <a href="{% url 'academics:dashboard' %}"
+       class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+              text-gray-600 hover:bg-gray-100 hover:text-gray-900">
+        <i class="bi bi-speedometer2 text-lg transition-transform duration-200 {% if request.resolver_match.url_name != 'dashboard' %}group-hover:scale-110{% endif %}"></i>
+        Academic Dashboard
+    </a>
+    {% endif %}
 
     <a href="{% url 'teacher:dashboard' %}"
        class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
@@ -46,6 +57,21 @@
         <i class="bi bi-easel text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'teacher:schoolclass' %}group-hover:scale-110{% endif %}"></i>
         Continues Evaluation
     </a>
+
+    {% if request.user|has_group:"Exam" %}
+    <div class="mt-2 mb-1 px-3">
+        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center">
+            Exam
+        </p>
+    </div>
+
+    <a href="{% url 'academics:assessment:list' %}"
+       class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+                  {% if request.resolver_match.app_name == 'academics:assessment' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+        <i class="bi bi-clipboard-check text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'academics:assessment' %}group-hover:scale-110{% endif %}"></i>
+        Assessment
+    </a>
+    {% endif %}
 
     <div class="mt-auto"></div>
 

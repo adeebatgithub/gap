@@ -101,6 +101,29 @@
             white-space: nowrap;
         }
 
+        .tt-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+
+        .tt-btn-save {
+            background: #f57c00;
+            color: #fff;
+        }
+
+        .tt-btn-save:hover {
+            background: #c96200;
+        }
+
         /* =========================================
            3. Table Structure & Typography
         ========================================= */
@@ -230,6 +253,7 @@
     </style>
 
     <div id="tt-outer">
+
         <div id="tt-toolbar">
             <form method="GET">
                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
@@ -240,7 +264,13 @@
                            value="{% if timetable %}{{ timetable.created_at|date:'Y-m-d' }}{% else %}{% now 'Y-m-d' %}{% endif %}">
                 </div>
             </form>
+            <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
+                <a href="{% url 'timetable:edit' %}" class="tt-btn tt-btn-save">
+                    <i class="bi bi-save"></i> Edit
+                </a>
+            </div>
         </div>
+
         <div id="tt-table-wrapper">
             <form method="POST" action="{% url 'timetable:create' %}" id="timetable-form">
                 {% csrf_token %}
@@ -293,7 +323,7 @@
                                             {% for cell in timetable.cells.all %}
                                                 {% if cell.period_number == period.number and cell.school_class == t_class.school_class %}
                                                     <td {% if cell.is_marked %}style="background-color: green;color: white"{% endif %}>
-                                                        <a href="{% url 'teacher:attendance:upsert' cell.pk %}">{{ cell.subject_class }}</a>
+                                                        {{ cell.subject_class }}
                                                     </td>
                                                 {% endif %}
                                             {% endfor %}

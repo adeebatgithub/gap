@@ -10,7 +10,7 @@ from timetable.models import Timetable, TimetableClass, TimetablePeriod, Timetab
 
 
 class TimetableView(TemplateView):
-    template_name = "timetable/index.html"
+    template_name = "timetable/edit.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -18,6 +18,26 @@ class TimetableView(TemplateView):
             "subjects": SubjectClass.objects.all(),
             "timetable": Timetable.objects.last(),
             "school_classes": SchoolClass.objects.all(),
+        })
+        return context
+
+
+class TimetablePreview(TemplateView):
+    template_name = "timetable/preview.html"
+
+    def get_table(self):
+        if date:=self.request.GET.get('date'):
+            table = Timetable.objects.filter(created_at__date=date)
+            if table:
+                return table.first()
+            else:
+                messages.info(self.request, "Timetable not found")
+        return Timetable.objects.last()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            "timetable": self.get_table(),
         })
         return context
 
@@ -56,4 +76,4 @@ class TimetableUpsertView(View):
                     )
 
         messages.success(request, "Timetable Saved")
-        return redirect(reverse_lazy('timetable:index'))
+        return redirect(reverse_lazy('timetable:preview'))

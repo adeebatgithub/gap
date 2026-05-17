@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     'teacher.apps.TeacherConfig',
     "timetable.apps.TimetableConfig",
     'users.apps.UsersConfig',
-    "landing.apps.LandingConfig",
 ]
 
 TAILWIND_APP_NAME = 'theme'

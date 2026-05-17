@@ -6,8 +6,6 @@
 
 {% block navbar_btns %}
     {% if timetable %}
-        {{ timetable.created_at|date:"d-m-Y" }}
-    {% else %}
         {% now "d-m-Y" %}
     {% endif %}
 {% endblock %}
@@ -329,6 +327,21 @@
             font-size: 0.58rem;
             font-weight: 700;
             color: #1a2744;
+        }
+
+        /* =========================================
+            5. Force Landscape on Mobile
+        ========================================= */
+        @media (max-width: 768px) and (orientation: portrait) {
+            #tt-outer {
+                transform: rotate(90deg);
+                transform-origin: left top;
+                width: 100vh;
+                height: 100vw;
+                top: 0;
+                left: 100%;
+                overflow: auto;
+            }
         }
     </style>
 

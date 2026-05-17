@@ -4,6 +4,7 @@ from django.db import transaction
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
+from django.utils import timezone
 from django.views.generic import DetailView, DeleteView, View
 
 from academics.models import Session, Enrollment, Attendance
@@ -46,12 +47,15 @@ class AttendanceSheetUpsertView(View):
     def get_object(self):
         cell = TimetableCell.objects.get(id=self.kwargs['pk'])
         if cell.subject_class.teacher.user != self.request.user:
-            messages.info(self.request, "not allowed")
-            return redirect(reverse("teacher:timetable"))
+            return None
         return cell
 
     def get(self, request, *args, **kwargs):
         cell = self.get_object()
+        if cell is None:
+            messages.info(self.request, "not allowed")
+            return redirect(reverse_lazy("teacher:timetable"))
+
         with transaction.atomic():
             session, created = Session.objects.get_or_create(
                 teacher=cell.subject_class.teacher,
@@ -74,7 +78,10 @@ class AttendanceSheetUpsertView(View):
 class MarkAttendance(View):
 
     def get_object(self):
-        return Session.objects.get(pk=self.kwargs['pk'])
+        session = Session.objects.get(pk=self.kwargs['pk'])
+        if session.created_at.date() != timezone.localdate():
+            return None
+        return session
 
     def get_success_url(self):
         return reverse_lazy('teacher:timetable')
@@ -92,6 +99,10 @@ class MarkAttendance(View):
     def post(self, request, *args, **kwargs):
         with transaction.atomic():
             session = self.get_object()
+            if session is None:
+                messages.info(self.request, "not allowed")
+                return redirect(reverse_lazy("teacher:timetable"))
+
             attendances = Attendance.objects.filter(session=session)
 
             for attendance in attendances:

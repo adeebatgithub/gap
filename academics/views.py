@@ -11,4 +11,5 @@ class DashboardView(GroupRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         if AcademicYear.objects.all().count() == 0:
             request.session["is_academic_year_set"] = 0
+        self.request.session["navbar"] = "admin"
         return super().get(request, *args, **kwargs)
