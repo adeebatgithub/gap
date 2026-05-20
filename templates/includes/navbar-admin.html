@@ -21,12 +21,12 @@
     </div>
 
     {% if request.user|has_group:"Teacher" %}
-        <a href="{% url 'teacher:dashboard' %}"
-           class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+    <a href="{% url 'teacher:dashboard' %}"
+       class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
                   text-gray-600 hover:bg-gray-100 hover:text-gray-900">
-            <i class="bi bi-speedometer2 text-lg transition-transform duration-200 group-hover:scale-110"></i>
-            Teacher Dashboard
-        </a>
+        <i class="bi bi-speedometer2 text-lg transition-transform duration-200 group-hover:scale-110"></i>
+        Teacher Dashboard
+    </a>
     {% endif %}
 
     <a href="{% url 'academics:dashboard' %}"
@@ -43,10 +43,10 @@
         Time Table
     </a>
 
-    <a href="{% url 'academics:teacher:list' %}"
+    <a href="{% url 'teacher:teacher:list' %}"
        class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
-              {% if request.resolver_match.app_name == 'academics:teacher' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
-        <i class="bi bi-people text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'academics:teacher' %}group-hover:scale-110{% endif %}"></i>
+              {% if request.resolver_match.app_name == 'teacher:teacher' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+        <i class="bi bi-people text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'teacher:teacher' %}group-hover:scale-110{% endif %}"></i>
         Teachers
     </a>
 
@@ -80,25 +80,40 @@
 
     <div class="mt-auto"></div>
 
+    <div class="mt-4 mb-1 px-3">
+        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center">
+            Reports
+        </p>
+    </div>
+
+    <a href="{% url 'teacher:attendance:report' %}"
+       class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+              {% if request.resolver_match.app_name == 'teacher:attendance' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+        <i class="bi bi-journal-check text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'teacher:attendance' %}group-hover:scale-110{% endif %}"></i>
+        Attendance
+    </a>
+
+    <div class="mt-auto"></div>
+
     {% if request.user.is_superuser %}
-        <div class="mt-4 mb-1 px-3">
-            <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center">
-                Administration
-            </p>
-        </div>
+    <div class="mt-4 mb-1 px-3">
+        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center">
+            Administration
+        </p>
+    </div>
 
-        <a href="{% url 'academics:academicyear:list' %}"
-           class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+    <a href="{% url 'academics:academicyear:list' %}"
+       class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
                   {% if request.resolver_match.app_name == 'academics:academicyear' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
-            <i class="bi bi-calendar3 text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'academics:academicyear' %}group-hover:scale-110{% endif %}"></i>
-            Academic Year
-        </a>
+        <i class="bi bi-calendar3 text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'academics:academicyear' %}group-hover:scale-110{% endif %}"></i>
+        Academic Year
+    </a>
 
-        <a href="/admin"
-           class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-200">
-            <i class="bi bi-shield-lock text-lg transition-transform duration-200 group-hover:translate-x-1"></i>
-            <span>Super Admin Panel</span>
-        </a>
+    <a href="/admin"
+       class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-200">
+        <i class="bi bi-shield-lock text-lg transition-transform duration-200 group-hover:translate-x-1"></i>
+        <span>Super Admin Panel</span>
+    </a>
     {% endif %}
 
     <a href="{% url 'users:logout' %}" onclick="return confirm('Are you sure you want to log out?')"

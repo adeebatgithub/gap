@@ -4,7 +4,9 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 
 from controller.mixins import RedirectToDetail
 from .forms import SchoolClassForm
-from academics.models import SchoolClass, SubjectClass, Enrollment
+from academics.schoolclass.models import SchoolClass
+from academics.subject.models import SubjectClass
+from academics.enrollment.models import Enrollment
 
 
 class SchoolClassListView(PermissionRequiredMixin, ListView):

@@ -5,7 +5,9 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from academics.models import Enrollment, SchoolClass, Attendance, Student
+from academics.enrollment.models import Student, Enrollment
+from academics.schoolclass.models import SchoolClass
+from teacher.attendance.models import Attendance
 from controller.mixins import RedirectToDetail
 from .forms import EnrollmentForm
 
@@ -48,6 +50,7 @@ class EnrollmentCreateView(PermissionRequiredMixin, CreateView):
         if self.request.GET.get('schoolclass'):
             initial.update({
                 "school_class": SchoolClass.objects.get(id=self.request.GET.get('schoolclass')),
+                "admission_date": timezone.localdate(),
             })
         return initial
 

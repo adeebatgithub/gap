@@ -1,5 +1,4 @@
-from django.conf import settings
-from academics.models import AcademicYear
+from academics.academicyear.models import AcademicYear
 
 
 def get_academic_year():

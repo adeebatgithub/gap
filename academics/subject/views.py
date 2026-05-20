@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from .forms import SubjectForm
-from academics.models import Subject
+from .models import Subject
 
 
 class SubjectListView(PermissionRequiredMixin, ListView):

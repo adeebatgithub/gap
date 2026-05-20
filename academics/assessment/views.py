@@ -4,7 +4,8 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 
-from academics.models import Assessment, Grade, Student, Enrollment
+from .models import Assessment, Grade
+from academics.enrollment.models import Enrollment, Student
 from .forms import AssessmentForm, AssessmentUpdateForm
 
 

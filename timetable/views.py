@@ -5,7 +5,8 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import TemplateView, View
 
-from academics.models import SubjectClass, SchoolClass
+from academics.subject.models import SubjectClass
+from academics.schoolclass.models import SchoolClass
 from timetable.models import Timetable, TimetableClass, TimetablePeriod, TimetableCell
 
 

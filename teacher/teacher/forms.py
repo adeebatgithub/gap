@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
-from academics.models import Teacher
+from teacher.teacher.models import Teacher
 
 User = get_user_model()
 

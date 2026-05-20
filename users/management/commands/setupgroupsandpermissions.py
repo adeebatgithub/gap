@@ -9,15 +9,17 @@ class Command(BaseCommand):
     ROLE_POLICY = {
         "Admin": "__all__",
         "Teacher": {
-            "academics.Attendance": ["add", "change", "delete", "view"],
-            "academics.Session": ["add", "change", "delete", "view"],
+            "teacher.Attendance": ["add", "change", "delete", "view"],
+            "teacher.Session": ["add", "change", "delete", "view"],
             "academics.Enrollment": ["view"],
-            "academics.Teacher": ["view"],
+            "teacher.Teacher": ["view"],
             "academics.SchoolClass": ["view"],
         },
         "Exam": {
-            "academics.assessment": ["add", "change", "delete", "view"],
-            "academics.Grade": ["add", "change", "delete", "view"],
+            "academics.assessment": ["view"],
+            "academics.Grade": ["view"],
+            "teacher.Attendance": ["view"],
+            "teacher.Session": ["view"],
         }
     }
 

@@ -1,13 +1,19 @@
+from collections import defaultdict
+from operator import index
+
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db import transaction
-from django.http import Http404
+from django.db.models import Count, F
 from django.shortcuts import redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import DetailView, DeleteView, View
+from django.views.generic import DetailView, DeleteView, View, TemplateView
+from requests import session
 
-from academics.models import Session, Enrollment, Attendance
+from academics.enrollment.models import Enrollment
+from academics.schoolclass.models import SchoolClass
+from teacher.attendance.models import Session, Attendance
 from timetable.models import TimetableCell
 
 
@@ -58,9 +64,7 @@ class AttendanceSheetUpsertView(View):
 
         with transaction.atomic():
             session, created = Session.objects.get_or_create(
-                teacher=cell.subject_class.teacher,
-                school_class=cell.school_class,
-                subject=cell.subject_class.subject,
+                subject_class=cell.subject_class,
                 period=cell.period_number,
                 date=cell.timetable.created_at.date(),
             )
@@ -118,3 +122,76 @@ class MarkAttendance(View):
                 cell.save()
         messages.success(request, "Attendance saved successfully!")
         return redirect(self.get_success_url())
+
+
+class AttendanceReportView(PermissionRequiredMixin, TemplateView):
+    permission_required = ('academics.view_session', 'academics.view_attendance')
+    template_name = 'teacher/report/attendance.html'
+
+    def get_queryset(self):
+        filters = {}
+        if self.request.GET.get('class_name'):
+            filters["session__subject_class__school_class__name"] = self.request.GET.get('class_name')
+        return Attendance.objects.filter(**filters)
+
+    def get_report(self):
+        queryset = (
+            self.get_queryset()
+            .annotate(
+                class_name=F("session__subject_class__school_class__name"),
+                subject_name=F("session__subject_class__subject__name"),
+                student_name=F("student__name"),
+            )
+            .values("class_name", "subject_name", "student_name")
+            .annotate(total_sessions=Count("id"))
+            .filter(status=Attendance.PRESENT)
+            .annotate(present_count=Count("id"))
+        )
+
+        data = {}
+        for row in queryset:
+            class_name = row["class_name"]
+            subject_name = row["subject_name"]
+            student_name = row["student_name"]
+            present_count = row["present_count"]
+            total_sessions = row["total_sessions"]
+
+            if class_name not in data:
+                data[class_name] = {
+                    "subjects": {"zTotal", "zz%"},
+                    "students": {"out of":{"zTotal": 0}}
+                }
+
+            data[class_name]["subjects"].add(subject_name)
+            if student_name not in data[class_name]["students"]:
+                data[class_name]["students"][student_name] = {}
+                data[class_name]["students"][student_name]["zTotal"] = 0
+                data[class_name]["students"][student_name]["zz%"] = 0
+
+
+            data[class_name]["students"][student_name][subject_name] = present_count
+            data[class_name]["students"][student_name]["zTotal"] += present_count
+
+            session_total = Session.objects.filter(
+                subject_class__subject__name=subject_name,
+                subject_class__school_class__name=class_name,
+            ).count()
+            if subject_name not in data[class_name]["students"]["out of"]:
+                data[class_name]["students"]["out of"][subject_name] = session_total
+                data[class_name]["students"]["out of"]["zTotal"] += session_total
+
+            data[class_name]["students"][student_name]["zz%"] = round(
+                (data[class_name]["students"][student_name]["zTotal"] / data[class_name]["students"]["out of"]["zTotal"]) * 100
+            )
+
+        for class_data in data.values():
+            class_data["subjects"] = sorted(class_data["subjects"])
+
+        return data
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            "report": self.get_report(),
+        })
+        return context

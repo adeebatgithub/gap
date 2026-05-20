@@ -1,10 +1,9 @@
 from django.contrib import admin
-from academics.models import *
-
-
-@admin.register(Teacher)
-class TeacherAdmin(admin.ModelAdmin):
-    list_display = ('code','user__first_name')
+from academics.academicyear.models import AcademicYear
+from academics.assessment.models import Assessment, Grade
+from academics.enrollment.models import Student, Enrollment
+from academics.schoolclass.models import SchoolClass
+from academics.subject.models import Subject, SubjectClass
 
 
 @admin.register(SchoolClass)
@@ -36,18 +35,6 @@ class AcademicYearAdmin(admin.ModelAdmin):
 class EnrollmentAdmin(admin.ModelAdmin):
     list_display = ('student', 'school_class', 'status', 'academic_year')
     list_filter = ('academic_year', 'school_class')
-
-
-@admin.register(Session)
-class SessionAdmin(admin.ModelAdmin):
-    list_display = ('date', 'subject', 'school_class')
-    list_filter = ('date',)
-
-
-@admin.register(Attendance)
-class AttendanceAdmin(admin.ModelAdmin):
-    list_display = ('student', 'session', 'status')
-    list_filter = ('session__date', 'session__subject')
 
 
 @admin.register(Assessment)

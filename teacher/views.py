@@ -1,9 +1,8 @@
 from django.contrib import messages
-from django.utils import timezone
 from django.views.generic import TemplateView
 
-from academics.models import Teacher
-from academics.teacher.views import TeacherDetailView
+from teacher.teacher.models import Teacher
+from teacher.teacher.views import TeacherDetailView
 from timetable.models import Timetable
 
 

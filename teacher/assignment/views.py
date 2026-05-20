@@ -2,7 +2,9 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 
-from academics.models import SubjectClass, Teacher, SchoolClass
+from teacher.teacher.models import Teacher
+from academics.subject.models import SubjectClass
+from academics.schoolclass.models import SchoolClass
 from .forms import SubjectClassForm
 from .mixin import RedirectToFrom
 
@@ -11,7 +13,7 @@ class SubjectClassCreateView(PermissionRequiredMixin, RedirectToFrom, CreateView
     permission_required = "academics.add_subjectclass"
     model = SubjectClass
     form_class = SubjectClassForm
-    template_name = 'academics/assignment/form.html'
+    template_name = 'teacher/assignment/form.html'
 
     def get_initial(self):
         if self.request.GET.get("teacher"):

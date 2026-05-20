@@ -1,11 +1,11 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db import transaction
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
 
 from .forms import AcademicYearForm
-from academics.models import AcademicYear
+from .models import AcademicYear
 
 
 class AcademicYearListView(PermissionRequiredMixin, ListView):
@@ -57,4 +57,3 @@ class AcademicYearSetActive(View):
             new_academic_year.save()
 
         return redirect(reverse_lazy('academics:academicyear:list'))
-

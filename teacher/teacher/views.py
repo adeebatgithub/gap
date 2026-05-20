@@ -4,22 +4,23 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from academics.models import Teacher, SubjectClass
+from academics.subject.models import SubjectClass
+from teacher.teacher.models import Teacher
 from .forms import TeacherForm
 from controller.mixins import RedirectToDetail
 
 
 class TeacherListView(PermissionRequiredMixin, ListView):
-    permission_required = "academics.view_teacher"
+    permission_required = "teacher.view_teacher"
     model = Teacher
-    template_name = 'academics/teachers/list.html'
+    template_name = 'teacher/teachers/list.html'
     context_object_name = 'teachers'
 
 
 class TeacherDetailView(PermissionRequiredMixin, DetailView):
-    permission_required = "academics.view_teacher"
+    permission_required = "teacher.view_teacher"
     model = Teacher
-    template_name = 'academics/teachers/detail.html'
+    template_name = 'teacher/teachers/detail.html'
     context_object_name = 'teacher'
 
     def get_context_data(self, **kwargs):
@@ -31,18 +32,18 @@ class TeacherDetailView(PermissionRequiredMixin, DetailView):
 
 
 class TeacherCreateView(PermissionRequiredMixin, CreateView):
-    permission_required = "academics.add_teacher"
+    permission_required = "teacher.add_teacher"
     model = Teacher
     form_class = TeacherForm
-    template_name = 'academics/teachers/form.html'
+    template_name = 'teacher/teachers/form.html'
     success_url = reverse_lazy('academics:teacher:list')
 
 
 class TeacherUpdateView(PermissionRequiredMixin, RedirectToDetail, UpdateView):
-    permission_required = "academics.change_teacher"
+    permission_required = "teacher.change_teacher"
     model = Teacher
     form_class = TeacherForm
-    template_name = 'academics/teachers/form.html'
+    template_name = 'teacher/teachers/form.html'
     success_url = reverse_lazy('academics:teacher:list')
 
     def get_detail_url(self):
@@ -50,7 +51,7 @@ class TeacherUpdateView(PermissionRequiredMixin, RedirectToDetail, UpdateView):
 
 
 class TeacherDeleteView(PermissionRequiredMixin, RedirectToDetail, DeleteView):
-    permission_required = "academics.delete_teacher"
+    permission_required = "teacher.delete_teacher"
     http_method_names = ['post']
     model = Teacher
     success_url = reverse_lazy('academics:teacher:list')
@@ -60,42 +61,52 @@ class TeacherDeleteView(PermissionRequiredMixin, RedirectToDetail, DeleteView):
 
 
 class AddToGroup(PermissionRequiredMixin, DetailView):
-    permission_required = "academics.change_teacher"
+    permission_required = "teacher.change_teacher"
     model = Teacher
     group = None
+
+    def get_group(self):
+        return self.group
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         user = self.object.user
-        user.groups.add(self.group)
+        user.groups.add(self.get_group())
         user.save()
         return redirect(reverse_lazy('academics:teacher:list'))
 
 
 class RemoveFromGroup(PermissionRequiredMixin, DetailView):
-    permission_required = "academics.change_teacher"
+    permission_required = "teacher.change_teacher"
     model = Teacher
     group = None
+
+    def get_group(self):
+        return self.group
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         user = self.object.user
-        user.groups.remove(self.group)
+        user.groups.remove(self.get_group())
         user.save()
         return redirect(reverse_lazy('academics:teacher:list'))
 
 
 class AddToAdmin(AddToGroup):
-    group = Group.objects.get(name="Admin")
+    def get_group(self):
+        return Group.objects.get(name="Admin")
 
 
 class AddToExam(AddToGroup):
-    group = Group.objects.get(name="Exam")
+    def get_group(self):
+        return Group.objects.get(name="Exam")
 
 
 class RemoveFromAdmin(RemoveFromGroup):
-    group = Group.objects.get(name="Admin")
+    def get_group(self):
+        return Group.objects.get(name="Admin")
 
 
 class RemoveFromExam(RemoveFromGroup):
-    group = Group.objects.get(name="Exam")
+    def get_group(self):
+        return Group.objects.get(name="Exam")

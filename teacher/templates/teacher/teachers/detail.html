@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block navbar_btns %}
-    <a href="{% url 'academics:teacher:list' %}"
+    <a href="{% url 'teacher:teacher:list' %}"
        class="hidden sm:inline-flex justify-center items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
         <i class="bi bi-arrow-left"></i> Back to List
     </a>
 
-    <a href="{% url 'academics:teacher:update' teacher.pk %}?back_to=detail"
+    <a href="{% url 'teacher:teacher:update' teacher.pk %}?back_to=detail"
        class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
         <i class="bi bi-pencil"></i> <span class="hidden sm:inline">Edit Teacher</span>
     </a>
@@ -163,7 +163,7 @@
                 </div>
 
                 <div class="w-full sm:w-auto">
-                    <a href="{% url 'academics:assignment:create' %}?teacher={{ teacher.pk }}"
+                    <a href="{% url 'teacher:assignment:create' %}?teacher={{ teacher.pk }}"
                        class="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-4 py-2 sm:px-3 sm:py-1.5 rounded-lg transition-colors">
                         <i class="bi bi-plus"></i> Assign Subject
                     </a>
@@ -249,7 +249,7 @@
             </div>
 
             <div class="flex-shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
-                <form method="POST" action="{% url 'academics:teacher:delete' teacher.pk %}?back_to=detail"
+                <form method="POST" action="{% url 'teacher:teacher:delete' teacher.pk %}?back_to=detail"
                       class="w-full"
                       onsubmit="return confirm('Are you sure you want to completely delete this teacher? This action cannot be undone.');">
                     {% csrf_token %}

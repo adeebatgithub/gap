@@ -1,6 +1,7 @@
 from django import forms
 
-from academics.models import Student, SchoolClass, Enrollment
+from academics.enrollment.models import Student
+from academics.schoolclass.models import SchoolClass
 
 
 class EnrollmentForm(forms.ModelForm):

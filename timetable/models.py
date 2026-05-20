@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
-from academics.models import SchoolClass, SubjectClass
+from academics.subject.models import SubjectClass
+from academics.schoolclass.models import SchoolClass
 from controller.models import TimeStampedModel
 
 

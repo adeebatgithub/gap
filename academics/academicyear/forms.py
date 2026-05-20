@@ -1,5 +1,5 @@
 from django import forms
-from academics.models import AcademicYear
+from academics.academicyear.models import AcademicYear
 
 
 class AcademicYearForm(forms.ModelForm):

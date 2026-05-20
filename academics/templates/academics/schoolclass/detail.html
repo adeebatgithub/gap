@@ -189,7 +189,7 @@
                 </div>
 
                 <div class="w-full sm:w-auto">
-                    <a href="{% url 'academics:assignment:create' %}?schoolclass={{ school_class.pk }}"
+                    <a href="{% url 'teacher:assignment:create' %}?schoolclass={{ school_class.pk }}"
                        class="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-4 py-2 sm:px-3 sm:py-1.5 rounded-lg transition-colors">
                         <i class="bi bi-plus"></i> Assign Teacher
                     </a>
@@ -234,14 +234,14 @@
                             <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-3 pt-4 sm:pt-3">
                                 <div class="flex items-center justify-between sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
 
-                                    <a href="{% url 'academics:teacher:detail' assigned_teacher.teacher.pk %}"
+                                    <a href="{% url 'teacher:teacher:detail' assigned_teacher.teacher.pk %}"
                                        class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-2.5 py-2 sm:py-1 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors"
                                        title="View Teacher">
                                         View
                                     </a>
 
                                     <form method="POST"
-                                          action="{% url 'academics:assignment:delete' assigned_teacher.pk %}"
+                                          action="{% url 'teacher:assignment:delete' assigned_teacher.pk %}"
                                           class="flex-1 sm:flex-none inline-block m-0 p-0"
                                           onsubmit="return confirm('Remove {{ assigned_teacher.teacher.name }} from this class?');">
                                         {% csrf_token %}

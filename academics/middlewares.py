@@ -1,6 +1,6 @@
 from django.contrib import messages
 
-from academics.models import AcademicYear
+from academics.academicyear.models import AcademicYear
 
 
 class CheckForAcademicYearMiddleware:
