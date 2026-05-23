@@ -4,6 +4,8 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic.base import RedirectView
+from django.views.generic.detail import SingleObjectMixin
 
 from academics.enrollment.models import Student, Enrollment
 from academics.schoolclass.models import SchoolClass
@@ -105,3 +107,17 @@ class EnrollmentDeleteView(PermissionRequiredMixin, DeleteView):
         if self.request.GET.get('schoolclass'):
             return reverse_lazy('academics:schoolclass:detail', kwargs={'pk': self.request.GET.get('schoolclass')})
         return super().get_success_url()
+
+
+class EnrollmentChangeLeaveStatusView(PermissionRequiredMixin, SingleObjectMixin, RedirectView):
+    permission_required = "academics.change_enrollment"
+    model = Enrollment
+
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse_lazy('academics:schoolclass:detail', kwargs={'pk': self.object.school_class.id})
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.on_leave = not self.object.on_leave
+        self.object.save()
+        return super().get(request, args, kwargs)

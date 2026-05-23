@@ -11,4 +11,5 @@ urlpatterns = [
     path('timetable/', TimetableView.as_view(), name='timetable'),
     path('attendance/', include("teacher.attendance.urls")),
     path('schoolclass/', include("teacher.schoolclass.urls")),
+    path('movement/', include("teacher.movement.urls")),
 ]

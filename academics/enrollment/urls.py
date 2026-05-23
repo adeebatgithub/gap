@@ -6,6 +6,7 @@ from .views import (
     EnrollmentCreateView,
     EnrollmentUpdateView,
     EnrollmentDeleteView,
+    EnrollmentChangeLeaveStatusView
 )
 
 app_name = 'enrollment'
@@ -16,4 +17,6 @@ urlpatterns = [
     path('create/', EnrollmentCreateView.as_view(), name='create'),
     path('<int:pk>/update/', EnrollmentUpdateView.as_view(), name='update'),
     path('<int:pk>/delete/', EnrollmentDeleteView.as_view(), name='delete'),
+
+    path('<int:pk>/onleave/', EnrollmentChangeLeaveStatusView.as_view(), name='onleave'),
 ]

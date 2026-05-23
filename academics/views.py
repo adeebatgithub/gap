@@ -1,3 +1,5 @@
+from django.db.models.aggregates import Count, Sum
+from django.db.models.query_utils import Q
 from django.views.generic import TemplateView
 from users.mixins import GroupRequiredMixin
 
@@ -13,20 +15,25 @@ class DashboardView(GroupRequiredMixin, TemplateView):
     def _get_enrollments():
         return Enrollment.objects.filter(status=Enrollment.ACTIVE)
 
-    def _get_total_enrollments_gender(self, gender):
-        return self._get_enrollments().filter(student__gender=gender).count()
-
-    def _get_total_on_leave(self):
-        return self._get_enrollments().filter(on_leave=True).count()
+    def _get_enrollment_stats(self):
+        stats = (
+            self._get_enrollments()
+            .aggregate(
+                total_enrollments=Count('id'),
+                total_M=Count('id', filter=Q(student__gender="M")),
+                total_present_M=Count('id', filter=Q(student__gender="M", on_leave=False)),
+                total_F=Count('id', filter=Q(student__gender="F")),
+                total_present_F=Count('id', filter=Q(student__gender="F", on_leave=False)),
+                total_leave=Count('id', filter=Q(on_leave=True)),
+            )
+        )
+        return stats
 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            "total_enrollments": self._get_enrollments().count(),
-            "total_M": self._get_total_enrollments_gender(gender="M"),
-            "total_F": self._get_total_enrollments_gender(gender="F"),
-            "total_leave": self._get_total_on_leave(),
+            "enrollment_stats": self._get_enrollment_stats(),
         })
         return context
 
