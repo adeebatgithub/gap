@@ -1,0 +1,17 @@
+<div class="w-full max-w-md mx-auto relative">
+    <!-- Search Icon -->
+    <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+        <i class="bi bi-search text-gray-400"></i>
+    </div>
+
+    <!-- Input Field -->
+    <input
+            hx-get="{{ url }}"
+            hx-trigger="keyup changed delay:300ms"
+            hx-target="{{ target|default:'#hx-list-table' }}"
+            hx-swap="innerHTML"
+
+            type="search" id="default-search" name="search"
+            class="block w-full p-4 pl-11 text-sm text-gray-900 border border-gray-200 rounded-xl bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all shadow-sm"
+            placeholder="{{ placeholder }}">
+</div>

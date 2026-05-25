@@ -5,6 +5,7 @@ from django.views.generic.base import RedirectView
 from django.views.generic.detail import SingleObjectMixin
 
 from controller.mixins import RedirectToDetail
+from controller.utils import get_academic_year
 from .forms import SchoolClassForm
 from academics.schoolclass.models import SchoolClass
 from academics.subject.models import SubjectClass
@@ -16,6 +17,23 @@ class SchoolClassListView(PermissionRequiredMixin, ListView):
     model = SchoolClass
     template_name = 'academics/schoolclass/list.html'
     context_object_name = 'classes'
+
+    def get_template_names(self):
+        if self.request.htmx:
+            return ['academics/schoolclass/partial_list.html']
+        return super().get_template_names()
+
+    def get_filters(self):
+        filters = {
+            "academic_year__id": get_academic_year(self.request)
+        }
+        if search := self.request.GET.get('search'):
+            filters['name__icontains'] = search
+        return filters
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(**self.get_filters())
 
 
 class SchoolClassDetailView(PermissionRequiredMixin, DetailView):

@@ -12,7 +12,25 @@
 {% endblock %}
 
 {% block content %}
-    <div class="bg-transparent sm:bg-white sm:shadow-sm rounded-xl sm:overflow-hidden">
+    <div class="w-full max-w-md mx-auto relative">
+        <!-- Search Icon -->
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+            <i class="bi bi-search text-gray-400"></i>
+        </div>
+
+        <!-- Input Field -->
+        <input
+                hx-get="{% url 'academics:subject:list' %}"
+                hx-trigger="keyup changed delay:300ms"
+                hx-target="#hx-list-table"
+                hx-swap="innerHTML"
+
+                type="search" id="default-search" name="search"
+                class="block w-full p-4 pl-11 text-sm text-gray-900 border border-gray-200 rounded-xl bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all shadow-sm"
+                placeholder="Search teacher">
+    </div>
+
+    <div id="hx-list-table" class="bg-transparent sm:bg-white sm:shadow-sm rounded-xl sm:overflow-hidden">
 
         <div class="w-full">
             <table class="w-full text-sm text-left text-gray-500 block sm:table">
@@ -46,17 +64,11 @@
                             <div class="h-10 w-10 sm:hidden rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
                                 <i class="bi bi-easel"></i>
                             </div>
-                            {{ subject.code }}
+                            {{ subject.code|default:"-" }}
                         </td>
 
                         <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 pt-3 sm:pt-4 text-right">
                             <div class="flex items-center justify-between sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
-
-{#                                <a href="{% url 'academics:subject:detail' subject.pk %}"#}
-{#                                   class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"#}
-{#                                   title="View Details">#}
-{#                                    <i class="bi bi-eye"></i> View#}
-{#                                </a>#}
 
                                 <a href="{% url 'academics:subject:update' subject.pk %}"
                                    class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md transition-colors"

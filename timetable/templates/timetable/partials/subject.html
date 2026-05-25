@@ -1,0 +1,6 @@
+<select name="timetable_cells[]">
+    <option value="">— Free —</option>
+    {% for subject in subjects %}
+        <option value="{{ subject.pk }}">{{ subject }}</option>
+    {% endfor %}
+</select>

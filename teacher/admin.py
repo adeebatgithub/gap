@@ -1,7 +1,9 @@
 from django.contrib import admin
 
+from teacher.assessment.models import Assessment, Grade
 from teacher.attendance.models import Session, Attendance
 from teacher.teacher.models import Teacher
+
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
@@ -18,3 +20,13 @@ class SessionAdmin(admin.ModelAdmin):
 class AttendanceAdmin(admin.ModelAdmin):
     list_display = ('student', 'session', 'status')
     list_filter = ('session__date', 'session__subject_class__subject')
+
+
+@admin.register(Assessment)
+class AssessmentAdmin(admin.ModelAdmin):
+    list_display = ("date", "subject", "school_class")
+
+
+@admin.register(Grade)
+class GradeAdmin(admin.ModelAdmin):
+    list_display = ("id", "student", "marks")

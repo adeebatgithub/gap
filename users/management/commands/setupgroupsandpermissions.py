@@ -14,6 +14,7 @@ class Command(BaseCommand):
             "academics.Enrollment": ["view"],
             "teacher.Teacher": ["view"],
             "academics.SchoolClass": ["view"],
+            "teacher.Movement": ["view"],
         },
         "Exam": {
             "academics.assessment": ["view"],

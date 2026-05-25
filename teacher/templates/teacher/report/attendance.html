@@ -7,128 +7,187 @@
 Attendance Report
 {% endblock %}
 
-{% block content %}
+{% block navbar_btns %}
+    <a href="{% url 'teacher:attendance:export' %}?class_name={{ request.GET.class_name }}"
+       class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+        <i class="bi bi-file-earmark-plus"></i> <span class="hidden sm:inline">Export to xlsx</span>
+    </a>
+{% endblock %}
 
-<div class="space-y-8">
+{% block content %}
+<div class="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-50 print:hidden">
+    <form hx-get="{% url 'teacher:attendance:report' %}"
+          hx-target="#hx-data"
+          hx-swap="InnerHTML"
+            class="flex flex-col sm:flex-row gap-4 items-end">
+
+        <!-- class Filter -->
+        <div class="w-full sm:w-auto flex-1 max-w-sm">
+            <label for="class_name" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+                Select Class
+            </label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="bi bi-person text-gray-400"></i>
+                </div>
+                <select name="class_name" id="class_name"
+                        class="block w-full pl-10 pr-10 py-2 border border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 transition-colors appearance-none text-gray-700 bg-gray-50 focus:bg-white outline-none cursor-pointer">
+                    <option value="">All Classes</option>
+                    {% for class in classes %}
+                        <option value="{{ class }}" {% if request.GET.class_name == class|stringformat:"s" %}selected{% endif %}>
+                            {{ class }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <!-- Custom dropdown arrow to replace default browser styling -->
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <i class="bi bi-chevron-down text-gray-400 text-xs"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="w-full sm:w-auto flex gap-2 mt-2 sm:mt-0">
+            <button type="submit"
+                    class="cursor-pointer flex-1 sm:flex-none inline-flex justify-center items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+                <i class="bi bi-funnel"></i> Filter
+            </button>
+
+            <!-- Use an anchor tag with href="?" to clear GET parameters easily -->
+            <a hx-get="{% url 'teacher:attendance:report' %}"
+               hx-target="#hx-data"
+               hx-swap="InnerHTML"
+               class="cursor-pointer flex-1 sm:flex-none inline-flex justify-center items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 px-5 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+                <i class="bi bi-arrow-counterclockwise"></i> Reset
+            </a>
+        </div>
+
+    </form>
+</div>
+
+<div id="hx-data" class="space-y-8">
 
     {% for class_name, rows in report.items %}
 
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
 
-            <!-- Class Header -->
-            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
-                <div class="flex items-center gap-3">
-                    <div class="h-10 w-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
-                        <i class="bi bi-mortarboard text-lg"></i>
-                    </div>
+        <!-- Class Header -->
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <div class="flex items-center gap-3">
+                <div class="h-10 w-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+                    <i class="bi bi-mortarboard text-lg"></i>
+                </div>
 
-                    <div>
-                        <h2 class="text-xl font-bold text-gray-800">
-                            {{ class_name }}
-                        </h2>
+                <div>
+                    <h2 class="text-xl font-bold text-gray-800">
+                        {{ class_name }}
+                    </h2>
 
-                        <p class="text-sm text-gray-500">
-                            Attendance summary
-                        </p>
-                    </div>
+                    <p class="text-sm text-gray-500">
+                        Attendance summary
+                    </p>
                 </div>
             </div>
+        </div>
 
-            <!-- Excel Style Table -->
-            <div class="overflow-x-auto">
+        <!-- Excel Style Table -->
+        <div class="overflow-x-auto">
 
-                <table class="min-w-full border-collapse">
+            <table class="min-w-full border-collapse">
 
-                    <!-- Header -->
-                    <thead class="bg-gray-100">
+                <!-- Header -->
+                <thead class="bg-gray-100">
 
-                    <tr>
+                <tr>
 
-                        <th class="border border-gray-300 px-4 py-3 text-left text-sm font-semibold text-gray-700 sticky left-0 bg-gray-100 z-10">
-                            #
-                        </th>
+                    <th class="border border-gray-300 px-4 py-3 text-left text-sm font-semibold text-gray-700 sticky left-0 bg-gray-100 z-10">
+                        #
+                    </th>
 
-                        <th class="border border-gray-300 px-4 py-3 text-left text-sm font-semibold text-gray-700 sticky left-0 bg-gray-100 z-10">
-                            Student Name
-                        </th>
+                    <th class="border border-gray-300 px-4 py-3 text-left text-sm font-semibold text-gray-700 sticky left-0 bg-gray-100 z-10">
+                        Student Name
+                    </th>
 
-                        {% for key, values in rows.items %}
-                            {% if key == "subjects" %}
-                                {% for value in values %}
-                                    <th class="border border-gray-300 px-4 py-3 text-center text-sm font-semibold text-gray-700 whitespace-nowrap">
-                                        {{ value|remove_z }}
-                                    </th>
-                                {% endfor %}
-                            {% endif %}
-                        {% endfor %}
-
-                    </tr>
-
-                    </thead>
-
-                    <!-- Body -->
-                    <tbody>
-
-                    <!-- Collect students from first subject -->
                     {% for key, values in rows.items %}
-                        {% if key == "students" %}
-                            {% for student_name, totals in values.items %}
-
-                                <tr class="hover:bg-gray-50">
-
-                                    <td>{{ forloop.counter }}</td>
-
-                                    <!-- Student Name -->
-                                    <td class="border border-gray-300 px-4 py-3 font-medium text-gray-800 bg-white sticky left-0 z-10">
-                                        {{ student_name }}
-                                    </td>
-
-                                    <!-- Subject Columns -->
-                                    {% for key, subjects in rows.items %}
-                                        {% if key == "subjects" %}
-                                            {% for subject in subjects %}
-                                            <td class="border border-gray-300 px-4 py-3 text-center text-gray-700">
-                                                {% if totals|get_item:subject %}
-                                                    {{ totals|get_item:subject }}
-                                                {% else %}
-                                                    -
-                                                {% endif %}
-                                            </td>
-                                            {% endfor %}
-                                        {% endif %}
-                                    {% endfor %}
-
-                                </tr>
-
-                            {% endfor %}
-                        {% endif %}
+                    {% if key == "subjects" %}
+                    {% for value in values %}
+                    <th class="border border-gray-300 px-4 py-3 text-center text-sm font-semibold text-gray-700 whitespace-nowrap">
+                        {{ value|remove_z }}
+                    </th>
+                    {% endfor %}
+                    {% endif %}
                     {% endfor %}
 
-                    </tbody>
+                </tr>
 
-                </table>
+                </thead>
 
-            </div>
+                <!-- Body -->
+                <tbody>
+
+                <!-- Collect students from first subject -->
+                {% for key, values in rows.items %}
+                {% if key == "students" %}
+                {% for student_name, totals in values.items %}
+
+                <tr class="hover:bg-gray-50">
+
+                    <!-- Student Name -->
+                    <td class="border border-gray-300 px-4 py-3 font-medium text-gray-800 bg-white sticky left-0 z-10">
+                        {{ forloop.counter }}
+                    </td>
+
+                    <!-- Student Name -->
+                    <td class="border border-gray-300 px-4 py-3 font-medium text-gray-800 bg-white sticky left-0 z-10">
+                        {{ student_name }}
+                    </td>
+
+                    <!-- Subject Columns -->
+                    {% for key, subjects in rows.items %}
+                    {% if key == "subjects" %}
+                    {% for subject in subjects %}
+                    <td class="border border-gray-300 px-4 py-3 text-center text-gray-700">
+                        {% if totals|get_item:subject %}
+                        {{ totals|get_item:subject }}
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                    {% endif %}
+                    {% endfor %}
+
+                </tr>
+
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+
+                </tbody>
+
+            </table>
 
         </div>
+
+    </div>
 
     {% empty %}
 
-        <div class="bg-white rounded-2xl shadow-sm p-12 text-center">
+    <div class="bg-white rounded-2xl shadow-sm p-12 text-center">
 
-            <div class="mx-auto h-20 w-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-                <i class="bi bi-bar-chart text-3xl text-gray-400"></i>
-            </div>
-
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">
-                No Data Available
-            </h3>
-
-            <p class="text-gray-500">
-                Attendance records will appear here once sessions are marked.
-            </p>
-
+        <div class="mx-auto h-20 w-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+            <i class="bi bi-bar-chart text-3xl text-gray-400"></i>
         </div>
+
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">
+            No Data Available
+        </h3>
+
+        <p class="text-gray-500">
+            Attendance records will appear here once sessions are marked.
+        </p>
+
+    </div>
 
     {% endfor %}
 

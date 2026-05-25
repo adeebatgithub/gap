@@ -3,23 +3,13 @@ import uuid
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from controller.consts import BLOOD_GROUP_CHOICES
 from controller.models import TimeStampedModel
-
-
-BLOOD_GROUP_CHOICES = (
-    ("A+", "A+"),
-    ("A-", "A-"),
-    ("B+", "B+"),
-    ("B-", "B-"),
-    ("AB+", "AB+"),
-    ("AB-", "AB-"),
-    ("O+", "O+"),
-    ("O-", "O-"),
-)
 
 
 def teacher_photo_path(instance, filename):
     return f"teachers/%Y/{instance.name}/photos/{filename}"
+
 
 def teacher_cv_path(instance, filename):
     return f"teachers/%Y/{instance.name}/cvs/{filename}"

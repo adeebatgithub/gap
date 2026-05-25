@@ -11,4 +11,5 @@ def get_academic_year():
 def global_data(request):
     return {
         "ACADEMIC_YEAR": get_academic_year(),
+        "ACADEMIC_YEARS": AcademicYear.objects.only("id", "name", "is_active"),
     }

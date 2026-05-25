@@ -11,13 +11,13 @@ from .forms import AssessmentForm, AssessmentUpdateForm
 
 class AssessmentListView(ListView):
     model = Assessment
-    template_name = 'academics/assessments/list.html'
+    template_name = 'teacher/assessments/list.html'
     context_object_name = 'assessments'
 
 
 class AssessmentDetailView(DetailView):
     model = Assessment
-    template_name = 'academics/assessments/detail.html'
+    template_name = 'teacher/assessments/detail.html'
     context_object_name = 'assessment'
 
     def get_context_data(self, **kwargs):
@@ -31,8 +31,8 @@ class AssessmentDetailView(DetailView):
 class AssessmentCreateView(CreateView):
     model = Assessment
     form_class = AssessmentForm
-    template_name = 'academics/assessments/form.html'
-    success_url = reverse_lazy('academics:assessment:list')
+    template_name = 'teacher/assessments/form.html'
+    success_url = reverse_lazy('teacher:assessment:list')
 
     def form_valid(self, form):
         with transaction.atomic():
@@ -51,8 +51,8 @@ class AssessmentCreateView(CreateView):
 class AssessmentUpdateView(UpdateView):
     model = Assessment
     form_class = AssessmentUpdateForm
-    template_name = 'academics/assessments/form.html'
-    success_url = reverse_lazy('academics:assessment:list')
+    template_name = 'teacher/assessments/form.html'
+    success_url = reverse_lazy('teacher:assessment:list')
 
 
 class AssessmentDeleteView(DeleteView):
@@ -74,7 +74,7 @@ class GradeAssessmentView(View):
         return Assessment.objects.get(pk=self.kwargs['pk'])
 
     def get_success_url(self):
-        return reverse_lazy('academics:assessment:list')
+        return reverse_lazy('teacher:assessment:list')
 
     def post(self, request, *args, **kwargs):
         with transaction.atomic():

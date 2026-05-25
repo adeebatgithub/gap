@@ -9,8 +9,9 @@ from django.views.generic.detail import SingleObjectMixin
 
 from academics.enrollment.models import Student, Enrollment
 from academics.schoolclass.models import SchoolClass
-from teacher.attendance.models import Attendance
 from controller.mixins import RedirectToDetail
+from controller.utils import get_academic_year
+from teacher.attendance.models import Attendance
 from .forms import EnrollmentForm
 
 
@@ -20,10 +21,33 @@ class EnrollmentListView(PermissionRequiredMixin, ListView):
     template_name = 'academics/enrollments/list.html'
     context_object_name = 'enrollments'
 
+    def get_template_names(self):
+        if self.request.htmx:
+            return ['academics/enrollments/partial_list.html']
+        return super().get_template_names()
+
+    def get_filters(self):
+        filters = {"school_class__academic_year__id": get_academic_year(self.request)}
+        if search := self.request.GET.get('search'):
+            filters['student__name__icontains'] = search
+
+        if class_name := self.request.GET.get('class_name'):
+            filters['school_class__name__icontains'] = class_name
+
+        return filters
+
     def get_queryset(self):
-        return Enrollment.objects.select_related(
-            'student', 'school_class', 'academic_year'
+        queryset = Enrollment.objects.filter(**self.get_filters()).select_related(
+            'student', 'school_class'
         ).order_by('student__name')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            "classes": SchoolClass.objects.all()
+        })
+        return context
 
 
 class EnrollmentDetailView(PermissionRequiredMixin, DetailView):

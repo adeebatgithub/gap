@@ -8,19 +8,19 @@ from academics.enrollment.models import Student
 
 class Assessment(TimeStampedModel):
     CHOICES = (
-        ("sem written exam", "sem written Exam"),
-        ("sem viva exam", "sem viva Exam"),
-
-        ("internal exam", "Internal exam"),
         ("assignment", "Assignment"),
         ("project", "Project"),
         ("viva", "Viva"),
         ("seminar", "Seminar"),
+        ("internal exam", "Internal exam"),
+        ("sem written exam", "Sem Written Exam"),
+        ("sem viva exam", "Sem Viva Exam"),
     )
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     school_class = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
     academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE)
     date = models.DateField()
+    assessment_type = models.CharField(choices=CHOICES, max_length=20)
 
     def __str__(self):
         return self.subject.name

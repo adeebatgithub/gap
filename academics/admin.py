@@ -1,6 +1,5 @@
 from django.contrib import admin
 from academics.academicyear.models import AcademicYear
-from academics.assessment.models import Assessment, Grade
 from academics.enrollment.models import Student, Enrollment
 from academics.schoolclass.models import SchoolClass
 from academics.subject.models import Subject, SubjectClass
@@ -33,15 +32,6 @@ class AcademicYearAdmin(admin.ModelAdmin):
 
 @admin.register(Enrollment)
 class EnrollmentAdmin(admin.ModelAdmin):
-    list_display = ('student', 'school_class', 'status', 'academic_year')
-    list_filter = ('academic_year', 'school_class')
+    list_display = ('student', 'school_class', 'status', 'school_class__academic_year')
+    list_filter = ('school_class__academic_year', 'school_class')
 
-
-@admin.register(Assessment)
-class AssessmentAdmin(admin.ModelAdmin):
-    list_display = ("date", "subject", "school_class")
-
-
-@admin.register(Grade)
-class GradeAdmin(admin.ModelAdmin):
-    list_display = ("id", "student", "marks")

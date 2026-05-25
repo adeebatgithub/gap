@@ -5,14 +5,17 @@ from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db import transaction
 from django.db.models import Count, F
+from django.http.response import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import DetailView, DeleteView, View, TemplateView
+from openpyxl.workbook.workbook import Workbook
 from requests import session
 
 from academics.enrollment.models import Enrollment
 from academics.schoolclass.models import SchoolClass
+from controller.utils import get_academic_year
 from teacher.attendance.models import Session, Attendance
 from timetable.models import TimetableCell
 
@@ -128,8 +131,15 @@ class AttendanceReportView(PermissionRequiredMixin, TemplateView):
     permission_required = ('academics.view_session', 'academics.view_attendance')
     template_name = 'teacher/report/attendance.html'
 
+    def get_template_names(self):
+        if self.request.htmx:
+            return ["teacher/report/partials/attendance.html"]
+        return super().get_template_names()
+
     def get_queryset(self):
-        filters = {}
+        filters = {
+            "session__subject_class__school_class__academic_year__id": get_academic_year(self.request),
+        }
         if self.request.GET.get('class_name'):
             filters["session__subject_class__school_class__name"] = self.request.GET.get('class_name')
         return Attendance.objects.filter(**filters)
@@ -139,45 +149,49 @@ class AttendanceReportView(PermissionRequiredMixin, TemplateView):
             self.get_queryset()
             .annotate(
                 class_name=F("session__subject_class__school_class__name"),
+                teacher_code=F("session__subject_class__teacher__code"),
                 subject_name=F("session__subject_class__subject__name"),
                 student_name=F("student__name"),
             )
-            .values("class_name", "subject_name", "student_name")
-            .annotate(total_sessions=Count("id"))
+            .values("class_name", "teacher_code", "subject_name", "student_name")
             .filter(status=Attendance.PRESENT)
             .annotate(present_count=Count("id"))
         )
+
+        print(queryset)
 
         data = {}
         for row in queryset:
             class_name = row["class_name"]
             subject_name = row["subject_name"]
+            teacher_code = row["teacher_code"]
+            subject_full = f"{subject_name} ({teacher_code})"
             student_name = row["student_name"]
             present_count = row["present_count"]
-            total_sessions = row["total_sessions"]
 
             if class_name not in data:
                 data[class_name] = {
                     "subjects": {"zTotal", "zz%"},
-                    "students": {"out of":{"zTotal": 0}}
+                    "students": {"out of":{"zTotal": 0, "zz%": "100"}}
                 }
 
-            data[class_name]["subjects"].add(subject_name)
+            data[class_name]["subjects"].add(subject_full)
             if student_name not in data[class_name]["students"]:
                 data[class_name]["students"][student_name] = {}
                 data[class_name]["students"][student_name]["zTotal"] = 0
                 data[class_name]["students"][student_name]["zz%"] = 0
 
 
-            data[class_name]["students"][student_name][subject_name] = present_count
+            data[class_name]["students"][student_name][subject_full] = present_count
             data[class_name]["students"][student_name]["zTotal"] += present_count
 
             session_total = Session.objects.filter(
                 subject_class__subject__name=subject_name,
                 subject_class__school_class__name=class_name,
+                subject_class__teacher__code=teacher_code,
             ).count()
-            if subject_name not in data[class_name]["students"]["out of"]:
-                data[class_name]["students"]["out of"][subject_name] = session_total
+            if subject_full not in data[class_name]["students"]["out of"]:
+                data[class_name]["students"]["out of"][subject_full] = session_total
                 data[class_name]["students"]["out of"]["zTotal"] += session_total
 
             data[class_name]["students"][student_name]["zz%"] = round(
@@ -193,5 +207,38 @@ class AttendanceReportView(PermissionRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context.update({
             "report": self.get_report(),
+            "classes": SchoolClass.objects.only("name"),
         })
         return context
+
+
+class AttendanceExportView(AttendanceReportView):
+    permission_required = ('academics.view_session', 'academics.view_attendance')
+
+    @staticmethod
+    def remove_z(header):
+        if header[0] == "z":
+            return header.replace("z", "")
+        return header
+
+    def get(self, request, *args, **kwargs):
+        workbook = Workbook()
+        report = self.get_report()
+        for class_name, data in report.items():
+            worksheet = workbook.create_sheet(class_name)
+            subjects = ["Student Name"] + data["subjects"]
+            worksheet.append([self.remove_z(x) for x in subjects])
+            for student_name, present_count in data["students"].items():
+                worksheet.append([student_name] + [present_count.get(x) for x in data["subjects"]])
+
+        response = HttpResponse(
+            content_type=(
+                "application/vnd.openxmlformats-officedocument."
+                "spreadsheetml.sheet"
+            )
+        )
+        response["Content-Disposition"] = (
+            f'attachment; filename="attendance_{timezone.localdate().year}.xlsx"'
+        )
+        workbook.save(response)
+        return response

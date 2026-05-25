@@ -5,7 +5,8 @@ from .views import (
     SessionDeleteView,
     AttendanceSheetUpsertView,
     MarkAttendance,
-    AttendanceReportView
+    AttendanceReportView,
+    AttendanceExportView
 )
 
 app_name = "attendance"
@@ -18,4 +19,5 @@ urlpatterns = [
     path('<int:pk>/mark/', MarkAttendance.as_view(), name='mark'),
 
     path('report/', AttendanceReportView.as_view(), name='report'),
+    path('export/', AttendanceExportView.as_view(), name='export'),
 ]

@@ -1,19 +1,8 @@
 from django.db import models
 
-from academics.academicyear.models import AcademicYear
 from academics.schoolclass.models import SchoolClass
+from controller.consts import BLOOD_GROUP_CHOICES
 from controller.models import TimeStampedModel
-
-BLOOD_GROUP_CHOICES = (
-    ("A+", "A+"),
-    ("A-", "A-"),
-    ("B+", "B+"),
-    ("B-", "B-"),
-    ("AB+", "AB+"),
-    ("AB-", "AB-"),
-    ("O+", "O+"),
-    ("O-", "O-"),
-)
 
 
 def student_photo_path(instance, filename):
@@ -62,11 +51,6 @@ class Enrollment(TimeStampedModel):
     school_class = models.ForeignKey(SchoolClass, on_delete=models.CASCADE, related_name="enrollments")
     status = models.IntegerField(choices=STATUS_CHOICES, default=ACTIVE)
     on_leave = models.BooleanField(default=False)
+
     def __str__(self):
         return self.student.name
-    academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE)
-
-    def save(self, *args, **kwargs):
-        if not self.academic_year:
-            self.academic_year = AcademicYear.objects.get(is_active=True)
-        return super().save(*args, **kwargs)

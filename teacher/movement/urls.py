@@ -4,6 +4,7 @@ from .views import (
     MovementCreateView,
     MovementUpdateView,
     MovementDeleteView,
+    MovementExportView,
 )
 
 app_name = "movement"
@@ -13,4 +14,5 @@ urlpatterns = [
     path("create/", MovementCreateView.as_view(), name="create"),
     path("<int:pk>/update/", MovementUpdateView.as_view(), name="update"),
     path("<int:pk>/delete/", MovementDeleteView.as_view(), name="delete"),
+    path("export/", MovementExportView.as_view(), name="export"),
 ]

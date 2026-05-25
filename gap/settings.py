@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     # ----- TailWindCSS ------#
     'tailwind',
     'theme',
+    "django_htmx",
 
     'academics.apps.AcademicsConfig',
     'teacher.apps.TeacherConfig',
@@ -72,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'academics.middlewares.CheckForAcademicYearMiddleware',
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = 'gap.urls'
@@ -108,7 +110,7 @@ DATABASES = {
 
 AUTHENTICATION_BACKENDS = [
     "users.backends.UsernameAuthBackend",
-    # "users.backends.EmailAuthBackend",
+    "users.backends.EmailAuthBackend",
 ]
 
 PASSWORD_HASHERS = [

@@ -7,7 +7,6 @@ from controller.models import TimeStampedModel
 
 
 class Session(TimeStampedModel):
-    academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE)
     subject_class = models.ForeignKey(SubjectClass, on_delete=models.CASCADE, related_name="sessions")
     period = models.IntegerField()
     date = models.DateField()

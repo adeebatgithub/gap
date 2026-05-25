@@ -12,9 +12,10 @@ class UserLoginForm(auth_forms.AuthenticationForm):
         model = get_user_model()
         fields = ['username', 'password']
 
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["username"].widget.attrs["placeholder"] = "Username or Email"
+        self.fields["username"].widget.attrs["placeholder"] = "Email"
         self.fields["password"].widget.attrs["placeholder"] = "Password"
 
     def clean(self):

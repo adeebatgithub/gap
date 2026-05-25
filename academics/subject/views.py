@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
@@ -11,6 +12,18 @@ class SubjectListView(PermissionRequiredMixin, ListView):
     model = Subject
     template_name = 'academics/subjects/list.html'
     context_object_name = 'subjects'
+
+    def get_template_names(self):
+        if self.request.htmx:
+            return ['academics/subjects/partial_list.html']
+        return super().get_template_names()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search = self.request.GET.get('search')
+        if search:
+            queryset = queryset.filter(Q(name__icontains=search) | Q(code__icontains=search))
+        return queryset
 
 
 class SubjectDetailView(PermissionRequiredMixin, DetailView):

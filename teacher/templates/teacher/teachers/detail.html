@@ -208,7 +208,7 @@
                             <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-3 pt-4 sm:pt-3">
                                 <div class="flex items-center justify-between sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
                                     <form method="POST"
-                                          action="{% url 'academics:assignment:delete' assigned_subject.pk %}"
+                                          action="{% url 'teacher:assignment:delete' assigned_subject.pk %}"
                                           class="flex-1 sm:flex-none inline-block m-0 p-0"
                                           onsubmit="return confirm('Unassign {{ assigned_subject.subject.name }} from {{ teacher.user.get_full_name|default:teacher.user.username }}?');">
                                         {% csrf_token %}
@@ -249,7 +249,7 @@
             </div>
 
             <div class="flex-shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
-                <form method="POST" action="{% url 'teacher:teacher:delete' teacher.pk %}?back_to=detail"
+                <form method="POST" action="{% url 'teacher:teacher:delete' teacher.pk %}"
                       class="w-full"
                       onsubmit="return confirm('Are you sure you want to completely delete this teacher? This action cannot be undone.');">
                     {% csrf_token %}

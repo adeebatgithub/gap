@@ -1,13 +1,14 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import Group
+from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
 from academics.subject.models import SubjectClass
+from controller.mixins import RedirectToDetail
 from teacher.teacher.models import Teacher
 from .forms import TeacherForm
-from controller.mixins import RedirectToDetail
 
 
 class TeacherListView(PermissionRequiredMixin, ListView):
@@ -15,6 +16,22 @@ class TeacherListView(PermissionRequiredMixin, ListView):
     model = Teacher
     template_name = 'teacher/teachers/list.html'
     context_object_name = 'teachers'
+
+    def get_template_names(self):
+        if self.request.htmx:
+            return ['teacher/teachers/partial_list.html']
+        return super().get_template_names()
+
+    def get_queryset(self):
+        search = self.request.GET.get("search", "")
+        queryset = super().get_queryset()
+        if search:
+            queryset = queryset.filter(
+                Q(user__first_name__icontains=search) |
+                Q(user__last_name__icontains=search)
+            )
+
+        return queryset
 
 
 class TeacherDetailView(PermissionRequiredMixin, DetailView):

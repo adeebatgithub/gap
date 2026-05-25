@@ -12,7 +12,56 @@
 {% endblock %}
 
 {% block content %}
-    <div class="bg-transparent sm:bg-white sm:shadow-sm rounded-xl sm:overflow-hidden">
+    <div class="flex justify-around">
+
+        <div class="w-full max-w-md relative">
+            <!-- Search Icon -->
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                <i class="bi bi-search text-gray-400"></i>
+            </div>
+
+            <!-- Input Field -->
+            <input
+                    hx-get="{% url 'academics:enrollment:list' %}"
+                    hx-trigger="keyup changed delay:300ms"
+                    hx-target="#hx-list-table"
+                    hx-swap="innerHTML"
+
+                    type="search" id="default-search" name="search"
+                    class="block w-full p-4 pl-11 text-sm text-gray-900 border border-gray-200 rounded-xl bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all shadow-sm"
+                    placeholder="Search Student">
+        </div>
+
+        <div class="w-full sm:w-auto flex-1 max-w-sm">
+            <label for="class_name" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+                Select Class
+            </label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="bi bi-person text-gray-400"></i>
+                </div>
+                <select hx-get="{% url 'academics:enrollment:list' %}"
+                        hx-target="#hx-list-table"
+                        hx-swap="innerHTML"
+                        name="class_name" id="class_name"
+                        class="block w-full pl-10 pr-10 py-2 border border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 transition-colors appearance-none text-gray-700 bg-gray-50 focus:bg-white outline-none cursor-pointer">
+                    <option value="">All Classes</option>
+                    {% for class in classes %}
+                        <option value="{{ class }}"
+                                {% if request.GET.class_name == class|stringformat:"s" %}selected{% endif %}>
+                            {{ class }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <!-- Custom dropdown arrow to replace default browser styling -->
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <i class="bi bi-chevron-down text-gray-400 text-xs"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="hx-list-table" class="bg-transparent sm:bg-white sm:shadow-sm rounded-xl sm:overflow-hidden">
 
         <div class="w-full">
             <table class="w-full text-sm text-left text-gray-500 block sm:table">
@@ -24,9 +73,6 @@
                     </th>
                     <th scope="col" class="px-6 py-4 font-semibold tracking-wider">
                         Class Name
-                    </th>
-                    <th scope="col" class="px-6 py-4 font-semibold tracking-wider">
-                        Status
                     </th>
                     <th scope="col" class="px-6 py-4 text-right font-semibold tracking-wider">
                         Actions
@@ -52,15 +98,16 @@
                             {{ enrollment.school_class.name }}
                         </td>
 
-                        <td class="flex sm:table-cell justify-between items-center px-2 sm:px-6 py-2 sm:py-4 font-medium text-sm border-b border-gray-50 sm:border-0 pb-4 sm:pb-4">
-                            <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</span>
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                {% if enrollment.status == 'active' %}bg-green-100 text-green-800
-                                {% elif enrollment.status == 'inactive' %}bg-gray-100 text-gray-800
+                        {% if enrollment.status == 'inactive' %}
+                            <td class="flex sm:table-cell justify-between items-center px-2 sm:px-6 py-2 sm:py-4 font-medium text-sm border-b border-gray-50 sm:border-0 pb-4 sm:pb-4">
+                                <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                {% if enrollment.status == 'inactive' %}bg-gray-100 text-gray-800
                                 {% else %}bg-blue-100 text-blue-800{% endif %}">
                                 {{ enrollment.get_status_display }}
                             </span>
-                        </td>
+                            </td>
+                        {% endif %}
 
                         <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 pt-4 sm:pt-4 text-right">
                             <div class="flex items-center justify-between sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">

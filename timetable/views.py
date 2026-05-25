@@ -3,7 +3,7 @@ from django.db import transaction
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import TemplateView, View
+from django.views.generic import TemplateView, View, ListView
 
 from academics.subject.models import SubjectClass
 from academics.schoolclass.models import SchoolClass
@@ -78,3 +78,19 @@ class TimetableUpsertView(View):
 
         messages.success(request, "Timetable Saved")
         return redirect(reverse_lazy('timetable:preview'))
+
+class TimeTableSubjectsPartialView(ListView):
+    model = SubjectClass
+    context_object_name = 'subjects'
+    template_name = "timetable/partials/subject.html"
+
+    def get_filters(self):
+        filters = {}
+        class_names = self.request.GET.getlist('class_names[]')
+        if class_names:
+            filters['school_class_id'] = class_names[0]
+        return filters
+
+
+    def get_queryset(self):
+        return super().get_queryset().filter(**self.get_filters())
