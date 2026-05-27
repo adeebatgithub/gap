@@ -16,6 +16,10 @@ class MaintenanceView(TemplateView):
         return super().get(request, *args, **kwargs)
 
 
+class UnderConstructionView(TemplateView):
+    template_name = "controller/underdev.html"
+
+
 class ExportAsXlsxView(View):
     workbook_title = "Export"
     filename = "export.xlsx"

@@ -1,22 +1,25 @@
 {% load teacher_tags %}
 {% load users %}
 
-<nav class="flex flex-col gap-1 h-full">
+<nav class="flex flex-col gap-1 h-full pb-4">
 
     <div class="mb-4 px-2">
         <div class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-3 flex items-center gap-3">
             <div class="bg-indigo-100 text-indigo-600 h-8 w-8 rounded-lg flex items-center justify-center flex-shrink-0">
                 <i class="bi bi-calendar-event"></i>
             </div>
-            <div>
+            <div class="flex-1">
                 <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-0.5">Current Session</p>
                 <form method="get" action="">
-                    <select name="academic_year" class="text-sm font-bold text-indigo-900 leading-none"
-                            onselect="this.form.submit()"
-                    >
+                    <label for="academic_year_select" class="sr-only">Select Academic Year</label>
+                    <select name="academic_year"
+                            id="academic_year_select"
+                            class="text-sm font-bold text-indigo-900 bg-transparent border-none p-0 leading-none focus:ring-0 cursor-pointer w-full"
+                            onchange="this.form.submit()">
                         {% for year in ACADEMIC_YEARS %}
-                            <option value="{{ year.id }}"
-                                    {% if year.is_active %}selected{% endif %}>{{ year.name }}</option>
+                            <option value="{{ year.id }}" {% if year.is_active %}selected{% endif %}>
+                                {{ year.name }}
+                            </option>
                         {% endfor %}
                     </select>
                 </form>
@@ -33,7 +36,8 @@
     {% if request.user|has_group:"Admin" %}
         <a href="{% url 'academics:dashboard' %}"
            class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
-              text-gray-600 hover:bg-gray-100 hover:text-gray-900">
+                  {% if request.resolver_match.app_name == 'academics' and request.resolver_match.url_name == 'dashboard' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"
+           {% if request.resolver_match.app_name == 'academics' and request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>
             <i class="bi bi-speedometer2 text-lg transition-transform duration-200 {% if request.resolver_match.url_name != 'dashboard' %}group-hover:scale-110{% endif %}"></i>
             Academic Dashboard
         </a>
@@ -41,34 +45,38 @@
 
     <a href="{% url 'teacher:dashboard' %}"
        class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
-              {% if request.resolver_match.url_name == 'dashboard' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
-        <i class="bi bi-speedometer2 text-lg transition-transform duration-200 {% if request.resolver_match.url_name != 'dashboard' %}group-hover:scale-110{% endif %}"></i>
+              {% if request.resolver_match.app_name == 'teacher' and request.resolver_match.url_name == 'dashboard' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"
+       {% if request.resolver_match.app_name == 'teacher' and request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>
+        <i class="bi bi-speedometer text-lg transition-transform duration-200 {% if request.resolver_match.url_name != 'dashboard' %}group-hover:scale-110{% endif %}"></i>
         Dashboard
     </a>
 
     <a href="{% url 'teacher:timetable' %}"
        class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
-              {% if request.resolver_match.url_name == 'timetable' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+              {% if request.resolver_match.url_name == 'timetable' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"
+       {% if request.resolver_match.url_name == 'timetable' %}aria-current="page"{% endif %}>
         <i class="bi bi-calendar-week text-lg transition-transform duration-200 {% if request.resolver_match.url_name != 'timetable' %}group-hover:scale-110{% endif %}"></i>
         Time Table
     </a>
 
     <a href="{% url 'teacher:schoolclass:list' %}"
        class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
-              {% if request.resolver_match.app_name == 'teacher:schoolclass' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+              {% if request.resolver_match.app_name == 'teacher:schoolclass' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"
+       {% if request.resolver_match.app_name == 'teacher:schoolclass' %}aria-current="page"{% endif %}>
         <i class="bi bi-easel text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'teacher:schoolclass' %}group-hover:scale-110{% endif %}"></i>
         Classes
     </a>
 
-    <a href="{% url 'academics:assessment:list' %}"
+    <a href="{% url 'underdev-mode' %}"
        class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
-                  {% if request.resolver_match.app_name == 'academics:assessment' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+              {% if request.resolver_match.app_name == 'academics:assessment' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"
+       {% if request.resolver_match.app_name == 'academics:assessment' %}aria-current="page"{% endif %}>
         <i class="bi bi-clipboard-check text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'academics:assessment' %}group-hover:scale-110{% endif %}"></i>
         Assessment
     </a>
 
     {% if request.user|has_group:"Exam" %}
-        <div class="mt-2 mb-1 px-3">
+        <div class="mt-4 mb-1 px-3">
             <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center">
                 Exam
             </p>
@@ -76,7 +84,8 @@
 
         <a href="{% url 'teacher:attendance:report' %}"
            class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
-              {% if request.resolver_match.app_name == 'teacher:attendance' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                  {% if request.resolver_match.app_name == 'teacher:attendance' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"
+           {% if request.resolver_match.app_name == 'teacher:attendance' %}aria-current="page"{% endif %}>
             <i class="bi bi-journal-check text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'teacher:attendance' %}group-hover:scale-110{% endif %}"></i>
             Attendance
         </a>

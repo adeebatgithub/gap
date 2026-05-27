@@ -1,0 +1,182 @@
+body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+}
+
+h1, h2, h3, h4 {
+    font-family: "Roboto", sans-serif;
+}
+
+/* Nav */
+.logo-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+}
+
+.nav-pill {
+    background: rgba(20, 20, 20, 0.72);
+    backdrop-filter: blur(12px);
+}
+
+.nav-link {
+    position: relative;
+    padding-bottom: 4px;
+}
+
+.nav-link.active::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #d1fb5f;
+    border-radius: 2px;
+}
+
+#mob-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+
+#mob-menu.open {
+    max-height: 500px;
+    opacity: 1;
+}
+
+/* Scroll reveal */
+.c-fade {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity 0.68s ease, transform 0.68s ease;
+}
+
+.c-left {
+    opacity: 0;
+    transform: translateX(-52px);
+    transition: opacity 0.72s ease, transform 0.72s ease;
+}
+
+.c-right {
+    opacity: 0;
+    transform: translateX(52px);
+    transition: opacity 0.72s ease, transform 0.72s ease;
+}
+
+.c-fade.vis, .c-left.vis, .c-right.vis {
+    opacity: 1;
+    transform: none;
+}
+
+/* Hero image zoom on load */
+@keyframes heroZoom {
+    from {
+        transform: scale(1.06);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.hero-img-zoom {
+    animation: heroZoom 1.4s ease forwards;
+}
+
+/* Card hover */
+.syl-card {
+    transition: transform 0.3s cubic-bezier(0.22, 0.68, 0, 1.15), box-shadow 0.3s ease;
+}
+
+.syl-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.16);
+}
+
+.feat-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 40px rgba(0, 48, 28, 0.18);
+}
+
+.phase-card {
+    transition: transform 0.28s ease;
+}
+
+.phase-card:hover {
+    transform: scale(1.015);
+}
+
+/* Image hover zoom */
+.img-zoom {
+    overflow: hidden;
+}
+
+.img-zoom img {
+    transition: transform 0.5s ease;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.img-zoom:hover img {
+    transform: scale(1.04);
+}
+
+/* Curved top for academy details section */
+.curve-top {
+    position: relative;
+}
+
+.curve-top::before {
+    content: "";
+    position: absolute;
+    top: -48px;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: #c8f040;
+    clip-path: ellipse(55% 100% at 50% 100%);
+}
+
+/* Checklist icon */
+.check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+/* Foot */
+.foot-link {
+    transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.foot-link:hover {
+    color: #d1fb5f;
+    padding-left: 4px;
+}
+
+.foot-sl {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.foot-sl:hover {
+    color: #d1fb5f;
+    transform: translateX(3px);
+}
+
+@media (max-width: 767px) {
+    #mob-menu {
+        background: #00301c;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+}

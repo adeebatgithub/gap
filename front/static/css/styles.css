@@ -1,0 +1,93 @@
+body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+}
+
+h1, h2, h3, h4 {
+    font-family: "Roboto", sans-serif;
+}
+
+/* UI Component Backgrounds with Blur */
+.logo-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.nav-pill {
+    background: rgba(30, 30, 30, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.nav-link {
+    position: relative;
+    padding-bottom: 4px;
+}
+
+.nav-link.active::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #d1fb5f;
+    border-radius: 2px;
+}
+
+/* Mobile Menu Styles */
+@media (max-width: 767px) {
+    #mob-menu {
+        background: #00301c;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    #mob-menu.open {
+        max-height: 500px;
+        opacity: 1;
+    }
+}
+
+/* Footer Interactive Link States */
+.foot-link {
+    transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.foot-link:hover {
+    color: #d1fb5f;
+    padding-left: 4px;
+}
+
+.foot-social-link {
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.foot-social-link:hover {
+    color: #d1fb5f;
+    transform: translateX(3px);
+}
+
+/* Footer Scroll Reveal */
+.foot-reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.foot-reveal.vis {
+    opacity: 1;
+    transform: none;
+}
+
+/* ── Wave Divider Utility ── */
+.wave-div {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}

@@ -1,0 +1,193 @@
+{% extends "front/base.html" %}
+{% load static %}
+
+{% block title %}
+    Activities & Gallery — GreenValley Academy
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/activities.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="relative w-full overflow-hidden flex items-center justify-center text-center"
+             style="min-height: clamp(380px, 60vh, 680px)" aria-label="Activities">
+
+        <div class="absolute inset-0">
+            <img src="{% static 'image/activity-hero.webp' %}" alt="GreenValley Academy activities" class="hero-zoom"/>
+        </div>
+
+        <div class="absolute inset-0" style="background: rgba(0, 48, 28, 0.72)"></div>
+        <div class="absolute inset-0"
+             style="background: linear-gradient(to bottom, rgba(0, 48, 28, 0.6) 0%, transparent 40%, transparent 60%, rgba(0, 48, 28, 0.5) 100%);"></div>
+
+        <div class="relative px-5 sm:px-8 pt-28 pb-16 max-w-3xl mx-auto">
+            <h1 class="h-t1 font-heading font-black text-white text-5xl sm:text-6xl md:text-7xl tracking-tight leading-none mb-5">
+                ACTIVITIES
+            </h1>
+            <p class="h-t2 text-white/65 font-body font-light text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+                Engaging students through academic programs, skill development, cultural events, community service, and
+                extracurricular activities for overall growth and learning.
+            </p>
+
+            <div class="h-t3 flex flex-col items-center gap-2 mt-10">
+                <p class="text-white/30 text-[10px] tracking-widest uppercase">Scroll</p>
+                <div class="w-px h-10 bg-gradient-to-b from-white/30 to-transparent"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-[#fdf0f0] py-20 md:py-28 overflow-hidden" aria-label="Top Achievements">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
+
+            <div class="g-fade text-center mb-12 md:mb-16">
+                <h2 class="font-heading font-black text-primary text-5xl sm:text-6xl md:text-7xl tracking-tight leading-none">
+                    TOP</h2>
+                <h2 class="font-heading font-black text-secondary text-5xl sm:text-6xl md:text-7xl tracking-tight leading-none">
+                    ACHIEVEMENTS</h2>
+                <p class="mt-5 text-primary/50 font-body font-light text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+                    Celebrating the dedication, discipline, and outstanding performance of our students across all
+                    domains.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+
+                {% for top in tops %}
+                    <article class="ach-card g-fade rounded-2xl overflow-hidden shadow-lg" style="transition-delay: 0s"
+                             aria-label="Long jump championship winner">
+                        <div class="w-full aspect-[4/3]">
+                            <img src="{{ top.image.url }}"
+                                 alt="Long jump championship winner" loading="lazy"/>
+                        </div>
+                    </article>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white py-20 md:py-28" aria-label="Gallery">
+        <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-10">
+
+            <div class="g-fade text-center mb-12 md:mb-16">
+                <h2 class="font-heading font-black text-primary text-4xl sm:text-5xl md:text-6xl tracking-tight mb-2">
+                    GALLERY</h2>
+                <div class="mx-auto w-14 h-1 rounded-full bg-secondary mb-4"></div>
+                <p class="text-primary/45 font-body font-light text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+                    Moments that define the GreenValley experience — sports, culture, academics, and life on campus.
+                </p>
+            </div>
+
+            <div class="masonry-grid" id="gallery-grid" aria-label="Photo gallery with 50 images">
+
+                {% for default in defaults %}
+                    <div class="masonry-item g-fade" style="transition-delay: 0s" role="img" aria-label="Sports day athletics event">
+                        <img src="{{ default.image.url }}" alt="Sports day athletics event" loading="lazy"/>
+                        <div class="overlay">
+                            <span class="overlay-icon">
+                                <svg viewBox="0 0 20 20" fill="none" class="w-5 h-5"><path d="M10 4v12M4 10h12"
+                                                                                           stroke="white"
+                                                                                           stroke-width="2"
+                                                                                           stroke-linecap="round"></path></svg>
+                            </span>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="masonry-item g-fade" style="transition-delay: 0s" role="img" aria-label="Sports day athletics event">
+                        Nothing Here
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+
+    <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image lightbox" onclick="closeLB()">
+        <button id="lb-close" aria-label="Close lightbox" onclick="closeLB()">
+            <svg class="w-5 h-5 text-white" viewBox="0 0 20 20" fill="none">
+                <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
+        <img id="lb-img" src="" alt="" onclick="event.stopPropagation()"/>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        // ── Mobile Navigation Toggle Logic ──
+        var mT = document.getElementById("mob-toggle"),
+            mM = document.getElementById("mob-menu");
+        var mb1 = document.getElementById("mb1"),
+            mb2 = document.getElementById("mb2"),
+            mb3 = document.getElementById("mb3");
+        var mO = false;
+
+        mT.addEventListener("click", function () {
+            mO = !mO;
+            mM.classList.toggle("open", mO);
+            mT.setAttribute("aria-expanded", mO);
+
+            // Hamburger Menu Animations
+            mb1.style.transform = mO ? "rotate(45deg) translate(4px,5px)" : "";
+            mb2.style.opacity = mO ? "0" : "1";
+            mb3.style.transform = mO ? "rotate(-45deg) translate(4px,-5px)" : "";
+            mb3.style.width = mO ? "20px" : "";
+        });
+
+        // Close Mobile Menu on Link Click
+        mM.querySelectorAll("a").forEach(function (a) {
+            a.addEventListener("click", function () {
+                mO = false;
+                mM.classList.remove("open");
+                mb1.style.transform = mb2.style.opacity = mb3.style.transform = "";
+                mb3.style.width = "";
+            });
+        });
+
+        // ── Lightbox Logic ──
+        function openLB(src, alt) {
+            var lb = document.getElementById("lightbox");
+            var img = document.getElementById("lb-img");
+            img.src = src;
+            img.alt = alt;
+            lb.classList.add("open");
+            document.body.style.overflow = "hidden"; // Prevent scrolling behind lightbox
+        }
+
+        function closeLB() {
+            document.getElementById("lightbox").classList.remove("open");
+            document.body.style.overflow = ""; // Restore scrolling
+        }
+
+        // Close Lightbox on 'Escape' key
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") closeLB();
+        });
+
+        // Attach Lightbox listener to Masonry Items
+        document.querySelectorAll(".masonry-item").forEach(function (item) {
+            item.addEventListener("click", function () {
+                var img = item.querySelector("img");
+                if (img) openLB(img.src, img.alt);
+            });
+        });
+
+        // ── Scroll Reveal Observer ──
+        var obs = new IntersectionObserver(
+            function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add("vis");
+                        obs.unobserve(e.target); // Unobserve once animated
+                    }
+                });
+            },
+            {threshold: 0.08}
+        );
+
+        document.querySelectorAll(".g-fade").forEach(function (el) {
+            obs.observe(el);
+        });
+    </script>
+{% endblock %}

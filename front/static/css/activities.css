@@ -1,0 +1,204 @@
+/* ── Hero Animations ── */
+@keyframes heroZoom {
+    from {
+        transform: scale(1.06);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.hero-zoom {
+    animation: heroZoom 1.8s ease forwards;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(32px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.h-t1 {
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.25s forwards;
+}
+
+.h-t2 {
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.45s forwards;
+}
+
+.h-t3 {
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.65s forwards;
+}
+
+/* ── General Scroll Reveal ── */
+.g-fade {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.g-fade.vis {
+    opacity: 1;
+    transform: none;
+}
+
+/* ── Achievement Card Styling ── */
+.ach-card {
+    transition: transform 0.32s ease, box-shadow 0.32s ease;
+}
+
+.ach-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px rgba(0, 48, 28, 0.2);
+}
+
+.ach-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.ach-card:hover img {
+    transform: scale(1.06);
+}
+
+/* ── Masonry Grid Layout ── */
+.masonry-grid {
+    columns: 5 200px;
+    column-gap: 8px;
+}
+
+@media (max-width: 1200px) {
+    .masonry-grid {
+        columns: 4 180px;
+    }
+}
+
+@media (max-width: 900px) {
+    .masonry-grid {
+        columns: 3 150px;
+    }
+}
+
+@media (max-width: 600px) {
+    .masonry-grid {
+        columns: 2 120px;
+    }
+}
+
+@media (max-width: 380px) {
+    .masonry-grid {
+        columns: 1;
+    }
+}
+
+.masonry-item {
+    break-inside: avoid;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    display: block;
+}
+
+.masonry-item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+}
+
+.masonry-item:hover img {
+    transform: scale(1.06);
+}
+
+/* Hover Overlay for Masonry Items */
+.masonry-item .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 48, 28, 0.65) 0%, transparent 55%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.masonry-item:hover .overlay {
+    opacity: 1;
+}
+
+.overlay-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(209, 251, 95, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay-icon svg {
+    color: #00301c;
+}
+
+/* ── Lightbox Styling ── */
+#lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.92);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#lightbox.open {
+    display: flex;
+}
+
+#lightbox img {
+    max-width: 90vw;
+    max-height: 88vh;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8);
+    cursor: default;
+    pointer-events: none;
+}
+
+#lb-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#lb-close:hover {
+    background: rgba(209, 251, 95, 0.3);
+}

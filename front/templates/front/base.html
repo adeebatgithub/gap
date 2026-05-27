@@ -1,0 +1,288 @@
+{% load static %}
+{% load tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{% block title %}GreenValley Academy{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/ico" href="{% static 'image/ico/favicon-circle.ico' %}"/>
+
+    <!-- Google Fonts: Roboto & Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap"
+          rel="stylesheet"/>
+
+    {% tailwind_css %}
+
+    <!-- Custom CSS Styles -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block css %}{% endblock %}
+</head>
+
+<body class="antialiased">
+
+<!-- ── NAVBAR OVERLAY ── -->
+<header class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 md:px-8 pt-4 flex items-start justify-between gap-4">
+
+    <!-- Logo Component -->
+    <a href="{% url 'home' %}" class="logo-card flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-lg flex-shrink-0"
+       aria-label="GreenValley Academy Home">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 overflow-hidden rounded-full bg-white">
+            <img src="{% static 'image/logo/logo.webp' %}" alt="GreenValley Academy logo"
+                 class="w-full h-full object-contain"/>
+        </div>
+        <div class="leading-tight">
+            <p class="font-heading font-black text-primary text-sm sm:text-base leading-none tracking-tight">
+                GREEN VALLEY</p>
+            <p class="font-heading font-black text-primary text-sm sm:text-base leading-none tracking-tight">
+                ACADEMY</p>
+            <p class="text-primary/40 text-[9px] sm:text-[10px] font-body font-medium tracking-widest uppercase mt-0.5">
+                Manjeri, Kerala</p>
+        </div>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="nav-pill hidden md:flex items-center gap-1 px-4 py-3 rounded-2xl" aria-label="Main navigation">
+        <a href="{% url 'home' %}"
+           class="nav-link font-body font-semibold text-xs lg:text-sm px-3 lg:px-4 py-1.5 hover:text-secondary transition-colors whitespace-nowrap {% if request.resolver_match.url_name == 'home' %}active text-white{% else %}text-white/70{% endif %}">
+            HOME</a>
+        <a href="{% url 'about' %}"
+           class="nav-link font-body font-medium text-xs lg:text-sm px-3 lg:px-4 py-1.5 hover:text-secondary transition-colors whitespace-nowrap {% if request.resolver_match.url_name == 'about' %}active text-white{% else %}text-white/70{% endif %}">
+            ABOUT US</a>
+        <a href="{% url 'program' %}"
+           class="nav-link font-body font-medium text-xs lg:text-sm px-3 lg:px-4 py-1.5 hover:text-secondary transition-colors whitespace-nowrap {% if request.resolver_match.url_name == 'program' %}active text-white{% else %}text-white/70{% endif %}">
+            PROGRAMS</a>
+        <a href="{% url 'womens_academy' %}"
+           class="nav-link font-body font-medium text-xs lg:text-sm px-3 lg:px-4 py-1.5 hover:text-secondary transition-colors whitespace-nowrap {% if request.resolver_match.url_name == 'womens_academy' %}active text-white{% else %}text-white/70{% endif %}">
+            WOMEN'S ACADEMY</a>
+        <a href="{% url 'application' %}"
+           class="nav-link font-body font-medium text-xs lg:text-sm px-3 lg:px-4 py-1.5 hover:text-secondary transition-colors whitespace-nowrap {% if request.resolver_match.url_name == 'application' %}active text-white{% else %}text-white/70{% endif %}">
+            ADMISSION</a>
+        <a href="{% url 'activity' %}"
+           class="nav-link font-body font-medium text-xs lg:text-sm px-3 lg:px-4 py-1.5 hover:text-secondary transition-colors whitespace-nowrap {% if request.resolver_match.url_name == 'activity' %}active text-white{% else %}text-white/70{% endif %}">
+            ACTIVITIES</a>
+        <a href="{% url 'contact' %}"
+           class="nav-link font-body font-medium text-xs lg:text-sm px-3 lg:px-4 py-1.5 hover:text-secondary transition-colors whitespace-nowrap {% if request.resolver_match.url_name == 'contact' %}active text-white{% else %}text-white/70{% endif %}">
+            CONTACT US</a>
+    </nav>
+
+    <!-- Mobile Hamburger Menu Button -->
+    <button id="mob-toggle" class="nav-pill md:hidden flex flex-col gap-1.5 p-3 rounded-xl mt-1"
+            aria-label="Open menu" aria-expanded="false" aria-controls="mob-menu">
+        <span class="block w-5 h-0.5 bg-white rounded"></span>
+        <span class="block w-5 h-0.5 bg-white rounded"></span>
+        <span class="block w-3.5 h-0.5 bg-white rounded self-end"></span>
+    </button>
+</header>
+
+<!-- Mobile Navigation Drawer -->
+<div id="mob-menu"
+     class="fixed top-0 left-0 right-0 z-40 bg-primary/95 backdrop-blur-md pt-20 pb-8 px-6 hidden md:hidden">
+    <button id="mob-close"
+            class="absolute top-6 right-6 w-10 h-10 rounded-full border border-white/30 text-white flex items-center justify-center"
+            aria-label="Close menu">
+        <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+    </button>
+    <nav class="flex flex-col gap-1" aria-label="Mobile navigation">
+        <a href="{% url 'home' %}" class="text-secondary font-heading font-bold text-sm py-3 border-b border-white/10">
+            HOME</a>
+        <a href="{% url 'about' %}"
+           class="text-white/80 font-body font-medium text-sm py-3 border-b border-white/10 hover:text-secondary transition-colors">
+            ABOUT US</a>
+        <a href="{% url 'program' %}"
+           class="text-white/80 font-body font-medium text-sm py-3 border-b border-white/10 hover:text-secondary transition-colors">
+            PROGRAMS</a>
+        <a href="{% url 'womens_academy' %}"
+           class="text-white/80 font-body font-medium text-sm py-3 hover:text-secondary transition-colors">
+            WOMEN'S ACADEMY</a>
+        <a href="{% url 'application' %}"
+           class="text-white/80 font-body font-medium text-sm py-3 border-b border-white/10 hover:text-secondary transition-colors">
+            ADMISSION</a>
+        <a href="{% url 'activity' %}"
+           class="text-white/80 font-body font-medium text-sm py-3 border-b border-white/10 hover:text-secondary transition-colors">
+            ACTIVITIES</a>
+        <a href="{% url 'contact' %}"
+           class="text-white/80 font-body font-medium text-sm py-3 hover:text-secondary transition-colors">
+            CONTACT US</a>
+    </nav>
+</div>
+
+{% block content %}
+
+{% endblock %}
+<!-- ==========================================
+     FOOTER
+=========================================== -->
+<footer class="bg-primary pt-16 pb-0" aria-label="Site footer">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
+
+        <!-- Footer 4-Column Grid -->
+        <div class="foot-reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 pb-14 border-b border-white/10">
+
+            <!-- Column 1: Academy Brand & Contact Info -->
+            <div>
+                <div class="flex items-center gap-2.5 mb-5">
+                    <span class="w-9 h-9 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+                          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M12 2C8 2 4 5 4 10c0 4 3 7 8 12 5-5 8-8 8-12 0-5-4-8-8-8z" fill="#00301C"></path>
+                          </svg>
+                    </span>
+                    <span class="font-heading font-black text-white text-base tracking-tight leading-tight">
+                        GREEN<span class="text-secondary">VALLEY</span>
+                    </span>
+                </div>
+                <ul class="space-y-3.5 text-white/50 text-sm font-body font-light">
+                    <li class="flex items-start gap-2.5">
+                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none"
+                             aria-hidden="true">
+                            <path d="M8 8.5a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" stroke-width="1.4"></path>
+                            <path d="M8 14s5-4 5-7a5 5 0 00-10 0c0 3 5 7 5 7z" stroke="currentColor"
+                                  stroke-width="1.4"/>
+                        </svg>
+                        <span>Green Valley Academy, Pulpatta P.O., Manjeri, Malappuram, Kerala – 676123</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none"
+                             aria-hidden="true">
+                            <path d="M13 10.7l-2-1a.8.8 0 00-.9.2l-.9 1a7.4 7.4 0 01-3.3-3.3l1-.9a.8.8 0 00.2-.9l-1-2A.8.8 0 005.4 4H4a.8.8 0 00-.8.8A9.6 9.6 0 0012.8 14a.8.8 0 00.8-.8v-1.7a.8.8 0 00-.6-.8z"
+                                  stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                        </svg>
+                        <span>+91 48329644291 | +91 4832969898</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none"
+                             aria-hidden="true">
+                            <rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+                            <path d="M2 6l6 4 6-4" stroke="currentColor" stroke-width="1.4"/>
+                        </svg>
+                        <a href="mailto:greenvalleymanjeri@gmail.com"
+                           class="hover:text-secondary transition-colors break-all">greenvalleymanjeri@gmail.com</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 2: Specific Course Offerings -->
+            <div>
+                <h4 class="font-heading font-bold text-white text-base mb-5 tracking-tight">Courses</h4>
+                <ul class="space-y-2.5">
+                    <li><a class="cursor-pointer foot-link text-white/50 text-sm font-body font-light">Computer
+                        Application</a></li>
+                    <li><a class="cursor-pointer foot-link text-white/50 text-sm font-body font-light">Graphic
+                        Designing</a></li>
+                    <li><a class="cursor-pointer foot-link text-white/50 text-sm font-body font-light">Electrical
+                        Technician</a></li>
+                    <li><a class="cursor-pointer foot-link text-white/50 text-sm font-body font-light">Account
+                        Executive</a></li>
+                    <li><a class="cursor-pointer foot-link text-white/50 text-sm font-body font-light">Arabic
+                        Translator</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Navigation Quick Links -->
+            <div>
+                <h4 class="font-heading font-bold text-white text-base mb-5 tracking-tight">Quick Links</h4>
+                <ul class="space-y-2.5">
+                    <li><a href="{% url 'application' %}" class="foot-link text-white/50 text-sm font-body font-light">Admission
+                        Form</a></li>
+                    <li><a href="{% url 'about' %}" class="foot-link text-white/50 text-sm font-body font-light">About
+                        Us</a>
+                    </li>
+                    <li><a href="{% url 'program' %}" class="foot-link text-white/50 text-sm font-body font-light">Programmes</a>
+                    </li>
+                    <li><a href="{% url 'womens_academy' %}"
+                           class="foot-link text-white/50 text-sm font-body font-light">Women's
+                        Academy</a></li>
+                    <li><a href="{% url 'activity' %}" class="foot-link text-white/50 text-sm font-body font-light">Activities</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Social Connect Links -->
+            <div>
+                <h4 class="font-heading font-bold text-white text-base mb-5 tracking-tight">Connect</h4>
+                <ul class="space-y-3.5">
+                    <li>
+                        <a href="#" class="foot-social-link text-white/50 text-sm font-body font-light">
+                <span class="w-7 h-7 rounded-lg bg-white/8 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-secondary" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                    <path d="M8 1.6a6.4 6.4 0 100 12.8A6.4 6.4 0 008 1.6zM5.5 5.5h1.8V4.7c0-1.2.6-1.8 2-1.8h1.3v1.8H9.4c-.5 0-.5.2-.5.5V5.5h1.7l-.2 2H8.9V13H7V7.5H5.8l.2-2z"/>
+                  </svg>
+                </span>
+                            Facebook
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="foot-social-link text-white/50 text-sm font-body font-light">
+                <span class="w-7 h-7 rounded-lg bg-white/8 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-secondary" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                       stroke-width="1.3" aria-hidden="true">
+                    <rect x="3" y="3" width="10" height="10" rx="3"/>
+                    <circle cx="8" cy="8" r="2.5"/>
+                    <circle cx="11.2" cy="4.8" r="0.7" fill="currentColor" stroke="none"/>
+                  </svg>
+                </span>
+                            Instagram
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="foot-social-link text-white/50 text-sm font-body font-light">
+                <span class="w-7 h-7 rounded-lg bg-white/8 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-secondary" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                    <path d="M15 3.5a6 6 0 01-1.65.46 2.9 2.9 0 001.26-1.6 5.8 5.8 0 01-1.83.7A2.9 2.9 0 008 5.57a8.2 8.2 0 01-5.96-3.02 2.9 2.9 0 00.9 3.86 2.87 2.87 0 01-1.31-.36v.04a2.9 2.9 0 002.32 2.84 2.9 2.9 0 01-1.3.05 2.9 2.9 0 002.7 2.01A5.82 5.82 0 011 12.4a8.2 8.2 0 004.44 1.3c5.33 0 8.25-4.42 8.25-8.25l-.01-.38A5.9 5.9 0 0015 3.5z"/>
+                  </svg>
+                </span>
+                            Twitter
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="foot-social-link text-white/50 text-sm font-body font-light">
+                <span class="w-7 h-7 rounded-lg bg-white/8 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-secondary" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                    <path d="M13.4 2.6a1.3 1.3 0 011 2.1L8.6 10.4l-3 .7.7-3L12.4 3a1.3 1.3 0 011-.4zM3 12.5h10"
+                          stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                    <circle cx="11" cy="11" r="3.5" fill="#25D366" opacity="0.9"/>
+                    <path d="M9.5 10.2c.2.7.8 1.3 1.5 1.5l.5-.5c.1-.1.3-.1.4 0l.8.6c.1.1.1.3 0 .4-.4.5-1.1.7-1.7.4a3.5 3.5 0 01-2-2c-.3-.6-.1-1.3.4-1.7.1-.1.3-.1.4 0l.6.8c.1.1.1.3 0 .4l-.9.1z"
+                          fill="white"/>
+                  </svg>
+                </span>
+                            WhatsApp
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Footer Bottom Copyright Bar -->
+        <div class="foot-reveal flex flex-col sm:flex-row items-center justify-between gap-3 py-5 text-white/30 text-xs font-body font-light"
+             style="transition-delay: 0.15s">
+            <p>© COPYRIGHT 2026 GREEN VALLEY ACADEMY. ALL RIGHTS RESERVED.</p>
+        </div>
+    </div>
+</footer>
+{% block js %}{% endblock %}
+<script>
+    (function () {
+        let els = document.querySelectorAll(".foot-reveal");
+        let obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                    e.target.classList.add("vis");
+                    obs.unobserve(e.target);
+                }
+            });
+        }, {threshold: 0.1});
+
+        els.forEach(function (el) {
+            obs.observe(el);
+        });
+    })();
+</script>
+</body>
+</html>

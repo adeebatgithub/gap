@@ -3,6 +3,7 @@ from academics.academicyear.models import AcademicYear
 from academics.enrollment.models import Student, Enrollment
 from academics.schoolclass.models import SchoolClass
 from academics.subject.models import Subject, SubjectClass
+from academics.admission.models import Admission
 
 
 @admin.register(SchoolClass)
@@ -35,3 +36,7 @@ class EnrollmentAdmin(admin.ModelAdmin):
     list_display = ('student', 'school_class', 'status', 'school_class__academic_year')
     list_filter = ('school_class__academic_year', 'school_class')
 
+
+@admin.register(Admission)
+class AdmissionAdmin(admin.ModelAdmin):
+    list_display = ("full_name", "guardian_name", "district", "state")

@@ -1,0 +1,71 @@
+/* ── Scroll Reveal Animations ── */
+.a-fade {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity 0.68s ease, transform 0.68s ease;
+}
+
+.a-fade.vis {
+    opacity: 1;
+    transform: none;
+}
+
+.a-left {
+    opacity: 0;
+    transform: translateX(-48px);
+    transition: opacity 0.72s ease, transform 0.72s ease;
+}
+
+.a-right {
+    opacity: 0;
+    transform: translateX(48px);
+    transition: opacity 0.72s ease, transform 0.72s ease;
+}
+
+.a-left.vis, .a-right.vis {
+    opacity: 1;
+    transform: none;
+}
+
+/* ── Image Hover Zoom Effects ── */
+.img-zoom {
+    overflow: hidden;
+}
+
+.img-zoom img, .img-zoom .thumb {
+    transition: transform 0.5s ease;
+}
+
+.img-zoom:hover img, .img-zoom:hover .thumb {
+    transform: scale(1.05);
+}
+
+/* ── Faculty Card Styling ── */
+.fac-card {
+    transition: transform 0.3s ease;
+}
+
+.fac-card:hover {
+    transform: translateY(-6px);
+}
+
+.fac-avatar {
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.fac-card:hover .fac-avatar {
+    transform: scale(1.08);
+    box-shadow: 0 12px 30px rgba(0, 48, 28, 0.22);
+}
+
+/* ── Custom Layer Accent ── */
+.layer-accent {
+    position: absolute;
+    width: 88%;
+    height: 88%;
+    border-radius: 1.5rem;
+    background: #d1fb5f;
+    bottom: -14px;
+    right: -14px;
+    z-index: 0;
+}

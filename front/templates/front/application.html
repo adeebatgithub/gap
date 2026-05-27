@@ -1,0 +1,357 @@
+{% extends 'front/base.html' %}
+{% load static %}
+{% block title %}Admission Form — GreenValley Academy{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/application.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- ==========================================
+         HERO SECTION
+    =========================================== -->
+    <section class="relative w-full min-h-[50vh] md:min-h-[56vh] flex items-center justify-center overflow-hidden"
+             aria-label="Admission Form Hero">
+        <!-- Background Campus Image -->
+        <div class="absolute inset-0">
+            <img src="{% static 'image/admission.webp' %}" alt="Green Valley Academy Campus"
+                 class="w-full h-full object-cover"/>
+        </div>
+
+        <!-- Dark Image Overlay -->
+        <div class="absolute inset-0 bg-primary/70"></div>
+
+        <!-- Hero Content -->
+        <div class="relative text-center px-5 pt-20">
+            <h1 class="font-heading font-black text-white text-4xl sm:text-5xl md:text-6xl tracking-tight">
+                ADMISSION FORM
+            </h1>
+            <p class="mt-4 text-white/55 font-body font-light text-sm sm:text-base max-w-md mx-auto leading-relaxed">
+                Begin your journey with GreenValley Academy — complete the form below to apply.
+            </p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         MAIN FORM CONTENT
+    =========================================== -->
+    <main class="bg-white py-16 md:py-24">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
+            <div class="grid lg:grid-cols-3 gap-10 xl:gap-16 items-start">
+
+                <!-- Form Container (Takes up 2/3 width on large screens) -->
+                <div class="lg:col-span-2 adm-fade">
+
+                    <!-- Form Header -->
+                    <div class="mb-10">
+                        <p class="text-secondary bg-primary font-body font-semibold text-xs tracking-widest uppercase px-3 py-1.5 rounded-full inline-block mb-4">
+                            Application for Enrollment
+                        </p>
+                        <h2 class="font-heading font-black text-primary text-3xl sm:text-4xl md:text-5xl leading-tight tracking-tight mb-4">
+                            APPLY FOR ADMISSION
+                        </h2>
+                        <p class="text-primary/55 font-body font-light text-base leading-relaxed max-w-lg">
+                            Join a community dedicated to academic excellence and personal growth. Please complete the
+                            admission form below with accurate information.
+                        </p>
+                    </div>
+
+                    <!-- Application Form -->
+                    <form method="post" action="{% url 'academics:academicyear:create' %}" novalidate class="space-y-12"
+                          aria-label="Admission application form">
+                        {% csrf_token %}
+                        <!-- ── SECTION 01: Personal Identity ── -->
+                        <fieldset>
+                            <legend class="flex items-center gap-3 mb-8">
+                                <span class="step-badge">01</span>
+                                <h3 class="font-heading font-black text-primary text-xl md:text-2xl tracking-tight">
+                                    Personal
+                                    Identity</h3>
+                            </legend>
+
+                            <div class="space-y-8">
+                                <!-- Name & Guardian Row -->
+                                <div class="grid sm:grid-cols-2 gap-8">
+                                    <div>
+                                        <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                                               for="applicant-name">
+                                            Name of Applicant
+                                        </label>
+                                        <input id="applicant-name" type="text" placeholder="Full Legal Name"
+                                               autocomplete="name" class="form-input" required/>
+                                    </div>
+                                    <div>
+                                        <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                                               for="guardian-name">
+                                            Father / Guardian Name
+                                        </label>
+                                        <input id="guardian-name" type="text" placeholder="Full Name" autocomplete="off"
+                                               class="form-input" required/>
+                                    </div>
+                                </div>
+
+                                <!-- DOB & Language Row -->
+                                <div class="grid sm:grid-cols-2 gap-8">
+                                    <div>
+                                        <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                                               for="dob">
+                                            Date of Birth
+                                        </label>
+                                        <input id="dob" type="date" placeholder="mm/dd/yyyy" class="form-input"
+                                               required/>
+                                    </div>
+                                    <div>
+                                        <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                                               for="mother-tongue">
+                                            Mother Tongue
+                                        </label>
+                                        <input id="mother-tongue" type="text" placeholder="Native Language"
+                                               autocomplete="off" class="form-input"/>
+                                    </div>
+                                </div>
+
+                                <!-- Preferred Course Selection -->
+                                <div>
+                                    <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                                           for="preferred-course">
+                                        Preferred Course
+                                    </label>
+                                    <div class="relative">
+                                        <select id="preferred-course" class="form-select pr-8" required>
+                                            <option value="" disabled selected>Select Academic Program</option>
+                                            <option>Integrated Learning Programme (ILP | Boys) — 5 Years</option>
+                                            <option>Islamic Life Solutions (ILS | Girls) — 3 Years</option>
+                                            <option>ILP Lateral Entry (Degree | Boys) — 3 Years</option>
+                                        </select>
+                                        <!-- Custom Select Dropdown Arrow -->
+                                        <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                                             viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6"
+                                                  stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Section Divider -->
+                        <div class="border-t border-primary/8"></div>
+
+                        <!-- ── SECTION 02: Residential Data ── -->
+                        <fieldset>
+                            <legend class="flex items-center gap-3 mb-8">
+                                <span class="step-badge">02</span>
+                                <h3 class="font-heading font-black text-primary text-xl md:text-2xl tracking-tight">
+                                    Residential Data</h3>
+                            </legend>
+
+                            <div class="space-y-8">
+                                <!-- Address & Pin Code Row -->
+                                <div class="grid sm:grid-cols-3 gap-8">
+                                    <div class="sm:col-span-2">
+                                        <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                                               for="address">
+                                            House Name / No
+                                        </label>
+                                        <input id="address" type="text" placeholder="Street Address"
+                                               autocomplete="street-address" class="form-input"/>
+                                    </div>
+                                    <div>
+                                        <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                                               for="pincode">
+                                            Pin Code
+                                        </label>
+                                        <input id="pincode" type="text" placeholder="Postal Code"
+                                               autocomplete="postal-code"
+                                               maxlength="10" class="form-input"/>
+                                    </div>
+                                </div>
+
+                                <!-- City, District & State Row -->
+                                <div class="grid sm:grid-cols-3 gap-8">
+                                    <div>
+                                        <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                                               for="city">
+                                            Post Office / City
+                                        </label>
+                                        <input id="city" type="text" placeholder="Locality"
+                                               autocomplete="address-level2"
+                                               class="form-input"/>
+                                    </div>
+                                    <div>
+                                        <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                                               for="district">
+                                            District
+                                        </label>
+                                        <input id="district" type="text" placeholder="Region" class="form-input"/>
+                                    </div>
+                                    <div>
+                                        <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                                               for="state">
+                                            State
+                                        </label>
+                                        <input id="state" type="text" placeholder="State/Province"
+                                               autocomplete="address-level1" class="form-input"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Section Divider -->
+                        <div class="border-t border-primary/8"></div>
+
+                        <!-- ── SECTION 03: Connectivity & Evaluation ── -->
+                        <fieldset>
+                            <legend class="flex items-center gap-3 mb-8">
+                                <span class="step-badge">03</span>
+                                <h3 class="font-heading font-black text-primary text-xl md:text-2xl tracking-tight">
+                                    Connectivity &amp; Evaluation</h3>
+                            </legend>
+
+                            <div class="space-y-8">
+                                <!-- Phone Numbers Row -->
+                                <div class="grid sm:grid-cols-2 gap-8">
+                                    <div>
+                                        <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                                               for="primary-phone">
+                                            Primary Mobile No
+                                        </label>
+                                        <input id="primary-phone" type="tel" placeholder="+1 (000) 000-0000"
+                                               autocomplete="tel" class="form-input" required/>
+                                    </div>
+                                    <div>
+                                        <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                                               for="secondary-phone">
+                                            Secondary Contact No
+                                        </label>
+                                        <input id="secondary-phone" type="tel" placeholder="Alternative Phone"
+                                               class="form-input"/>
+                                    </div>
+                                </div>
+
+                                <!-- Exam Center Selection -->
+                                <div>
+                                    <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                                           for="exam-center">
+                                        Preferred Entrance Exam Center
+                                    </label>
+                                    <div class="relative">
+                                        <select id="exam-center" class="form-select pr-8">
+                                            <option value="" disabled selected>Select Location</option>
+                                            <option>Kollam</option>
+                                            <option>Aluva</option>
+                                            <option>Manjeri</option>
+                                            <option>Thalassery</option>
+                                        </select>
+                                        <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                                             viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6"
+                                                  stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- ── SUBMIT BUTTON ── -->
+                        <div class="pt-2">
+                            <button type="submit"
+                                    class="submit-btn bg-secondary text-primary font-heading font-black text-base px-10 py-4 rounded-full shadow-lg">
+                                Submit Application
+                            </button>
+                            <p class="mt-4 text-primary/40 font-body font-light text-xs leading-relaxed max-w-md">
+                                By submitting, you agree to the Green Valley Academy terms of enrollment and data
+                                privacy
+                                policies.
+                            </p>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ==========================================
+         FOOTER SECTION
+    =========================================== -->
+
+    <!-- SVG Wave Divider -->
+    <div class="wave-divider">
+        <svg viewBox="0 0 1440 56" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+             class="w-full h-10 md:h-14"
+             aria-hidden="true">
+            <path d="M0,32 C240,60 480,0 720,32 C960,60 1200,0 1440,32 L1440,56 L0,56 Z" fill="#00301C"></path>
+        </svg>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <!-- ==========================================
+         SCRIPTS
+    =========================================== -->
+    <script>
+        // ── Mobile Menu Toggle Logic ──
+        let mobToggle = document.getElementById("mob-toggle");
+        let mobMenu = document.getElementById("mob-menu");
+        let mb1 = document.getElementById("mb1"),
+            mb2 = document.getElementById("mb2"),
+            mb3 = document.getElementById("mb3");
+        let open = false;
+
+        mobToggle.addEventListener("click", function () {
+            open = !open;
+            mobMenu.classList.toggle("open", open);
+            mobToggle.setAttribute("aria-expanded", open);
+
+            // Menu Icon Animation
+            mb1.style.transform = open ? "rotate(45deg) translate(4px,5px)" : "";
+            mb2.style.opacity = open ? "0" : "1";
+            mb3.style.transform = open ? "rotate(-45deg) translate(4px,-5px)" : "";
+            mb3.style.width = open ? "20px" : "";
+        });
+
+        mobMenu.querySelectorAll("a").forEach(function (a) {
+            a.addEventListener("click", function () {
+                open = false;
+                mobMenu.classList.remove("open");
+                mobToggle.setAttribute("aria-expanded", "false");
+                mb1.style.transform = mb2.style.opacity = mb3.style.transform = "";
+                mb3.style.width = "";
+            });
+        });
+
+        // ── CAPTCHA Generator Logic ──
+        let CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+        function genCaptcha() {
+            let code = "";
+            for (let i = 0; i < 6; i++) {
+                code += CHARS[Math.floor(Math.random() * CHARS.length)];
+            }
+            return code.split("").join(" ");
+        }
+
+        function refreshCaptcha() {
+            document.getElementById("captcha-text").textContent = genCaptcha();
+        }
+
+        // ── Scroll Reveal Intersection Observer ──
+        let fadeEls = document.querySelectorAll(".adm-fade");
+        let obs = new IntersectionObserver(
+            function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add("vis");
+                        obs.unobserve(e.target);
+                    }
+                });
+            },
+            {threshold: 0.08}
+        );
+
+        fadeEls.forEach(function (el) {
+            obs.observe(el);
+        });
+    </script>
+{% endblock %}

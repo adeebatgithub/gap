@@ -1,0 +1,259 @@
+{% extends 'front/base.html' %}
+{% load static %}
+{% block title %}About Us — GreenValley Academy{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="bg-primary pt-28 pb-20 md:pt-36 md:pb-28 overflow-hidden" aria-label="About GreenValley">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
+
+            <p class="a-fade font-heading font-black text-white/70 text-center text-4xl sm:text-5xl tracking-tight mb-14 md:mb-18">
+                ABOUT US
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+                <div class="a-left">
+                    <h1 class="font-heading font-black text-white text-3xl sm:text-4xl lg:text-5xl leading-[1.08] tracking-tight mb-6">
+                        A campus built to grow<br/>skill, confidence, and<br/>character.
+                    </h1>
+                    <p class="text-white/55 font-body font-light text-base leading-relaxed max-w-lg">
+                        GreenValley Academy in Manjeri is designed around practical learning, supportive mentorship, and
+                        a
+                        clear path from classroom study to real opportunity. We nurture every student's potential and
+                        prepare them to thrive beyond academics.
+                    </p>
+                </div>
+
+                <div class="a-right flex justify-center md:justify-end">
+                    <div class="img-zoom w-full max-w-sm md:max-w-none rounded-3xl border-4 border-white/20 shadow-2xl overflow-hidden">
+                        <img src="{% static 'image/about/hero-img.webp' %}" alt="Your description"
+                             class="w-full h-full object-cover"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="wave-div" style="margin-top: -2px">
+        <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+             class="w-full h-10 md:h-16"
+             aria-hidden="true">
+            <path d="M0,30 C360,65 1080,-5 1440,30 L1440,60 L0,60 Z" fill="white"/>
+        </svg>
+    </div>
+
+    <section class="bg-white py-16 md:py-24 overflow-hidden" aria-label="About video and content">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
+
+            <div class="a-fade relative w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-primary/10 mb-14 md:mb-20"
+                 aria-label="GreenValley Academy introduction video">
+                <div class="w-full aspect-video bg-primary">
+                    <iframe
+                            class="w-full h-full"
+                            src="https://www.youtube.com/embed/QnqXQMeZGZs?si=GfLJrNeVwCQJdDwg"
+                            title="GreenValley Academy introduction video"
+                            loading="lazy"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10 lg:gap-16">
+                <div class="a-left">
+                    <p class="text-primary/70 font-body font-light text-sm md:text-base leading-relaxed">
+                        Every individual is blessed with infinite potential. An ocean of abilities brims within us. We
+                        only
+                        need to open ourselves to new knowledge and practices to unleash our abilities and achieve our
+                        life
+                        goals. Green Valley Academy is an educational institution established in 1993, with the aim of
+                        shaping a generation of young, multi-talented individuals who can bring about a social and
+                        cultural
+                        renaissance. The institution inspires students to think creatively, explore the lesser known
+                        realms
+                        of life and work for social empowerment. Apart from classroom tutoring, the institution
+                        identifies
+                        and nourishes unique talents in students and develops them into outstanding skill sets.
+                    </p>
+                </div>
+                <div class="a-right" style="transition-delay: 0.12s">
+                    <p class="text-primary/70 font-body font-light text-sm md:text-base leading-relaxed">
+                        Here we also provide ample opportunities for students to interact with intellectuals and thought
+                        leaders of various hues. Diligently organized seminars, symposia and brainstorming sessions also
+                        widen the horizons of knowledge among students. The institution also lays emphasis on promoting
+                        artistic and sporting talent among students with the annually organized art festivals and sports
+                        events. To put it simply, Green Valley Academy stands apart from other institutions by shaping
+                        individuals as dynamic go-getters who can take on the various challenges of life with
+                        determination,
+                        integrity and a firm moral footing.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faculty" class="bg-white pt-6 pb-20 md:pb-28 overflow-hidden" aria-label="Faculty">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
+
+            <div class="a-fade mb-14 md:mb-18">
+                <div class="flex flex-col sm:flex-row sm:items-end gap-6 md:gap-10">
+                    <h2 class="font-heading font-black text-primary text-5xl sm:text-6xl md:text-7xl leading-none tracking-tight flex-shrink-0">
+                        THE<br/><span class="text-secondary">FACULTY</span>
+                    </h2>
+                    <p class="text-primary/50 font-body font-light text-sm sm:text-base leading-relaxed max-w-xs pb-1">
+                        Mentors bridging the gap between ancestral knowledge and futuristic systems.
+                    </p>
+                </div>
+            </div>
+
+            <div class="a-fade grid grid-cols-2 sm:grid-cols-4 gap-8 md:gap-10 mb-20 md:mb-28"
+                 style="transition-delay: 0.1s">
+
+                <article class="fac-card flex flex-col items-center text-center">
+                    <div class="fac-avatar w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-4 border-white shadow-xl mb-4 img-zoom flex-shrink-0">
+                        <div class="thumb w-full h-full">
+                            <img src="{% static 'image/about/profile_placeholder.webp' %}" alt="_"
+                                 class="w-full h-full object-cover"/>
+                        </div>
+                    </div>
+                    <h4 class="font-heading font-bold text-primary text-sm md:text-base tracking-tight mb-1">Dr. Ashraf
+                        kalpetta</h4>
+                    <p class="text-secondary bg-primary font-body font-medium text-[10px] tracking-wider uppercase px-2.5 py-0.5 rounded-full">
+                        Principle of Academics</p>
+                </article>
+
+                <article class="fac-card flex flex-col items-center text-center">
+                    <div class="fac-avatar w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-4 border-white shadow-xl mb-4 img-zoom flex-shrink-0">
+                        <div class="thumb w-full h-full">
+                            <img src="{% static 'image/about/profile_placeholder.webp' %}" alt="_"
+                                 class="w-full h-full object-cover"/>
+                        </div>
+                    </div>
+                    <h4 class="font-heading font-bold text-primary text-sm md:text-base tracking-tight mb-1">Mohammed
+                        Ashraf</h4>
+                    <p class="text-secondary bg-primary font-body font-medium text-[10px] tracking-wider uppercase px-2.5 py-0.5 rounded-full">
+                        Vice Principal of Academics</p>
+                </article>
+
+                <article class="fac-card flex flex-col items-center text-center">
+                    <div class="fac-avatar w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-4 border-white shadow-xl mb-4 img-zoom flex-shrink-0">
+                        <div class="thumb w-full h-full">
+                            <img src="{% static 'image/about/profile_placeholder.webp' %}" alt="_"
+                                 class="w-full h-full object-cover"/>
+                        </div>
+                    </div>
+                    <h4 class="font-heading font-bold text-primary text-sm md:text-base tracking-tight mb-1">Mujeeb</h4>
+                    <p class="text-secondary bg-primary font-body font-medium text-[10px] tracking-wider uppercase px-2.5 py-0.5 rounded-full">
+                        Administrator of Academics</p>
+                </article>
+
+                <article class="fac-card flex flex-col items-center text-center">
+                    <div class="fac-avatar w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-4 border-white shadow-xl mb-4 img-zoom flex-shrink-0">
+                        <div class="thumb w-full h-full">
+                            <img src="{% static 'image/about/profile_placeholder.webp' %}" alt="_"
+                                 class="w-full h-full object-cover"/>
+                        </div>
+                    </div>
+                    <h4 class="font-heading font-bold text-primary text-sm md:text-base tracking-tight mb-1">Mariam
+                        Al-Sayed</h4>
+                    <p class="text-secondary bg-primary font-body font-medium text-[10px] tracking-wider uppercase px-2.5 py-0.5 rounded-full">
+                        Creative Director</p>
+                </article>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <div class="a-left">
+                    <p class="text-primary/65 font-body font-light text-sm md:text-base leading-relaxed mb-6">
+                        The faculty of the institution is a highly efficient force spearheaded by the Principal Dr.
+                        Ashraf
+                        Kalpetta, who has authored over 20 books and is an academician of the highest order. He is
+                        assisted
+                        by a Vice Principal, Administrator and Teaching staff.
+                    </p>
+                    <p class="text-primary/65 font-body font-light text-sm md:text-base leading-relaxed">
+                        The teachers are a young and energetic group, always eager to identify and nurture the skills of
+                        students. They are subject experts willing to clarify any doubts raised by students and strive
+                        to be
+                        friendly mentors. In other words, at the institution no student-teacher gap exists, but only
+                        harmonious relationships built on mutual respect and shared purpose.
+                    </p>
+                </div>
+
+                <div class="a-right relative flex justify-center md:justify-end" style="transition-delay: 0.12s">
+                    <div class="relative w-full max-w-sm md:max-w-none">
+                        <div class="layer-accent rounded-2xl md:rounded-3xl"></div>
+                        <div class="relative z-10 img-zoom rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border-2 border-white aspect-[4/3]">
+                            <img src="{% static 'image/about/faculty.webp' %}"
+                                 alt="Students working together in lab activity"
+                                 class="w-full h-full object-cover"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="wave-div">
+        <svg viewBox="0 0 1440 56" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+             class="w-full h-10 md:h-14"
+             aria-hidden="true">
+            <path d="M0,32 C240,60 480,0 720,32 C960,60 1200,0 1440,32 L1440,56 L0,56 Z" fill="#00301C"/>
+        </svg>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        // ── Mobile Navigation Toggle ──
+        let mT = document.getElementById("mob-toggle"),
+            mM = document.getElementById("mob-menu");
+        let mb1 = document.getElementById("mb1"),
+            mb2 = document.getElementById("mb2"),
+            mb3 = document.getElementById("mb3");
+        let mO = false;
+
+        mT.addEventListener("click", function () {
+            mO = !mO;
+            mM.classList.toggle("open", mO);
+            mT.setAttribute("aria-expanded", mO);
+
+            // Hamburger icon animations
+            mb1.style.transform = mO ? "rotate(45deg) translate(4px,5px)" : "";
+            mb2.style.opacity = mO ? "0" : "1";
+            mb3.style.transform = mO ? "rotate(-45deg) translate(4px,-5px)" : "";
+            mb3.style.width = mO ? "20px" : "";
+        });
+
+        mM.querySelectorAll("a").forEach(function (a) {
+            a.addEventListener("click", function () {
+                mO = false;
+                mM.classList.remove("open");
+                mb1.style.transform = mb2.style.opacity = mb3.style.transform = "";
+                mb3.style.width = "";
+            });
+        });
+
+        // ── Intersection Observer for Scroll Animations ──
+        let els = document.querySelectorAll(".a-fade, .a-left, .a-right");
+        let obs = new IntersectionObserver(
+            function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add("vis");
+                        // Stop observing once animated
+                        obs.unobserve(e.target);
+                    }
+                });
+            },
+            {threshold: 0.1}
+        );
+
+        els.forEach(function (el) {
+            obs.observe(el);
+        });
+    </script>
+    <!-- Gallery & Footer Observer Script -->
+{% endblock %}

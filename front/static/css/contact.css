@@ -1,0 +1,92 @@
+/* Form Components */
+.c-input,
+.c-select,
+.c-textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.25);
+    padding: 10px 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.82rem;
+    color: white;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.c-input::placeholder,
+.c-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.c-input:focus,
+.c-select:focus,
+.c-textarea:focus {
+    border-bottom-color: #d1fb5f;
+}
+
+.c-select {
+    appearance: none;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.c-select option {
+    background: #00301c;
+    color: white;
+}
+
+.c-textarea {
+    resize: none;
+    min-height: 80px;
+}
+
+/* Buttons & Interactions */
+.submit-btn {
+    transition: background 0.22s ease, transform 0.2s ease, letter-spacing 0.2s ease;
+}
+
+.submit-btn:hover {
+    background: #b8e84a;
+    transform: translateY(-2px);
+    letter-spacing: 0.04em;
+}
+
+.contact-icon-btn {
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.contact-icon-btn:hover {
+    background: #d1fb5f;
+    transform: scale(1.08);
+}
+
+.contact-icon-btn:hover svg {
+    color: #00301c;
+}
+
+
+/* Utilities & Animations */
+.c-fade {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity 0.68s ease, transform 0.68s ease;
+}
+
+.c-fade.vis {
+    opacity: 1;
+    transform: none;
+}
+
+@keyframes mapShimmer {
+    0%, 100% {
+        opacity: 0.06;
+    }
+    50% {
+        opacity: 0.12;
+    }
+}
+
+.map-shimmer {
+    animation: mapShimmer 2.5s ease-in-out infinite;
+}

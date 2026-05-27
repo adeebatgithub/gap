@@ -1,5 +1,5 @@
 {% load users %}
-<div class="w-full">
+<div class="w-full overflow-x-auto">
     <table class="w-full text-sm text-left text-gray-500 block sm:table">
 
         <thead class="hidden sm:table-header-group text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-100">
@@ -18,102 +18,106 @@
 
         <tbody class="block sm:table-row-group sm:divide-y sm:divide-gray-100 space-y-4 sm:space-y-0">
         {% for teacher in teachers %}
-        <tr class="block sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-4 sm:p-0 hover:bg-gray-50 transition-colors duration-150 group">
+            <tr class="block sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-4 sm:p-0 hover:bg-gray-50 transition-colors duration-150 group">
 
-            <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-50 sm:border-0 pb-3 sm:pb-4 flex items-center gap-3">
-                <div class="h-10 w-10 sm:hidden rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-                    <i class="bi bi-person"></i>
-                </div>
-                {{ teacher }}
-            </td>
+                <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-50 sm:border-0 pb-3 sm:pb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 sm:hidden rounded-full bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <span>{{ teacher }}</span>
+                    </div>
+                </td>
 
-            <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-50 sm:border-0 pb-3 sm:pb-4 flex items-center gap-3">
-                <div class="h-10 w-10 sm:hidden rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-                    <i class="bi bi-person"></i>
-                </div>
-                {% if teacher.user|has_group:"Admin" %}
-                Admin
-                {% endif %}
-                {% if teacher.user|has_group:"Exam" %}
-                | Exam Controller
-                {% endif %}
-            </td>
+                <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-50 sm:border-0 pb-3 sm:pb-4">
+                    <div class="flex items-center sm:items-start sm:flex-col lg:flex-row gap-2">
+                        <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider mr-2">Privileges:</span>
 
-            <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 pt-3 sm:pt-4">
-                <div class="flex items-center justify-between sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+                        <div class="flex flex-wrap gap-2">
+                            {% if teacher.user|has_group:"Admin" %}
+                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-purple-50 text-purple-700 border border-purple-100">
+                                        <i class="bi bi-shield-lock mr-1"></i> Admin
+                                    </span>
+                            {% endif %}
 
-                    {% if teacher.user|has_group:"Admin" %}
-                    <a href="{% url 'teacher:teacher:remove-admin' teacher.pk %}"
-                       onclick="return confirm('Are you sure you want to make this teacher admin?');"
-                       class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
-                       title="Remove Admin privileges">
-                        <i class="bi bi-eye"></i> remove from admin
-                    </a>
-                    {% else %}
-                    <a href="{% url 'teacher:teacher:add-admin' teacher.pk %}"
-                       onclick="return confirm('Are you sure you want to make this teacher admin?');"
-                       class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
-                       title="Grant Admin privileges">
-                        <i class="bi bi-eye"></i> add to admin
-                    </a>
-                    {% endif %}
+                            {% if teacher.user|has_group:"Exam" %}
+                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
+                                        <i class="bi bi-journal-text mr-1"></i> Exam Controller
+                                    </span>
+                            {% endif %}
 
-                    {% if teacher.user|has_group:"Exam" %}
-                    <a href="{% url 'teacher:teacher:remove-exam' teacher.pk %}"
-                       onclick="return confirm('Are you sure you want to make this teacher exam controller?');"
-                       class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
-                       title="Remove Exam privileges">
-                        <i class="bi bi-eye"></i> remove from exam
-                    </a>
-                    {% else %}
-                    <a href="{% url 'teacher:teacher:add-exam' teacher.pk %}"
-                       onclick="return confirm('Are you sure you want to make this teacher exam controller?');"
-                       class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
-                       title="Grant Exam privileges">
-                        <i class="bi bi-eye"></i> add to exam
-                    </a>
-                    {% endif %}
+                            {% if not teacher.user|has_group:"Admin" and not teacher.user|has_group:"Exam" %}
+                                <span class="text-gray-400 text-sm font-normal">Standard</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </td>
 
-                    <a href="{% url 'teacher:teacher:detail' teacher.pk %}"
-                       class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
-                       title="View Details">
-                        <i class="bi bi-eye"></i> View
-                    </a>
+                <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 pt-3 sm:pt-4">
+                    <div class="flex flex-wrap items-center justify-start sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
 
-                    <a href="{% url 'teacher:teacher:update' teacher.pk %}"
-                       class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md transition-colors"
-                       title="Edit Teacher">
-                        <i class="bi bi-pencil"></i> Edit
-                    </a>
+                        {% if teacher.user|has_group:"Admin" %}
+                            <a href="{% url 'teacher:teacher:remove-admin' teacher.pk %}"
+                               onclick="return confirm('Are you sure you want to remove Admin privileges from this teacher?');"
+                               class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
+                               title="Remove Admin privileges">
+                                <i class="bi bi-shield-minus"></i> <span class="sm:hidden lg:inline">Remove Admin</span>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'teacher:teacher:add-admin' teacher.pk %}"
+                               onclick="return confirm('Are you sure you want to grant Admin privileges to this teacher?');"
+                               class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-md transition-colors"
+                               title="Grant Admin privileges">
+                                <i class="bi bi-shield-plus"></i> <span
+                                    class="sm:hidden lg:inline">Add Admin</span>
+                            </a>
+                        {% endif %}
 
-                    <form method="POST" action="{% url 'teacher:teacher:delete' teacher.pk %}"
-                          class="flex-1 sm:flex-none inline-block m-0 p-0 w-full sm:w-auto"
-                          onsubmit="return confirm('Are you sure you want to delete this teacher? This action cannot be undone.');">
-                        {% csrf_token %}
-                        <button type="submit"
-                                class="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-md transition-colors cursor-pointer"
-                                title="Delete Teacher">
-                            <i class="bi bi-trash"></i> Delete
-                        </button>
-                    </form>
+                        {% if teacher.user|has_group:"Exam" %}
+                            <a href="{% url 'teacher:teacher:remove-exam' teacher.pk %}"
+                               onclick="return confirm('Are you sure you want to remove Exam Controller privileges?');"
+                               class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
+                               title="Remove Exam privileges">
+                                <i class="bi bi-journal-minus"></i> <span class="sm:hidden lg:inline">Remove Exam</span>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'teacher:teacher:add-exam' teacher.pk %}"
+                               onclick="return confirm('Are you sure you want to grant Exam Controller privileges?');"
+                               class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-md transition-colors"
+                               title="Grant Exam privileges">
+                                <i class="bi bi-journal-plus"></i> <span
+                                    class="sm:hidden lg:inline">Add Exam</span>
+                            </a>
+                        {% endif %}
 
-                </div>
-            </td>
-        </tr>
+                        <a href="{% url 'teacher:teacher:detail' teacher.pk %}"
+                           class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
+                           title="View Details">
+                            <i class="bi bi-eye"></i> View
+                        </a>
+
+                        <a href="{% url 'teacher:teacher:update' teacher.pk %}"
+                           class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md transition-colors"
+                           title="Edit Teacher">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a>
+                    </div>
+                </td>
+            </tr>
         {% empty %}
-        <tr class="block sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-4 sm:p-0">
-            <td colspan="2" class="block sm:table-cell px-6 py-12 text-center text-gray-500">
-                <div class="flex flex-col items-center justify-center">
-                    <i class="bi bi-person-x text-4xl mb-3 text-gray-300"></i>
-                    <p class="text-base font-medium text-gray-900">No teachers found</p>
-                    <p class="text-sm mt-1">Get started by adding a new teacher to the system.</p>
-                    <a href="{% url 'teacher:teacher:create' %}"
-                       class="mt-4 text-sm font-medium text-blue-600 hover:text-blue-800">
-                        + Add your first teacher
-                    </a>
-                </div>
-            </td>
-        </tr>
+            <tr class="block sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-4 sm:p-0">
+                <td colspan="3" class="block sm:table-cell px-6 py-12 text-center text-gray-500">
+                    <div class="flex flex-col items-center justify-center">
+                        <i class="bi bi-person-x text-4xl mb-3 text-gray-300"></i>
+                        <p class="text-base font-medium text-gray-900">No teachers found</p>
+                        <p class="text-sm mt-1">Get started by adding a new teacher to the system.</p>
+                        <a href="{% url 'teacher:teacher:create' %}"
+                           class="mt-4 text-sm font-medium text-blue-600 hover:text-blue-800">
+                            + Add your first teacher
+                        </a>
+                    </div>
+                </td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>

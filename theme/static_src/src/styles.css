@@ -8,3 +8,10 @@
   * the scope of this path.
   */
 @source "../../../**/*.{html,py,js}";
+@theme {
+  --color-primary: #00301C;
+  --color-secondary: #D1FB5F;
+
+  --font-heading: "Roboto", sans-serif;
+  --font-body: "Poppins", sans-serif;
+}

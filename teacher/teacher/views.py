@@ -90,7 +90,7 @@ class AddToGroup(PermissionRequiredMixin, DetailView):
         user = self.object.user
         user.groups.add(self.get_group())
         user.save()
-        return redirect(reverse_lazy('academics:teacher:list'))
+        return redirect(reverse_lazy('teacher:teacher:list'))
 
 
 class RemoveFromGroup(PermissionRequiredMixin, DetailView):
@@ -106,7 +106,7 @@ class RemoveFromGroup(PermissionRequiredMixin, DetailView):
         user = self.object.user
         user.groups.remove(self.get_group())
         user.save()
-        return redirect(reverse_lazy('academics:teacher:list'))
+        return redirect(reverse_lazy('teacher:teacher:list'))
 
 
 class AddToAdmin(AddToGroup):

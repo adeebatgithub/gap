@@ -12,27 +12,26 @@
 {% endblock %}
 
 {% block content %}
-    <div class="w-full max-w-md mx-auto relative">
-        <!-- Search Icon -->
+    <!-- Search Section -->
+    <div class="w-full max-w-md relative mb-6">
         <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
             <i class="bi bi-search text-gray-400"></i>
         </div>
-
-        <!-- Input Field -->
-        <input
-                hx-get="{% url 'academics:subject:list' %}"
-                hx-trigger="keyup changed delay:300ms"
-                hx-target="#hx-list-table"
-                hx-swap="innerHTML"
-
-                type="search" id="default-search" name="search"
-                class="block w-full p-4 pl-11 text-sm text-gray-900 border border-gray-200 rounded-xl bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all shadow-sm"
-                placeholder="Search teacher">
+        <input hx-get="{% url 'academics:subject:list' %}"
+               hx-trigger="keyup changed delay:300ms"
+               hx-target="#hx-list-table"
+               hx-swap="innerHTML"
+               type="search"
+               id="default-search"
+               name="search"
+               class="block w-full p-3 pl-11 text-sm text-gray-900 border border-gray-200 rounded-xl bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all shadow-sm"
+               placeholder="Search subjects...">
     </div>
 
+    <!-- Table Section -->
     <div id="hx-list-table" class="bg-transparent sm:bg-white sm:shadow-sm rounded-xl sm:overflow-hidden">
 
-        <div class="w-full">
+        <div class="w-full overflow-x-auto">
             <table class="w-full text-sm text-left text-gray-500 block sm:table">
 
                 <thead class="hidden sm:table-header-group text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-100">
@@ -53,22 +52,25 @@
                 {% for subject in subjects %}
                     <tr class="block sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-4 sm:p-0 hover:bg-gray-50 transition-colors duration-150 group">
 
-                        <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-50 sm:border-0 pb-3 sm:pb-4 flex items-center gap-3">
-                            <div class="h-10 w-10 sm:hidden rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-                                <i class="bi bi-easel"></i>
+                        <!-- Subject Name Column -->
+                        <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-50 sm:border-0 pb-3 sm:pb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="h-10 w-10 sm:hidden rounded-full bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0">
+                                    <i class="bi bi-book"></i>
+                                </div>
+                                <span>{{ subject.name }}</span>
                             </div>
-                            {{ subject.name }}
                         </td>
 
-                        <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-50 sm:border-0 pb-3 sm:pb-4 flex items-center gap-3">
-                            <div class="h-10 w-10 sm:hidden rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-                                <i class="bi bi-easel"></i>
-                            </div>
-                            {{ subject.code|default:"-" }}
+                        <!-- Subject Code Column -->
+                        <td class="flex sm:table-cell justify-between items-center px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-600 text-sm border-b border-gray-50 sm:border-0">
+                            <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Code</span>
+                            <span class="text-right sm:text-left">{{ subject.code|default:"-" }}</span>
                         </td>
 
+                        <!-- Actions Column -->
                         <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 pt-3 sm:pt-4 text-right">
-                            <div class="flex items-center justify-between sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+                            <div class="flex items-center justify-start sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
 
                                 <a href="{% url 'academics:subject:update' subject.pk %}"
                                    class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md transition-colors"
@@ -92,7 +94,7 @@
                     </tr>
                 {% empty %}
                     <tr class="block sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-4 sm:p-0">
-                        <td colspan="2" class="block sm:table-cell px-6 py-12 text-center text-gray-500">
+                        <td colspan="3" class="block sm:table-cell px-6 py-12 text-center text-gray-500">
                             <div class="flex flex-col items-center justify-center">
                                 <div class="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
                                     <i class="bi bi-book text-3xl text-gray-400"></i>
@@ -101,7 +103,7 @@
                                 <p class="text-sm mt-1">Get started by adding a new subject to the system.</p>
                                 <a href="{% url 'academics:subject:create' %}"
                                    class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800">
-                                    <i class="bi bi-plus"></i> Add your first subject
+                                    <i class="bi bi-plus-lg"></i> Add your first subject
                                 </a>
                             </div>
                         </td>

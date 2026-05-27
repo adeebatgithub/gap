@@ -1,0 +1,304 @@
+/* Carousel Slide Transitions */
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.5s ease;
+}
+
+.slide.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 10;
+}
+
+/* Carousel Progress Dots */
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.4);
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+.dot.active {
+    width: 28px;
+    background: #d1fb5f;
+}
+
+/* Call to Action Button Hover Effects */
+.cta-btn {
+    transition: background 0.2s ease, letter-spacing 0.2s ease;
+}
+
+.cta-btn:hover {
+    background: #1a5c38;
+    letter-spacing: 0.08em;
+}
+
+.cta-icon {
+    transition: transform 0.25s ease;
+}
+
+.cta-btn:hover .cta-icon {
+    transform: rotate(45deg);
+}
+
+/* Slide-Up Text Animations */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(28px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide.active .animate-up {
+    animation: slideUp 0.75s ease forwards;
+}
+
+.slide.active .animate-up:nth-child(1) {
+    animation-delay: 0.1s;
+    opacity: 0;
+}
+
+.slide.active .animate-up:nth-child(2) {
+    animation-delay: 0.25s;
+    opacity: 0;
+}
+
+.slide.active .animate-up:nth-child(3) {
+    animation-delay: 0.4s;
+    opacity: 0;
+}
+
+.slide.active .animate-up:nth-child(4) {
+    animation-delay: 0.55s;
+    opacity: 0;
+}
+
+.slide.active .animate-up:nth-child(5) {
+    animation-delay: 0.7s;
+    opacity: 0;
+}
+
+/* Stats counter tabular formatting */
+.stat-num {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Section fade-in animation rules */
+.about-fade {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.about-fade.visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* Card Hover Animations */
+.why-card {
+    transition: transform 0.32s cubic-bezier(0.22, 0.68, 0, 1.2), box-shadow 0.32s ease;
+}
+
+.why-card:hover {
+    transform: translateY(-10px) scale(1.025);
+    box-shadow: 0 28px 60px rgba(0, 48, 28, 0.18);
+}
+
+/* Icon Container Spin-on-Hover */
+.why-icon-wrap {
+    transition: transform 0.4s ease;
+}
+
+.why-card:hover .why-icon-wrap {
+    transform: rotate(-6deg) scale(1.12);
+}
+
+/* Scroll Reveal Initial States */
+.why-reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.why-reveal.visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* Directional Fade-In Animations */
+.prog-img-left {
+    opacity: 0;
+    transform: translateX(-56px);
+    transition: opacity 0.75s ease, transform 0.75s ease;
+}
+
+.prog-img-right {
+    opacity: 0;
+    transform: translateX(56px);
+    transition: opacity 0.75s ease, transform 0.75s ease;
+}
+
+.prog-text-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.75s ease, transform 0.75s ease;
+}
+
+.prog-img-left.vis, .prog-img-right.vis, .prog-text-up.vis {
+    opacity: 1;
+    transform: none;
+}
+
+/* Program Image Hover Effects */
+.prog-img-wrap {
+    overflow: hidden;
+}
+
+.prog-img-wrap:hover .prog-thumb {
+    transform: scale(1.04);
+}
+
+.prog-thumb {
+    transition: transform 0.5s ease;
+}
+
+/* Title Side Accent Styling */
+.prog-title-accent {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.prog-title-accent::before {
+    content: "";
+    display: block;
+    width: 4px;
+    min-height: 52px;
+    height: 100%;
+    border-radius: 4px;
+    background: #d1fb5f;
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+/* Card Scroll Reveal */
+.course-reveal {
+    opacity: 0;
+    transform: translateY(44px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.course-reveal.vis {
+    opacity: 1;
+    transform: none;
+}
+
+/* Standard Card Hover */
+.course-card {
+    transition: transform 0.3s cubic-bezier(0.22, 0.68, 0, 1.2), box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+}
+
+/* Highlighted Card Hover */
+.course-card-highlight {
+    transition: transform 0.3s cubic-bezier(0.22, 0.68, 0, 1.2), box-shadow 0.3s ease;
+}
+
+.course-card-highlight:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 32px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* Image Zoom Effect */
+.course-img-wrap {
+    overflow: hidden;
+}
+
+.course-img-wrap svg, .course-img-inner {
+    transition: transform 0.5s ease;
+}
+
+.course-card:hover .course-img-inner, .course-card-highlight:hover .course-img-inner {
+    transform: scale(1.05);
+}
+
+/* Admission Card & Button Transitions */
+.adm-card {
+    transition: transform 0.32s cubic-bezier(0.22, 0.68, 0, 1.15), box-shadow 0.32s ease;
+}
+
+.adm-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 56px rgba(0, 48, 28, 0.13);
+}
+
+.adm-btn {
+    transition: background 0.22s ease, color 0.22s ease, transform 0.2s ease;
+}
+
+.adm-btn:hover {
+    background: #d1fb5f;
+    color: #00301c;
+    transform: translateY(-2px);
+}
+
+.adm-reveal {
+    opacity: 0;
+    transform: translateY(44px);
+    transition: opacity 0.68s ease, transform 0.68s ease;
+}
+
+.adm-reveal.vis {
+    opacity: 1;
+    transform: none;
+}
+
+/* Image Gallery Transitions */
+.gal-img-wrap {
+    overflow: hidden;
+}
+
+.gal-thumb {
+    transition: transform 0.55s ease;
+}
+
+.gal-img-wrap:hover .gal-thumb {
+    transform: scale(1.06);
+}
+
+.gal-reveal {
+    opacity: 0;
+    transform: scale(0.96) translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.gal-reveal.vis {
+    opacity: 1;
+    transform: none;
+}
+
+/* Primary Button Customizations */
+.see-more-btn {
+    transition: background 0.25s ease, transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.see-more-btn:hover {
+    background: #b8e84a;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(209, 251, 95, 0.35);
+}

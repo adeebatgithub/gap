@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db import transaction
+from django.db.models.aggregates import Count
+from django.db.models.expressions import F
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -11,7 +13,7 @@ from academics.enrollment.models import Student, Enrollment
 from academics.schoolclass.models import SchoolClass
 from controller.mixins import RedirectToDetail
 from controller.utils import get_academic_year
-from teacher.attendance.models import Attendance
+from teacher.attendance.models import Attendance, Session
 from .forms import EnrollmentForm
 
 
@@ -56,10 +58,55 @@ class EnrollmentDetailView(PermissionRequiredMixin, DetailView):
     template_name = 'academics/enrollments/detail.html'
     context_object_name = 'enrollment'
 
+    def get_attendance_report(self):
+        queryset = (
+            Attendance.objects.filter(
+                student=self.object.student,
+                status=Attendance.PRESENT,
+                session__subject_class__school_class__academic_year=get_academic_year(self.request),
+            )
+            .annotate(
+                teacher_code=F("session__subject_class__teacher__code"),
+                subject_name=F("session__subject_class__subject__name"),
+            )
+            .values("teacher_code", "subject_name")
+            .annotate(present_count=Count("id"))
+        )
+
+        data = {
+            "subjects": {"zTotal", "zz%"},
+            "counts": {"out of": {"zTotal": 0, "zz%": 100}, "subjects": {"zTotal": 0, "zz%": 0}}
+        }
+        for row in queryset:
+            subject_name = row["subject_name"]
+            teacher_code = row["teacher_code"]
+            subject_full = f"{subject_name} ({teacher_code})"
+            present_count = row["present_count"]
+
+            data["subjects"].add(subject_full)
+
+            data["counts"]["subjects"][subject_full] = present_count
+            data["counts"]["subjects"]["zTotal"] += present_count
+
+            session_total = Session.objects.filter(
+                subject_class__subject__name=subject_name,
+                subject_class__school_class__id=self.object.school_class.id,
+                subject_class__teacher__code=teacher_code,
+            ).count()
+            data["counts"]["out of"][subject_full] = session_total
+            data["counts"]["out of"]["zTotal"] += session_total
+
+        data["counts"]["subjects"]["zz%"] = round(
+            (data["counts"]["subjects"]["zTotal"] / data["counts"]["out of"]["zTotal"]) * 100
+        )
+        data["subjects"] = sorted(data["subjects"])
+
+        return data
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            "attendances": Attendance.objects.filter(student=self.object.student, session__date=timezone.localdate())
+            "attendance_report": self.get_attendance_report()
         })
         return context
 
