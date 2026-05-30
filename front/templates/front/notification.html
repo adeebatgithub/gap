@@ -1,0 +1,394 @@
+{% extends "front/base.html" %}
+
+{% block title %}
+    Notifications — GreenValley Academy
+{% endblock %}
+
+{% block css %}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: #f7f7f5;
+            color: #1a1a1a;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* ── Nav ── */
+        .logo-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+        }
+
+        .nav-pill {
+            background: rgba(20, 20, 20, 0.72);
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-link {
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        #mob-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .35s ease, opacity .3s ease;
+            opacity: 0;
+        }
+
+        #mob-menu.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        /* ── Notification card ── */
+        .notif-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 18px;
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #e8e8e6;
+            cursor: pointer;
+            transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .notif-card:hover {
+            background: #f5f5f2;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .07);
+        }
+
+        .notif-card.unread {
+            background: #f0f8f3;
+            border-color: #c6e8d4;
+        }
+
+        .notif-card.unread:hover {
+            background: #e8f4ed;
+        }
+
+        /* ── Icon badge ── */
+        .notif-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .icon-academic {
+            background: #e8f1fb;
+            color: #1a5fa5;
+        }
+
+        .icon-success {
+            background: #e8f4ed;
+            color: #1a7a45;
+        }
+
+        .icon-warning {
+            background: #fef3e2;
+            color: #b06a00;
+        }
+
+        .icon-danger {
+            background: #fceaea;
+            color: #b02020;
+        }
+
+        .icon-default {
+            background: #f0f0ee;
+            color: #666;
+        }
+
+        /* ── Unread dot ── */
+        .unread-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #1a5fa5;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        /* ── Badge pill ── */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 2px 9px;
+            border-radius: 20px;
+        }
+
+        .badge-academic {
+            background: #dceef9;
+            color: #1a5fa5;
+        }
+
+        .badge-admin {
+            background: #e8f4ed;
+            color: #1a7a45;
+        }
+
+        .badge-event {
+            background: #fef3e2;
+            color: #b06a00;
+        }
+
+        .badge-urgent {
+            background: #fceaea;
+            color: #b02020;
+        }
+
+        .badge-default {
+            background: #f0f0ee;
+            color: #666;
+        }
+
+        /* ── Filter tabs ── */
+        .tab-btn {
+            font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            padding: 7px 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 8px;
+            color: #888;
+            font-weight: 400;
+            transition: background .15s ease, color .15s ease;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            background: #efefed;
+            color: #1a1a1a;
+        }
+
+        .tab-btn.active {
+            background: #00301C;
+            color: #D1FB5F;
+            font-weight: 500;
+        }
+
+        /* ── Action link ── */
+        .notif-action {
+            font-size: 11px;
+            font-weight: 500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        /* ── Empty state ── */
+        #empty-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 4rem 1rem;
+            gap: 12px;
+            color: #888;
+        }
+
+        /* ── Scroll reveal ── */
+        .rv {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .5s ease, transform .5s ease;
+        }
+
+        .rv.vis {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* ── Mark read button ── */
+        .mark-btn {
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            padding: 6px 14px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #555;
+            transition: background .15s, border-color .15s;
+        }
+
+        .mark-btn:hover {
+            background: #f5f5f2;
+            border-color: #bbb;
+        }
+
+        /* ── Foot ── */
+        .foot-link {
+            transition: color .2s ease, padding-left .2s ease;
+        }
+
+        .foot-link:hover {
+            color: #D1FB5F;
+            padding-left: 4px;
+        }
+
+        .foot-sl {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color .2s, transform .2s;
+        }
+
+        .foot-sl:hover {
+            color: #D1FB5F;
+            transform: translateX(3px);
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <main style="min-height: 100vh; padding: 100px 16px 60px;">
+        <div style="width: 100%; margin: 0 auto; margin-top: 50px;">
+
+            <!-- Page header -->
+            <div class="rv"
+                 style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 28px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 42px; height: 42px; border-radius: 12px; background: #00301C; display: flex; align-items: center; justify-content: center;">
+                        <i class="ti ti-bell" style="font-size: 20px; color: #D1FB5F;" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h1 style="font-size: 22px; font-weight: 700; margin: 0; color: #00301C; font-family: 'Roboto', sans-serif; letter-spacing: -0.3px;">
+                            Notifications</h1>
+                        <p style="font-size: 12px; color: #888; margin: 0; font-weight: 400;">Stay up to date with
+                            GreenValley Academy</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification list -->
+            <div id="notif-list" style="display: flex; flex-direction: column; gap: 8px;">
+
+                {% for notification in notifications %}
+                    <div class="notif-card unread rv" data-cat="academic" data-read="false"
+                         style="transition-delay:.12s;" onclick="location.href='{{ notification.file.url }}'">
+                        <div class="notif-icon icon-academic"><i class="ti ti-school" aria-hidden="true"></i></div>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 4px;">
+                                <span style="font-size: 14px; font-weight: 600; color: #1a1a1a; line-height: 1.3;"><a href="{{ notification.file.url }}" target="_blank">{{ notification.title }}</a></span>
+                                <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0; margin-top: 2px;">
+                                    <span style="font-size: 11px; color: #aaa; white-space: nowrap;">{{ notification.date }}</span>
+                                </div>
+                            </div>
+                            <p style="font-size: 13px; color: #555; margin: 0 0 10px; line-height: 1.55;">{{ notification.content }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <!-- Empty state -->
+                    <div id="empty-state">
+                        <i class="ti ti-bell-off" style="font-size: 36px; opacity: 0.35;" aria-hidden="true"></i>
+                        <p style="font-size: 14px; margin: 0; color: #888;">No notifications here</p>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block js %}
+    <script>
+        // Read on click
+        function readCard(card) {
+            if (card.dataset.read === 'false') {
+                card.dataset.read = 'true';
+                card.classList.remove('unread');
+                card.style.background = '';
+                card.style.borderColor = '';
+                card.onmouseenter = function () {
+                    this.style.background = '#f5f5f2';
+                };
+                card.onmouseleave = function () {
+                    this.style.background = '';
+                };
+                var dot = card.querySelector('.unread-dot');
+                if (dot) dot.remove();
+                updateBadge();
+            }
+        }
+
+        function updateBadge() {
+            var count = document.querySelectorAll('.notif-card[data-read="false"]').length;
+            var badge = document.getElementById('unread-badge');
+            if (count === 0) {
+                badge.style.display = 'none';
+            } else {
+                badge.style.display = '';
+                badge.textContent = count + ' new';
+            }
+        }
+
+        // Mark all read
+        function markAllRead() {
+            document.querySelectorAll('.notif-card[data-read="false"]').forEach(function (card) {
+                readCard(card);
+            });
+        }
+
+        // Filter tabs
+        function filterTab(btn, filter) {
+            document.querySelectorAll('.tab-btn').forEach(function (b) {
+                b.classList.remove('active');
+            });
+            btn.classList.add('active');
+
+            var cards = document.querySelectorAll('.notif-card');
+            var seps = document.querySelectorAll('.date-sep');
+            var any = false;
+
+            cards.forEach(function (card) {
+                var cat = card.dataset.cat;
+                var read = card.dataset.read === 'true';
+                var show = false;
+                if (filter === 'all') show = true;
+                else if (filter === 'unread') show = !read;
+                else show = (cat === filter);
+                card.style.display = show ? 'flex' : 'none';
+                if (show) any = true;
+            });
+
+            seps.forEach(function (s) {
+                s.style.display = filter === 'all' ? 'block' : 'none';
+            });
+            document.getElementById('empty-state').style.display = any ? 'none' : 'flex';
+        }
+
+        // Scroll reveal
+        var obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                    e.target.classList.add('vis');
+                    obs.unobserve(e.target);
+                }
+            });
+        }, {threshold: 0.08});
+        document.querySelectorAll('.rv').forEach(function (el) {
+            obs.observe(el);
+        });
+    </script>
+{% endblock %}

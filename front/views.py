@@ -2,7 +2,7 @@ from django.urls.base import reverse_lazy
 from django.views.generic import TemplateView, ListView, DeleteView
 from django.views.generic.detail import DetailView
 
-from front.models import Gallery, Inquiry
+from front.models import Gallery, Inquiry, Notification
 
 
 class HomeView(TemplateView):
@@ -12,6 +12,7 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context.update({
             "images": Gallery.objects.filter(position=Gallery.IN_HOME_PAGE)[:5],
+            "notification": Notification.objects.last(),
         })
         return context
 
@@ -46,6 +47,13 @@ class ProgramView(TemplateView):
 
 class WomenAcademyView(TemplateView):
     template_name = "front/womens_academy.html"
+
+
+class NotificationsView(ListView):
+    model = Notification
+    template_name = "front/notification.html"
+    context_object_name = "notifications"
+    ordering = ['-date']
 
 
 class InquiryListView(ListView):

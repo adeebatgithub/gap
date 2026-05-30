@@ -1,0 +1,458 @@
+<form hx-post="{% url 'academics:admission:create' %}"
+      class="space-y-12"
+      aria-label="Admission application form">
+
+    {% csrf_token %}
+
+    <!-- ── SECTION 01: Personal Identity ── -->
+    <fieldset>
+        <legend class="flex items-center gap-3 mb-8">
+            <span class="step-badge">01</span>
+            <h3 class="font-heading font-black text-primary text-xl md:text-2xl tracking-tight">
+                Personal Identity
+            </h3>
+        </legend>
+
+        <div class="space-y-8">
+
+            <!-- Name & Guardian Row -->
+            <div class="grid sm:grid-cols-2 gap-8">
+
+                <div>
+                    <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                           for="applicant-name">
+                        Name of Applicant
+                    </label>
+
+                    <input id="applicant-name"
+                           name="full_name"
+                           type="text"
+                           placeholder="Full Legal Name"
+                           autocomplete="name"
+                           class="form-input"
+                           required
+                           value="{{ form.full_name.value|default_if_none:'' }}"/>
+
+                    {% if form.full_name.errors %}
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ form.full_name.errors|join:", " }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                           for="guardian-name">
+                        Father / Guardian Name
+                    </label>
+
+                    <input id="guardian-name"
+                           name="guardian_name"
+                           type="text"
+                           placeholder="Full Name"
+                           autocomplete="off"
+                           class="form-input"
+                           required
+                           value="{{ form.guardian_name.value|default_if_none:'' }}"/>
+
+                    {% if form.guardian_name.errors %}
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ form.guardian_name.errors|join:", " }}
+                        </p>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <!-- DOB & Language Row -->
+            <div class="grid sm:grid-cols-2 gap-8">
+
+                <div>
+                    <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                           for="dob">
+                        Date of Birth
+                    </label>
+
+                    <input id="dob"
+                           type="date"
+                           name="dob"
+                           class="form-input"
+                           required
+                           value="{{ form.dob.value|date:'Y-m-d' }}"/>
+
+                    {% if form.dob.errors %}
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ form.dob.errors|join:", " }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                           for="mother-tongue">
+                        Mother Tongue
+                    </label>
+
+                    <input id="mother-tongue"
+                           name="mother_tongue"
+                           type="text"
+                           placeholder="Native Language"
+                           autocomplete="off"
+                           class="form-input"
+                           value="{{ form.mother_tongue.value|default_if_none:'' }}"/>
+
+                    {% if form.mother_tongue.errors %}
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ form.mother_tongue.errors|join:", " }}
+                        </p>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <!-- Preferred Course Selection -->
+            <div>
+                <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                       for="preferred-course">
+                    Preferred Course
+                </label>
+
+                <div class="relative">
+
+                    <select id="preferred-course"
+                            name="course"
+                            class="form-select pr-8"
+                            required>
+
+                        <option value=""
+                                disabled
+                                {% if not form.course.value %}selected{% endif %}>
+                            Select Academic Program
+                        </option>
+
+                        <option value="Integrated Learning Programme (ILP | Boys) — 5 Years"
+                                {% if form.course.value == "Integrated Learning Programme (ILP | Boys) — 5 Years" %}selected{% endif %}>
+                            Integrated Learning Programme (ILP | Boys) — 5 Years
+                        </option>
+
+                        <option value="Islamic Life Solutions (ILS | Girls) — 3 Years"
+                                {% if form.course.value == "Islamic Life Solutions (ILS | Girls) — 3 Years" %}selected{% endif %}>
+                            Islamic Life Solutions (ILS | Girls) — 3 Years
+                        </option>
+
+                        <option value="ILP Lateral Entry (Degree | Boys) — 3 Years"
+                                {% if form.course.value == "ILP Lateral Entry (Degree | Boys) — 3 Years" %}selected{% endif %}>
+                            ILP Lateral Entry (Degree | Boys) — 3 Years
+                        </option>
+
+                    </select>
+
+                    <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                         viewBox="0 0 16 16"
+                         fill="none"
+                         aria-hidden="true">
+                        <path d="M4 6l4 4 4-4"
+                              stroke="currentColor"
+                              stroke-width="1.6"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                    </svg>
+
+                </div>
+
+                {% if form.course.errors %}
+                    <p class="text-red-500 text-sm mt-2">
+                        {{ form.course.errors|join:", " }}
+                    </p>
+                {% endif %}
+            </div>
+
+        </div>
+    </fieldset>
+
+    <!-- Section Divider -->
+    <div class="border-t border-primary/8"></div>
+
+    <!-- ── SECTION 02: Residential Data ── -->
+    <fieldset>
+
+        <legend class="flex items-center gap-3 mb-8">
+            <span class="step-badge">02</span>
+            <h3 class="font-heading font-black text-primary text-xl md:text-2xl tracking-tight">
+                Residential Data
+            </h3>
+        </legend>
+
+        <div class="space-y-8">
+
+            <!-- Address & Pin Code Row -->
+            <div class="grid sm:grid-cols-3 gap-8">
+
+                <div class="sm:col-span-2">
+
+                    <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                           for="address">
+                        House Name / No
+                    </label>
+
+                    <input id="address"
+                           name="house_name"
+                           type="text"
+                           placeholder="Street Address"
+                           autocomplete="street-address"
+                           class="form-input"
+                           value="{{ form.house_name.value|default_if_none:'' }}"/>
+
+                    {% if form.house_name.errors %}
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ form.house_name.errors|join:", " }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+
+                    <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                           for="pincode">
+                        Pin Code
+                    </label>
+
+                    <input id="pincode"
+                           name="pincode"
+                           type="text"
+                           placeholder="Postal Code"
+                           autocomplete="postal-code"
+                           maxlength="10"
+                           class="form-input"
+                           value="{{ form.pincode.value|default_if_none:'' }}"/>
+
+                    {% if form.pincode.errors %}
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ form.pincode.errors|join:", " }}
+                        </p>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <!-- City, District & State Row -->
+            <div class="grid sm:grid-cols-3 gap-8">
+
+                <div>
+
+                    <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                           for="city">
+                        Post Office / City
+                    </label>
+
+                    <input id="city"
+                           name="post"
+                           type="text"
+                           placeholder="Locality"
+                           autocomplete="address-level2"
+                           class="form-input"
+                           value="{{ form.post.value|default_if_none:'' }}"/>
+
+                    {% if form.post.errors %}
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ form.post.errors|join:", " }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+
+                    <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                           for="district">
+                        District
+                    </label>
+
+                    <input id="district"
+                           name="district"
+                           type="text"
+                           placeholder="Region"
+                           class="form-input"
+                           value="{{ form.district.value|default_if_none:'' }}"/>
+
+                    {% if form.district.errors %}
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ form.district.errors|join:", " }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+
+                    <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                           for="state">
+                        State
+                    </label>
+
+                    <input id="state"
+                           name="state"
+                           type="text"
+                           placeholder="State/Province"
+                           autocomplete="address-level1"
+                           class="form-input"
+                           value="{{ form.state.value|default_if_none:'' }}"/>
+
+                    {% if form.state.errors %}
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ form.state.errors|join:", " }}
+                        </p>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+
+    </fieldset>
+
+    <!-- Section Divider -->
+    <div class="border-t border-primary/8"></div>
+
+    <!-- ── SECTION 03: Connectivity & Evaluation ── -->
+    <fieldset>
+
+        <legend class="flex items-center gap-3 mb-8">
+            <span class="step-badge">03</span>
+            <h3 class="font-heading font-black text-primary text-xl md:text-2xl tracking-tight">
+                Connectivity &amp; Evaluation
+            </h3>
+        </legend>
+
+        <div class="space-y-8">
+
+            <!-- Phone Numbers Row -->
+            <div class="grid sm:grid-cols-2 gap-8">
+
+                <div>
+
+                    <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                           for="primary-phone">
+                        Primary Mobile No
+                    </label>
+
+                    <input id="primary-phone"
+                           name="phone_1"
+                           type="tel"
+                           placeholder="+1 (000) 000-0000"
+                           autocomplete="tel"
+                           class="form-input"
+                           required
+                           value="{{ form.phone_1.value|default_if_none:'' }}"/>
+
+                    {% if form.phone_1.errors %}
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ form.phone_1.errors|join:", " }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+
+                    <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                           for="secondary-phone">
+                        Secondary Contact No
+                    </label>
+
+                    <input id="secondary-phone"
+                           name="phone_2"
+                           type="tel"
+                           placeholder="Alternative Phone"
+                           class="form-input"
+                           value="{{ form.phone_2.value|default_if_none:'' }}"/>
+
+                    {% if form.phone_2.errors %}
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ form.phone_2.errors|join:", " }}
+                        </p>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <!-- Exam Center Selection -->
+            <div>
+
+                <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
+                       for="exam-center">
+                    Preferred Entrance Exam Center
+                </label>
+
+                <div class="relative">
+
+                    <select id="exam-center"
+                            name="center"
+                            class="form-select pr-8">
+
+                        <option value=""
+                                disabled
+                                {% if not form.center.value %}selected{% endif %}>
+                            Select Location
+                        </option>
+
+                        <option value="Kollam"
+                                {% if form.center.value == "Kollam" %}selected{% endif %}>
+                            Kollam
+                        </option>
+
+                        <option value="Aluva"
+                                {% if form.center.value == "Aluva" %}selected{% endif %}>
+                            Aluva
+                        </option>
+
+                        <option value="Manjeri"
+                                {% if form.center.value == "Manjeri" %}selected{% endif %}>
+                            Manjeri
+                        </option>
+
+                        <option value="Thalassery"
+                                {% if form.center.value == "Thalassery" %}selected{% endif %}>
+                            Thalassery
+                        </option>
+
+                    </select>
+
+                    <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                         viewBox="0 0 16 16"
+                         fill="none"
+                         aria-hidden="true">
+                        <path d="M4 6l4 4 4-4"
+                              stroke="currentColor"
+                              stroke-width="1.6"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                    </svg>
+
+                </div>
+
+                {% if form.center.errors %}
+                    <p class="text-red-500 text-sm mt-2">
+                        {{ form.center.errors|join:", " }}
+                    </p>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </fieldset>
+
+    <!-- ── SUBMIT BUTTON ── -->
+    <div class="pt-2">
+
+        <button id="btn-submit"
+                type="submit"
+                class="submit-btn bg-secondary text-primary font-heading font-black text-base px-10 py-4 rounded-full shadow-lg">
+            Submit Application
+        </button>
+
+        <p class="mt-4 text-primary/40 font-body font-light text-xs leading-relaxed max-w-md">
+            By submitting, you agree to the Green Valley Academy terms of enrollment and data
+            privacy policies.
+        </p>
+
+    </div>
+
+</form>

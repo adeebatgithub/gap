@@ -1,4 +1,4 @@
-from django.http.response import JsonResponse
+from django.http.response import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
 from django.views.generic.detail import DetailView
@@ -45,20 +45,14 @@ class AdmissionCreateView(CreateView):
     model = Admission
     form_class = AdmissionForm
     http_method_names = ["post"]
+    template_name = "front/partials/application_form.html"
 
     def form_valid(self, form):
         self.object = form.save()
 
-        return JsonResponse({
-            "status": "success",
-            "message": "Application submitted successfully"
-        }, status=201)
-
-    def form_invalid(self, form):
-        return JsonResponse({
-            "status": "error",
-            "errors": form.errors
-        }, status=400)
+        response = HttpResponse(status=200)
+        response["HX-TRIGGER"] = "SubmitSuccess"
+        return response
 
 
 class AdmissionUpdateView(UpdateView):

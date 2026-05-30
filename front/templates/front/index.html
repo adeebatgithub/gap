@@ -48,6 +48,7 @@
                     </div>
                 </div>
             </div>
+            {% include 'front/includes/notification.html' with notification=notification %}
         </div>
 
         <!-- Slide 2: ILP Academy -->
@@ -84,6 +85,7 @@
                     </div>
                 </div>
             </div>
+            {% include 'front/includes/notification.html' with notification=notification %}
         </div>
 
         <!-- Slide 3: Women's Academy -->
@@ -120,6 +122,7 @@
                     </div>
                 </div>
             </div>
+            {% include 'front/includes/notification.html' with notification=notification %}
         </div>
 
         <!-- ── BOTTOM CAROUSEL CONTROLS ── -->
@@ -892,84 +895,84 @@
 {% endblock %}
 
 {% block js %}
-<!-- Carousel & Navigation Scripts -->
-<script src="{% static 'js/index.js' %}"></script>
+    <!-- Carousel & Navigation Scripts -->
+    <script src="{% static 'js/index.js' %}"></script>
 
-<!-- Gallery & Footer Observer Script -->
-<script>
-    (function () {
-        let els = document.querySelectorAll(".gal-reveal");
-        let obs = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) {
-                if (e.isIntersecting) {
-                    e.target.classList.add("vis");
-                    obs.unobserve(e.target);
-                }
+    <!-- Gallery & Footer Observer Script -->
+    <script>
+        (function () {
+            let els = document.querySelectorAll(".gal-reveal");
+            let obs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add("vis");
+                        obs.unobserve(e.target);
+                    }
+                });
+            }, {threshold: 0.1});
+
+            els.forEach(function (el) {
+                obs.observe(el);
             });
-        }, {threshold: 0.1});
+        })();
+    </script>
 
-        els.forEach(function (el) {
-            obs.observe(el);
-        });
-    })();
-</script>
+    <!-- Programs Fade-In Script -->
+    <script>
+        (function () {
+            const progEls = document.querySelectorAll(".prog-img-left, .prog-img-right, .prog-text-up");
+            const progObs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add("vis");
+                        progObs.unobserve(e.target);
+                    }
+                });
+            }, {threshold: 0.12});
 
-<!-- Programs Fade-In Script -->
-<script>
-    (function () {
-        const progEls = document.querySelectorAll(".prog-img-left, .prog-img-right, .prog-text-up");
-        const progObs = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) {
-                if (e.isIntersecting) {
-                    e.target.classList.add("vis");
-                    progObs.unobserve(e.target);
-                }
+            progEls.forEach(function (el) {
+                progObs.observe(el);
             });
-        }, {threshold: 0.12});
-
-        progEls.forEach(function (el) {
-            progObs.observe(el);
-        });
-    })();
-</script>
+        })();
+    </script>
 
 
-<!-- Courses Observer Script -->
-<script>
-    (function () {
-        let els = document.querySelectorAll(".course-reveal");
-        let obs = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) {
-                if (e.isIntersecting) {
-                    e.target.classList.add("vis");
-                    obs.unobserve(e.target);
-                }
+    <!-- Courses Observer Script -->
+    <script>
+        (function () {
+            let els = document.querySelectorAll(".course-reveal");
+            let obs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add("vis");
+                        obs.unobserve(e.target);
+                    }
+                });
+            }, {threshold: 0.1});
+
+            els.forEach(function (el) {
+                obs.observe(el);
             });
-        }, {threshold: 0.1});
-
-        els.forEach(function (el) {
-            obs.observe(el);
-        });
-    })();
-</script>
+        })();
+    </script>
 
 
-<!-- Admission Observer Script -->
-<script>
-    (function () {
-        let els = document.querySelectorAll(".adm-reveal");
-        let obs = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) {
-                if (e.isIntersecting) {
-                    e.target.classList.add("vis");
-                    obs.unobserve(e.target);
-                }
+    <!-- Admission Observer Script -->
+    <script>
+        (function () {
+            let els = document.querySelectorAll(".adm-reveal");
+            let obs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add("vis");
+                        obs.unobserve(e.target);
+                    }
+                });
+            }, {threshold: 0.1});
+
+            els.forEach(function (el) {
+                obs.observe(el);
             });
-        }, {threshold: 0.1});
-
-        els.forEach(function (el) {
-            obs.observe(el);
-        });
-    })();
-</script>
+        })();
+    </script>
 {% endblock %}

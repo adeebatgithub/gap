@@ -19,3 +19,10 @@ class Inquiry(models.Model):
     phone = models.CharField(max_length=20)
     subject = models.CharField(max_length=200)
     message = models.TextField()
+
+
+class Notification(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    file = models.FileField(upload_to='notifications/')
+    date = models.DateField(auto_now_add=True)

@@ -10,6 +10,7 @@ urlpatterns = [
     path('contact/',views.ContactView.as_view(),name='contact'),
     path('program/',views.ProgramView.as_view(),name='program'),
     path('womens_academy/',views.WomenAcademyView.as_view(),name='womens_academy'),
+    path('notifications/',views.NotificationsView.as_view(),name='notifications'),
 
     path('inquiry/list/',views.InquiryListView.as_view(),name='inquiry-list'),
     path('inquiry/detail/<int:pk>/',views.InquiryDetailView.as_view(),name='inquiry-detail'),

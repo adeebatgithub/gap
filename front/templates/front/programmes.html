@@ -1,1255 +1,1246 @@
-<!doctype html>
-<html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+{% extends "front/base.html" %}
+{% load static %}
 
-    <title>Programmes & Courses — GreenValley Academy</title>
+{% block title %}
+    Programmes & Courses — GreenValley Academy
+{% endblock %}
 
-    <link rel="icon" type="image/ico" href="assets/image/ico/favicon-circle.ico"/>
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/programmes.css' %}">
+{% endblock %}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {primary: "#00301C", secondary: "#D1FB5F"},
-                    fontFamily: {
-                        heading: ["Roboto", "sans-serif"],
-                        body: ["Poppins", "sans-serif"],
-                    },
-                },
-            },
-        };
-    </script>
-    <link rel="stylesheet" href="./assets/css/programmes.css">
-</head>
-<body class="bg-white text-primary antialiased">
-<!-- ══════════ NAVBAR ══════════ -->
-<header class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 md:px-8 pt-4 flex items-start justify-between gap-4">
-    <a href="./index.html" class="logo-card flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-lg flex-shrink-0" aria-label="Home">
-        <div class="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 overflow-hidden rounded-full bg-white">
-            <img src="./assets/image/logo/logo.webp" alt="GreenValley Academy logo" class="w-full h-full object-contain"/>
+{% block content %}
+    <section class="relative w-full overflow-hidden" style="min-height: 55vh" aria-label="Our Courses">
+        <div class="absolute inset-0">
+            <img src="{% static 'image/programs/hero-img.webp' %}" alt="GreenValley Academy students"
+                 class="w-full h-full object-cover object-center hero-img-zoom"/>
         </div>
-        <div class="leading-tight">
-            <p class="font-heading font-black text-primary text-sm sm:text-base leading-none tracking-tight">
-                GREEN VALLEY
-            </p>
-            <p class="font-heading font-black text-primary text-sm sm:text-base leading-none tracking-tight">
-                ACADEMY
-            </p>
-            <p class="text-primary/40 text-[9px] font-body font-medium tracking-widest uppercase mt-0.5">
-                Manjeri, Kerala
-            </p>
+        <div class="absolute inset-0"
+             style="background: linear-gradient(to right, #00301c 0%, #00301c 38%, rgba(0, 48, 28, 0.75) 52%, rgba(0, 48, 28, 0.2) 68%, transparent 85%);"></div>
+        <div class="absolute inset-0"
+             style="background: linear-gradient(to bottom, rgba(0, 48, 28, 0.5) 0%, transparent 30%);"></div>
+
+        <div class="relative w-full max-w-7xl mx-auto px-8 sm:px-12 md:px-16 flex items-center"
+             style="min-height: 55vh; padding-top: 100px; padding-bottom: 60px">
+            <div class="max-w-md c-fade">
+                <h1 class="font-heading font-black text-white text-4xl sm:text-5xl md:text-6xl tracking-tight leading-[1.05] mb-5">
+                    OUR COURSES
+                </h1>
+                <p class="text-white/60 font-body font-light text-sm sm:text-base leading-relaxed">
+                    Explore a diverse range of career-focused programs designed to foster knowledge, skill development,
+                    and professional excellence. We provide high-quality education, hands-on practical learning, and
+                    robust
+                    academic support to empower students in achieving their highest potential.
+                </p>
+            </div>
         </div>
-    </a>
-    <nav class="nav-pill hidden md:flex items-center gap-1 px-4 py-3 rounded-2xl" aria-label="Main navigation">
-        <a href="./index.html"
-           class="nav-link text-white/70 font-body font-medium text-xs lg:text-sm px-3 lg:px-4 py-1.5 hover:text-secondary transition-colors whitespace-nowrap">HOME</a>
-        <a href="about.html"
-           class="nav-link text-white/70 font-body font-medium text-xs lg:text-sm px-3 lg:px-4 py-1.5 hover:text-secondary transition-colors whitespace-nowrap">ABOUT
-            US</a>
-        <a href="./programmes.html"
-           class="nav-link active text-white font-body font-semibold text-xs lg:text-sm px-3 lg:px-4 py-1.5 whitespace-nowrap">PROGRAMMES</a>
-        <a href="./activities.html"
-           class="nav-link text-white/70 font-body font-medium text-xs lg:text-sm px-3 lg:px-4 py-1.5 hover:text-secondary transition-colors whitespace-nowrap">ACTIVITIES</a>
-        <a href="./application.html"
-           class="nav-link text-white/70 font-body font-medium text-xs lg:text-sm px-3 lg:px-4 py-1.5 hover:text-secondary transition-colors whitespace-nowrap">ADMISSION</a>
-        <a href="./womens_academy.html"
-           class="nav-link text-white/70 font-body font-medium text-xs lg:text-sm px-3 lg:px-4 py-1.5 hover:text-secondary transition-colors whitespace-nowrap">WOMEN'S
-            ACADEMY</a>
-        <a href="./application.html"
-           class="nav-link text-white/70 font-body font-medium text-xs lg:text-sm px-3 lg:px-4 py-1.5 hover:text-secondary transition-colors whitespace-nowrap">CONTACT
-            US</a>
-    </nav>
-    <button
-            id="mob-toggle"
-            class="nav-pill md:hidden flex flex-col gap-1.5 p-3 rounded-xl mt-1"
-            aria-label="Open menu"
-            aria-expanded="false"
-    >
-        <span id="mb1" class="block w-5 h-0.5 bg-white rounded"></span>
-        <span id="mb2" class="block w-5 h-0.5 bg-white rounded"></span>
-        <span id="mb3" class="block w-3.5 h-0.5 bg-white rounded self-end"></span>
-    </button>
-</header>
-<div id="mob-menu" class="fixed top-0 left-0 right-0 z-40 bg-primary/97 backdrop-blur-md pt-20 pb-8 px-6 md:hidden">
-    <nav class="flex flex-col gap-1">
-        <a href="./index.html"
-           class="text-white/80 font-body font-medium text-sm py-3 border-b border-white/10 hover:text-secondary transition-colors">HOME</a>
-        <a href="./about.html"
-           class="text-white/80 font-body font-medium text-sm py-3 border-b border-white/10 hover:text-secondary transition-colors">ABOUT
-            US</a>
-        <a href="./programmes.html" class="text-secondary font-heading font-bold text-sm py-3 border-b border-white/10">PROGRAMMES</a>
-        <a href="./activities.html"
-           class="text-white/80 font-body font-medium text-sm py-3 border-b border-white/10 hover:text-secondary transition-colors">ACTIVITIES</a>
-        <a href="./application.html"
-           class="text-white/80 font-body font-medium text-sm py-3 border-b border-white/10 hover:text-secondary transition-colors">ADMISSION</a>
-        <a href="./womens_academy.html"
-           class="text-white/80 font-body font-medium text-sm py-3 hover:text-secondary transition-colors">WOMEN'S
-            ACADEMY</a>
-        <a href="./contact.html"
-           class="text-white/80 font-body font-medium text-sm py-3 border-b border-white/10 hover:text-secondary transition-colors">CONTACT
-            US</a>
-    </nav>
-</div>
+    </section>
 
-<!-- ══════════ 1. HERO ══════════ -->
-<section class="relative w-full overflow-hidden" style="min-height: 55vh" aria-label="Our Courses">
-    <div class="absolute inset-0">
-        <img src="assets/image/programs/hero-img.webp" alt="GreenValley Academy students"
-             class="w-full h-full object-cover object-center hero-img-zoom"/>
-    </div>
-    <div class="absolute inset-0"
-         style="background: linear-gradient(to right, #00301c 0%, #00301c 38%, rgba(0, 48, 28, 0.75) 52%, rgba(0, 48, 28, 0.2) 68%, transparent 85%);"></div>
-    <div class="absolute inset-0"
-         style="background: linear-gradient(to bottom, rgba(0, 48, 28, 0.5) 0%, transparent 30%);"></div>
+    <section class="bg-white py-20 md:py-28 overflow-hidden" aria-label="Shahbi programme">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12 text-center">
 
-    <div class="relative w-full max-w-7xl mx-auto px-8 sm:px-12 md:px-16 flex items-center"
-         style="min-height: 55vh; padding-top: 100px; padding-bottom: 60px">
-        <div class="max-w-md c-fade">
-            <h1 class="font-heading font-black text-white text-4xl sm:text-5xl md:text-6xl tracking-tight leading-[1.05] mb-5">
-                OUR COURSES
-            </h1>
-            <p class="text-white/60 font-body font-light text-sm sm:text-base leading-relaxed">
-                Explore a diverse range of career-focused programs designed to foster knowledge, skill development,
-                and professional excellence. We provide high-quality education, hands-on practical learning, and robust
-                academic support to empower students in achieving their highest potential.
-            </p>
-        </div>
-    </div>
-</section>
-
-<!-- ══════════ 2. OUR SYLLABUS ══════════ -->
-<section class="bg-white py-20 md:py-28 overflow-hidden" aria-label="Our Syllabus">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
-        <h2 class="c-fade font-heading font-black text-primary text-3xl sm:text-4xl md:text-5xl tracking-tight text-center mb-12 md:mb-16">
-            OUR SYLLABUS
-        </h2>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-5">
-            <article class="syl-card c-fade bg-primary rounded-2xl overflow-hidden"
-                     style="transition-delay: 0.06s; min-height: 260px">
-                <div class="grid grid-cols-2 h-full">
-                    <div class="p-6 flex flex-col justify-between">
-                        <div>
-                            <h3 class="font-heading font-bold text-white text-base tracking-widest uppercase mb-3">
-                                LANGUAGES
-                            </h3>
-                            <p class="text-white/45 font-body font-light text-xs leading-relaxed mb-4">
-                                Master multiple languages with a focus on practical communication, comprehensive
-                                grammar, and advanced speaking and writing skills.
-                            </p>
-                            <ul class="space-y-1.5">
-                                <li class="flex items-center gap-2 text-white/65 font-body text-xs"><span
-                                        class="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0"></span>Arabic
-                                </li>
-                                <li class="flex items-center gap-2 text-white/65 font-body text-xs"><span
-                                        class="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0"></span>Urdu
-                                </li>
-                                <li class="flex items-center gap-2 text-white/65 font-body text-xs"><span
-                                        class="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0"></span>English
-                                </li>
-                                <li class="flex items-center gap-2 text-white/65 font-body text-xs"><span
-                                        class="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0"></span>Malayalam
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="img-zoom">
-                        <img src="assets/image/programs/sociology.webp" alt="Students in language class"
-                             class="w-full h-full object-cover"/>
-                    </div>
-                </div>
-            </article>
-
-            <article class="syl-card c-fade rounded-2xl overflow-hidden shadow-lg"
-                     style="transition-delay: 0.14s; min-height: 260px">
-                <div class="img-zoom w-full h-full" style="min-height: 260px">
-                    <img src="assets/image/programs/bcom.webp" alt="Students in classroom" class="w-full h-full object-cover"/>
-                </div>
-            </article>
-
-            <article class="syl-card c-fade bg-secondary rounded-2xl flex items-center justify-center p-8"
-                     style="transition-delay: 0.22s; min-height: 260px">
-                <h3 class="font-heading font-black text-primary text-2xl md:text-3xl text-center leading-tight tracking-tight">
-                    SOCIAL SCIENCE &amp;<br/>COMMERCE
-                </h3>
-            </article>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-            <article class="feat-card c-fade bg-primary rounded-2xl p-6 flex flex-col gap-4"
-                     style="transition-delay: 0.08s">
-                <div class="w-10 h-10 rounded-xl bg-secondary/15 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="none">
-                        <path d="M10 2l2.4 4.8L18 8l-4 3.9 1 5.5L10 15l-5 2.4 1-5.5L2 8l5.6-.7z" stroke="currentColor"
-                              stroke-width="1.5" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <div>
-                    <h4 class="font-heading font-bold text-white text-sm tracking-tight uppercase mb-2">QUR'AN &amp;
-                        HADITH</h4>
-                    <p class="text-white/45 font-body font-light text-xs leading-relaxed">
-                        Engage with the Qur'an and Hadith through authentic teachings, core values, and comprehensive
-                        Islamic guidance.
-                    </p>
-                </div>
-            </article>
-            <article class="feat-card c-fade bg-primary rounded-2xl p-6 flex flex-col gap-4"
-                     style="transition-delay: 0.16s">
-                <div class="w-10 h-10 rounded-xl bg-secondary/15 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="none">
-                        <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
-                        <path d="M10 6v4l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                </div>
-                <div>
-                    <h4 class="font-heading font-bold text-white text-sm tracking-tight uppercase mb-2">ISLAMIC
-                        HISTORY</h4>
-                    <p class="text-white/45 font-body font-light text-xs leading-relaxed">
-                        Discover the richness of Islamic history, exploring great civilizations, eminent scholars,
-                        vibrant cultures, and pivotal historical events.
-                    </p>
-                </div>
-            </article>
-            <article class="feat-card c-fade bg-primary rounded-2xl p-6 flex flex-col gap-4"
-                     style="transition-delay: 0.24s">
-                <div class="w-10 h-10 rounded-xl bg-secondary/15 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="none">
-                        <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
-                        <path d="M10 3a7 7 0 010 14M10 3C8 6 7 8 7 10s1 4 3 7M10 3c2 3 3 5 3 7s-1 4-3 7"
-                              stroke="currentColor" stroke-width="1" opacity=".5"/>
-                    </svg>
-                </div>
-                <div>
-                    <h4 class="font-heading font-bold text-white text-sm tracking-tight uppercase mb-2">FIQH &amp;
-                        DAWA</h4>
-                    <p class="text-white/45 font-body font-light text-xs leading-relaxed">
-                        Study Islamic jurisprudence (Fiqh) and methodologies of Dawa, building strong foundations in
-                        religious guidance and community leadership.
-                    </p>
-                </div>
-            </article>
-            <article class="feat-card c-fade bg-primary rounded-2xl p-6 flex flex-col gap-4"
-                     style="transition-delay: 0.32s">
-                <div class="w-10 h-10 rounded-xl bg-secondary/15 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="none">
-                        <path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                        <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                </div>
-                <div>
-                    <h4 class="font-heading font-bold text-white text-sm tracking-tight uppercase mb-2">COMPARATIVE
-                        RELIGION</h4>
-                    <p class="text-white/45 font-body font-light text-xs leading-relaxed">
-                        Examine global religions, beliefs, and traditions to foster interfaith dialogue and a profound
-                        comparative understanding.
-                    </p>
-                </div>
-            </article>
-        </div>
-    </div>
-</section>
-
-<!-- ══════════ 3. VOCATIONAL TRAINING ══════════ -->
-<section class="bg-[#fafaf8] py-20 md:py-28 overflow-hidden" aria-label="Vocational Training">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
-        <div class="c-fade text-center mb-14 md:mb-18">
-            <h2 class="font-heading font-black text-primary text-3xl sm:text-4xl md:text-5xl tracking-tight mb-3">
-                VOCATIONAL TRAINING
+            <!-- Heading -->
+            <h2 class="rv font-heading font-black text-primary text-4xl sm:text-5xl md:text-6xl tracking-tight mb-8">
+                AL-SHA’BI
             </h2>
-            <div class="mx-auto w-14 h-1 rounded-full bg-secondary"></div>
-        </div>
 
-        <!-- Block 1: Computer Applications -->
-        <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center mb-20 md:mb-24">
-            <div class="c-left img-zoom rounded-2xl overflow-hidden shadow-xl border-2 border-secondary/30 aspect-[4/3]">
-                <img src="assets/image/programs/bca.webp" alt="Students at computer lab — Computer Applications"
-                     class="w-full h-full object-cover"/>
-            </div>
-            <div class="c-right" style="transition-delay: 0.12s">
-                <h3 class="font-heading font-black text-primary text-2xl sm:text-3xl md:text-4xl leading-tight tracking-tight mb-4">
-                    Diploma in Computer Applications
-                </h3>
-                <p class="text-primary/60 font-body font-light text-sm md:text-base leading-relaxed mb-6">
-                    Our Diploma in Computer Applications (DCA) is a career-oriented programme offering fundamental
-                    knowledge and practical expertise in modern computing, designed to make students industry-ready.
-                </p>
-                <ul class="grid grid-cols-2 gap-x-6 gap-y-2.5">
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Computer Fundamentals</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Microsoft PowerPoint</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Internet Technologies</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Graphic Design Basics</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Hardware &amp; Networking</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Programming Fundamentals</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Microsoft Word</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Microsoft Excel</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Block 2: Electrical Technician -->
-        <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center mb-20 md:mb-24">
-            <div class="c-left order-2 md:order-1">
-                <h3 class="font-heading font-black text-primary text-2xl sm:text-3xl md:text-4xl leading-tight tracking-tight mb-4">
-                    ELECTRICAL TECHNICIAN
-                </h3>
-                <p class="text-primary/60 font-body font-light text-sm md:text-base leading-relaxed mb-6">
-                    The Electrical Technician certification equips students with hands-on skills in electrical wiring,
-                    maintenance, installation, and troubleshooting, paving the way for a dynamic career in technical
-                    industries.
-                </p>
-                <ul class="grid grid-cols-2 gap-x-6 gap-y-2.5">
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Electrical Wiring Fundamentals</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Safety &amp; Hazard Prevention</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Circuit Troubleshooting</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Equipment Maintenance</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Appliance Repair</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Industrial Wiring Basics</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Power Distribution</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Testing &amp; Quality Checks</span>
-                    </li>
-                </ul>
-            </div>
-            <div class="c-right order-1 md:order-2 img-zoom rounded-2xl overflow-hidden shadow-xl border-2 border-secondary/30 aspect-[4/3]"
-                 style="transition-delay: 0.12s">
-                <img src="assets/image/programs/electrician.webp" alt="Students doing electrical technician work"
-                     class="w-full h-full object-cover"/>
-            </div>
-        </div>
-
-        <!-- Block 3: Graphic Designing -->
-        <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center mb-20 md:mb-24">
-            <div class="c-left img-zoom rounded-2xl overflow-hidden shadow-xl border-2 border-secondary/30 aspect-[4/3]">
-                <img src="assets/image/programs/graphicdesign.webp" alt="Student working on graphic design"
-                     class="w-full h-full object-cover"/>
-            </div>
-            <div class="c-right" style="transition-delay: 0.12s">
-                <h3 class="font-heading font-black text-primary text-2xl sm:text-3xl md:text-4xl leading-tight tracking-tight mb-4">
-                    DIPLOMA IN GRAPHIC DESIGNING
-                </h3>
-                <p class="text-primary/60 font-body font-light text-sm md:text-base leading-relaxed mb-6">
-                    The Diploma in Graphic Designing nurtures creative talent by teaching industry-standard design
-                    software, visual communication principles, and digital artistry to prepare students for the creative
-                    sector.
-                </p>
-                <ul class="grid grid-cols-2 gap-x-6 gap-y-2.5">
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Visual Communication</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Typography &amp; Color Theory</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Adobe Photoshop</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Adobe Illustrator</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Layout Design</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>UI/UX Basics</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Brand Identity Design</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Portfolio Development</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Block 4: Fitness Trainer -->
-        <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center mb-20 md:mb-24">
-            <div class="c-left order-2 md:order-1">
-                <h3 class="font-heading font-black text-primary text-2xl sm:text-3xl md:text-4xl leading-tight tracking-tight mb-4">
-                    DIPLOMA IN FITNESS TRAINER
-                </h3>
-                <p class="text-primary/60 font-body font-light text-sm md:text-base leading-relaxed mb-6">
-                    Our Diploma in Fitness Training provides comprehensive knowledge in human anatomy, exercise
-                    physiology, and nutrition, empowering students to become certified, professional fitness
-                    instructors.
-                </p>
-                <ul class="grid grid-cols-2 gap-x-6 gap-y-2.5">
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Human Anatomy &amp; Physiology</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Exercise Kinesiology</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Diet &amp; Sports Nutrition</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Strength &amp; Conditioning</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Injury Prevention</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Personal Training Strategies</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Group Fitness Leadership</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Client Assessment</span>
-                    </li>
-                </ul>
-            </div>
-            <div class="c-right order-1 md:order-2 img-zoom rounded-2xl overflow-hidden shadow-xl border-2 border-secondary/30 aspect-[4/3]"
-                 style="transition-delay: 0.12s">
-                <img src="assets/image/programs/fitness.webp" alt="Martial arts fitness training"
-                     class="w-full h-full object-cover object-top"/>
-            </div>
-        </div>
-
-        <!-- Block 5: Cybersecurity -->
-        <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <div class="c-left img-zoom rounded-2xl overflow-hidden shadow-xl border-2 border-secondary/30 aspect-[4/3]">
-                <img src="assets/image/programs/cybersecurity.webp" alt="Student at computer — Cybersecurity"
-                     class="w-full h-full object-cover object-right"/>
-            </div>
-            <div class="c-right" style="transition-delay: 0.12s">
-                <h3 class="font-heading font-black text-primary text-2xl sm:text-3xl md:text-4xl leading-tight tracking-tight mb-4">
-                    DIPLOMA IN CYBERSECURITY
-                </h3>
-                <p class="text-primary/60 font-body font-light text-sm md:text-base leading-relaxed mb-6">
-                    The Diploma in Cybersecurity is a specialized, job-oriented programme designed to equip students
-                    with the theoretical knowledge and practical skills required to defend networks, systems, and data
-                    against emerging cyber threats.
-                </p>
-                <ul class="grid grid-cols-2 gap-x-6 gap-y-2.5">
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Network Security Fundamentals</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Ethical Hacking Basics</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Cryptography</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Risk Management</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Cyber Laws &amp; Ethics</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Incident Response</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Malware Analysis</span>
-                    </li>
-                    <li class="check-item text-sm text-primary/70 font-body">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C" stroke-width="1"/>
-                            <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <span>Cloud Security</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ══════════ 4. ACADEMY COURSE DETAILS ══════════ -->
-<section class="relative overflow-hidden" aria-label="Academy Course Details" style="background: #c8f040">
-    <!-- Smooth wave top: white → lime green -->
-    <div style="line-height: 0; margin-bottom: -4px">
-        <svg viewBox="0 0 1440 90" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
-             style="display: block; width: 100%" height="90" aria-hidden="true">
-            <rect width="1440" height="90" fill="white"/>
-            <path d="M0,90 C240,30 480,80 720,45 C960,10 1200,70 1440,25 L1440,90 Z" fill="#c8f040"/>
-        </svg>
-    </div>
-
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12 pt-10 md:pt-16 pb-20 md:pb-28">
-        <div class="c-fade text-center mb-12 md:mb-16">
-            <h2 class="font-heading font-black text-primary text-3xl sm:text-4xl md:text-5xl tracking-tight mb-5">
-                ACADEMY COURSE DETAILS
-            </h2>
-            <p class="text-primary/65 font-body font-light text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-                Our academic framework is thoughtfully structured to bridge traditional Islamic scholarship with modern
-                educational paradigms. We offer a progressive learning path that nurtures intellectual growth, ethical
-                grounding, and professional competence from the foundational pre-university years through to
-                undergraduate mastery.
+            <!-- Paragraph -->
+            <p class="rv text-gray-800 font-body font-light text-base sm:text-lg leading-relaxed mx-auto mb-12 max-w-5xl"
+               style="transition-delay:.12s;">
+                Green Valley Academy has decided to confer the title AL-SHA’BI on those who complete the graduation from
+                the Academy.
+                The word Al- Sha’bi has been derived from the Arabic root word SHA’B which means PEOPLE or SOCIETY.
+                Sha’bi is a Person who represents ordinary people and liked by a lot of people or a person chosen or
+                appointed to act or speak for others.
+                Green valley Academy thinks that it is the most well-matched title for our graduates because living
+                among the people acting and speaking for them is the real mission of our graduates
+                This title realizes and fulfills the long-cherished goal set of Green Valley Academy. The Academy
+                envisages that it has to mould a new generation equipped with profound understanding in Islamic
+                knowledge and has to make them proficient in dealing with contemporary social issues. The Academy has
+                exerted mammoth efforts to bring up enthusiastic and energetic scholars who will grow to be vanguards of
+                community empowerment in future. We are sure that graduates of the Academy will perform well for the
+                well-being and welfare of the society as their title Sha’bi connotes and they will be able to play a
+                lead role in Muslim community steering the people into the right direction.
             </p>
-        </div>
 
-        <div class="c-fade flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6"
-             style="transition-delay: 0.08s">
-            <h3 class="font-heading font-black text-primary text-2xl sm:text-3xl tracking-tight">
-                FOUNDATION PHASE
-            </h3>
-            <span class="font-body font-semibold text-primary/60 text-xs tracking-widest uppercase">Pre-University Levels</span>
-        </div>
+            <!-- Full-width image -->
+            <div class="rv img-zoom rounded-2xl md:rounded-3xl overflow-hidden shadow-xl w-full max-w-6xl"
+                 style="transition-delay:.24s;">
+                <img src="{% static 'image/programs/languagedevelopment.webp' %}"
+                     alt="Shahbi programme — teacher and students in classroom"
+                     class="w-full h-auto object-cover"/>
+            </div>
 
-        <div class="grid md:grid-cols-2 gap-5 md:gap-6">
-            <article class="phase-card c-fade bg-primary rounded-2xl overflow-hidden"
-                     style="transition-delay: 0.12s; min-height: 280px">
-                <div class="grid grid-cols-2 h-full" style="min-height: 280px">
-                    <div class="p-7 flex flex-col justify-between">
-                        <div>
-                            <p class="text-white/40 font-body font-semibold text-[10px] tracking-widest uppercase mb-3">
-                                ILP -1 (PLUS ONE)
-                            </p>
-                            <h4 class="font-heading font-bold text-white text-xl md:text-2xl leading-snug tracking-tight mb-4">
-                                Humanities &amp; Commerce
-                            </h4>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="bg-white/10 text-white/70 font-body text-[10px] px-2.5 py-1 rounded-full">Islamic Studies</span>
-                                <span class="bg-white/10 text-white/70 font-body text-[10px] px-2.5 py-1 rounded-full">Foundation Ethics</span>
+        </div>
+    </section>
+
+    <!-- ══════════ 2. OUR SYLLABUS ══════════ -->
+    <section class="bg-white py-20 md:py-28 overflow-hidden" aria-label="Our Syllabus">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
+            <h2 class="c-fade font-heading font-black text-primary text-3xl sm:text-4xl md:text-5xl tracking-tight text-center mb-12 md:mb-16">
+                OUR SYLLABUS
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-5">
+                <article class="col-span-2 syl-card c-fade bg-primary rounded-2xl overflow-hidden"
+                         style="transition-delay: 0.06s; min-height: 260px">
+                    <div class="grid grid-cols-2 h-full">
+                        <div class="p-6 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-heading font-bold text-white text-base tracking-widest uppercase mb-3">
+                                    LANGUAGES
+                                </h3>
+                                <p class="text-white/45 font-body font-light text-xs leading-relaxed mb-4">
+                                    Master multiple languages with a focus on practical communication, comprehensive
+                                    grammar, and advanced speaking and writing skills.
+                                </p>
+                                <ul class="space-y-1.5">
+                                    <li class="flex items-center gap-2 text-white/65 font-body text-xs"><span
+                                            class="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0"></span>Arabic
+                                    </li>
+                                    <li class="flex items-center gap-2 text-white/65 font-body text-xs"><span
+                                            class="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0"></span>Urdu
+                                    </li>
+                                    <li class="flex items-center gap-2 text-white/65 font-body text-xs"><span
+                                            class="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0"></span>English
+                                    </li>
+                                    <li class="flex items-center gap-2 text-white/65 font-body text-xs"><span
+                                            class="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0"></span>Malayalam
+                                    </li>
+                                </ul>
                             </div>
-                            <p class="text-white/50 font-body font-light text-sm leading-relaxed">
-                                Establishing the bedrock of critical inquiry and economic literacy through an integrated
-                                moral lens.
-                            </p>
+                        </div>
+                        <div class="img-zoom">
+                            <img src="{% static 'image/programs/sociology.webp' %}" alt="Students in language class"
+                                 class="w-full h-full object-cover"/>
                         </div>
                     </div>
-                    <div class="img-zoom">
-                        <img src="./assets/image/programs/ilp.webp" alt="Students studying humanities and commerce"
+                </article>
+
+                <article class="syl-card c-fade rounded-2xl overflow-hidden shadow-lg"
+                         style="transition-delay: 0.14s; min-height: 260px">
+                    <div class="img-zoom w-full h-full" style="min-height: 260px">
+                        <img src="{% static 'image/programs/gs.webp' %}" alt="Students in classroom"
                              class="w-full h-full object-cover"/>
                     </div>
-                </div>
-            </article>
+                </article>
+            </div>
 
-            <article class="phase-card c-fade bg-primary/90 rounded-2xl p-7 flex flex-col justify-between"
-                     style="transition-delay: 0.22s; min-height: 280px">
-                <div>
-                    <p class="text-white/40 font-body font-semibold text-[10px] tracking-widest uppercase mb-3">
-                        ILP -2 (PLUS TWO)
-                    </p>
-                    <h4 class="font-heading font-bold text-white text-xl md:text-2xl leading-snug tracking-tight mb-6">
-                        Integrated Mastery
-                    </h4>
-                    <ul class="space-y-3">
-                        <li class="check-item text-white/65 font-body text-sm">
-                            <svg class="w-5 h-5 text-secondary flex-shrink-0" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="10" r="8" fill="#D1FB5F" opacity=".15" stroke="#D1FB5F"
-                                        stroke-width="1.2"/>
-                                <path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="#D1FB5F" stroke-width="1.6"
-                                      stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+                <article class="feat-card c-fade bg-primary rounded-2xl p-6 flex flex-col gap-4"
+                         style="transition-delay: 0.08s">
+                    <div class="w-10 h-10 rounded-xl bg-secondary/15 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 2l2.4 4.8L18 8l-4 3.9 1 5.5L10 15l-5 2.4 1-5.5L2 8l5.6-.7z"
+                                  stroke="currentColor"
+                                  stroke-width="1.5" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-white text-sm tracking-tight uppercase mb-2">QUR'AN &amp;
+                            HADITH</h4>
+                        <p class="text-white/45 font-body font-light text-xs leading-relaxed">
+                            Engage with the Qur'an and Hadith through authentic teachings, core values, and
+                            comprehensive
+                            Islamic guidance.
+                        </p>
+                    </div>
+                </article>
+                <article class="feat-card c-fade bg-primary rounded-2xl p-6 flex flex-col gap-4"
+                         style="transition-delay: 0.16s">
+                    <div class="w-10 h-10 rounded-xl bg-secondary/15 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M10 6v4l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-white text-sm tracking-tight uppercase mb-2">ISLAMIC
+                            HISTORY</h4>
+                        <p class="text-white/45 font-body font-light text-xs leading-relaxed">
+                            Discover the richness of Islamic history, exploring great civilizations, eminent scholars,
+                            vibrant cultures, and pivotal historical events.
+                        </p>
+                    </div>
+                </article>
+                <article class="feat-card c-fade bg-primary rounded-2xl p-6 flex flex-col gap-4"
+                         style="transition-delay: 0.24s">
+                    <div class="w-10 h-10 rounded-xl bg-secondary/15 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M10 3a7 7 0 010 14M10 3C8 6 7 8 7 10s1 4 3 7M10 3c2 3 3 5 3 7s-1 4-3 7"
+                                  stroke="currentColor" stroke-width="1" opacity=".5"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-white text-sm tracking-tight uppercase mb-2">FIQH &amp;
+                            DAWA</h4>
+                        <p class="text-white/45 font-body font-light text-xs leading-relaxed">
+                            Study Islamic jurisprudence (Fiqh) and methodologies of Dawa, building strong foundations in
+                            religious guidance and community leadership.
+                        </p>
+                    </div>
+                </article>
+                <article class="feat-card c-fade bg-primary rounded-2xl p-6 flex flex-col gap-4"
+                         style="transition-delay: 0.32s">
+                    <div class="w-10 h-10 rounded-xl bg-secondary/15 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-white text-sm tracking-tight uppercase mb-2">COMPARATIVE
+                            RELIGION</h4>
+                        <p class="text-white/45 font-body font-light text-xs leading-relaxed">
+                            Examine global religions, beliefs, and traditions to foster interfaith dialogue and a
+                            profound
+                            comparative understanding.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="relative overflow-hidden" style="background:#c8f040;" aria-label="Academy Course Details">
+
+        <!-- Curved top from white -->
+        <div style="line-height:0; margin-bottom:-2px;">
+            <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                 style="display:block;width:100%;height:64px;" aria-hidden="true">
+                <rect width="1440" height="80" fill="white"/>
+                <path d="M0,80 C240,20 480,75 720,45 C960,15 1200,70 1440,30 L1440,80 Z" fill="#c8f040"/>
+            </svg>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12 pt-10 md:pt-14 pb-10 md:pb-14">
+
+            <!-- Centered heading block -->
+            <div class="rv text-center mb-12 md:mb-16">
+                <h2 class="font-heading font-black text-primary text-3xl sm:text-4xl md:text-5xl tracking-tight mb-5">
+                    ACADEMY COURSE DETAILS
+                </h2>
+                <p class="text-primary/65 font-body font-light text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+                    Explore our comprehensive range of academic courses designed to provide students with in-depth
+                    knowledge, practical skills, and industry-relevant expertise.
+                </p>
+            </div>
+
+            <!-- Foundation Phase label row -->
+            <div class="rv flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-8"
+                 style="transition-delay:.08s;">
+                <h3 class="font-heading font-black text-primary text-2xl sm:text-3xl tracking-tight">FOUNDATION
+                    PHASE</h3>
+                <span class="font-body font-semibold text-primary/55 text-xs tracking-widest uppercase">Pre-University Levels</span>
+            </div>
+
+            <!-- Asymmetric 2-col grid -->
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8 items-start">
+
+                <!-- LEFT column: ILP-1 image top + ILP-2 content bottom -->
+                <div class="rv-left space-y-6">
+
+                    <!-- ILP-1 large image -->
+                    <div class="img-zoom rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
+                        <img src="{% static 'image/programs/ilp-1.webp' %}"
+                             alt="ILP-1 students studying in library"
+                             class="w-full h-full object-cover"/>
+                    </div>
+
+                    <!-- ILP-2 content card -->
+                    <div class="bg-primary rounded-2xl p-7 md:p-8 shadow-sm">
+                        <p class="font-body font-semibold text-white/50 text-xs tracking-widest uppercase mb-1">ILP -2
+                            (PLUS TWO)</p>
+                        <h4 class="font-heading font-black text-secondary text-2xl sm:text-3xl leading-tight tracking-tight mb-4">
                             Humanities &amp; Commerce
-                        </li>
-                        <li class="check-item text-white/65 font-body text-sm">
-                            <svg class="w-5 h-5 text-secondary flex-shrink-0" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="10" r="8" fill="#D1FB5F" opacity=".15" stroke="#D1FB5F"
-                                        stroke-width="1.2"/>
-                                <path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="#D1FB5F" stroke-width="1.6"
-                                      stroke-linecap="round" stroke-linejoin="round"/>
+                        </h4>
+                        <p class="text-white/65 font-body font-light text-sm leading-relaxed mb-6">
+                            Advance your academic journey with a comprehensive ILP 2 program that combines
+                            Humanities, Commerce, Islamic Studies, and vocational training. Designed to prepare students
+                            for higher education and future careers, the course nurtures knowledge, confidence,
+                            practical skills, and personal growth.
+
+                        </p>
+                        <!-- Bullet list -->
+                        <ul class="space-y-2.5">
+                            <li class="flex items-center gap-3 text-white/75 font-body text-sm">
+                                <svg class="w-5 h-5 text-primary flex-shrink-0" viewBox="0 0 20 20" fill="none">
+                                    <circle cx="10" cy="10" r="8" fill="#D1FB5F" opacity=".25" stroke="#D1FB5F"
+                                            stroke-width="1"/>
+                                    <path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="#D1FB5F" stroke-width="1.6"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Humanities &amp; Commerce
+                            </li>
+                            <li class="flex items-center gap-3 text-white/75 font-body text-sm">
+                                <svg class="w-5 h-5 text-primary flex-shrink-0" viewBox="0 0 20 20" fill="none">
+                                    <circle cx="10" cy="10" r="8" fill="#D1FB5F" opacity=".25" stroke="#D1FB5F"
+                                            stroke-width="1"/>
+                                    <path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="#D1FB5F" stroke-width="1.6"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Islamic Studies Core
+                            </li>
+                            <li class="flex items-center gap-3 text-white/75 font-body text-sm">
+                                <svg class="w-5 h-5 text-primary flex-shrink-0" viewBox="0 0 20 20" fill="none">
+                                    <circle cx="10" cy="10" r="8" fill="#D1FB5F" opacity=".25" stroke="#D1FB5F"
+                                            stroke-width="1"/>
+                                    <path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="#D1FB5F" stroke-width="1.6"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Vocational Training Lab
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- RIGHT column: ILP-1 content top + classroom image bottom -->
+                <div class="rv-right space-y-6" style="transition-delay:.12s;">
+
+                    <!-- ILP-1 content card -->
+                    <div class="bg-primary rounded-2xl p-7 md:p-8 shadow-sm">
+                        <p class="font-body font-semibold text-white/50 text-xs tracking-widest uppercase mb-1">ILP -1
+                            (PLUS ONE)</p>
+                        <h4 class="font-heading font-black text-secondary text-2xl sm:text-3xl leading-tight tracking-tight mb-4">
+                            Humanities &amp; Commerce
+                        </h4>
+                        <p class="text-white/65 font-body font-light text-sm leading-relaxed mb-6">
+                            Begin your higher secondary journey with a well-rounded program that blends academic
+                            excellence, personal development, and value-based learning. The ILP-1 (Plus One) is designed
+                            to strengthen analytical thinking, communication skills, and
+                            ethical understanding while providing a strong foundation in commerce, humanities, and
+                            Islamic studies.
+                        </p>
+                        <ul class="space-y-2.5">
+                            <li class="flex items-center gap-3 text-white/75 font-body text-sm">
+                                <svg class="w-5 h-5 text-primary flex-shrink-0" viewBox="0 0 20 20" fill="none">
+                                    <circle cx="10" cy="10" r="8" fill="#D1FB5F" opacity=".25" stroke="#D1FB5F"
+                                            stroke-width="1"/>
+                                    <path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="#D1FB5F" stroke-width="1.6"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Humanities &amp; Commerce
+                            </li>
+                            <li class="flex items-center gap-3 text-white/75 font-body text-sm">
+                                <svg class="w-5 h-5 text-primary flex-shrink-0" viewBox="0 0 20 20" fill="none">
+                                    <circle cx="10" cy="10" r="8" fill="#D1FB5F" opacity=".25" stroke="#D1FB5F"
+                                            stroke-width="1"/>
+                                    <path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="#D1FB5F" stroke-width="1.6"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Islamic Studies Core
+                            </li>
+                            <li class="flex items-center gap-3 text-white/75 font-body text-sm">
+                                <svg class="w-5 h-5 text-primary flex-shrink-0" viewBox="0 0 20 20" fill="none">
+                                    <circle cx="10" cy="10" r="8" fill="#D1FB5F" opacity=".25" stroke="#D1FB5F"
+                                            stroke-width="1"/>
+                                    <path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="#D1FB5F" stroke-width="1.6"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Language Training
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Classroom image -->
+                    <div class="img-zoom rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
+                        <img src="{% static 'image/programs/bcom.webp' %}"
+                             alt="ILP classroom lecture session"
+                             class="w-full h-full object-cover"/>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- No bottom wave — Higher Learning follows same bg -->
+    </section>
+
+    <!-- ══════════ HIGHER LEARNING ══════════ -->
+    <section class="overflow-hidden pb-0" style="background: #c8f040" aria-label="Higher Learning">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12 pt-16 md:pt-20 pb-20 md:pb-32">
+            <div class="c-fade flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-10 md:mb-12">
+                <h2 class="font-heading font-black text-primary text-2xl sm:text-3xl md:text-4xl tracking-tight">
+                    HIGHER LEARNING
+                </h2>
+                <span class="font-body font-semibold text-primary/55 text-xs tracking-widest uppercase">Undergraduate Streams (BA/B.COM)</span>
+            </div>
+
+            <div class="space-y-5">
+                <!-- Stream 1 -->
+                <div class="c-fade grid sm:grid-cols-5 gap-0 rounded-2xl overflow-hidden shadow-lg"
+                     style="transition-delay: 0.06s">
+                    <div class="sm:col-span-2 img-zoom" style="min-height: 220px">
+                        <img src="{% static 'image/programs/higherstudy.webp' %}" alt="Students studying — Stream 1"
+                             class="w-full h-full object-cover"
+                             style="display: block; width: 100%; height: 100%; object-fit: cover; min-height: 220px;"/>
+                    </div>
+                    <div class="sm:col-span-3 bg-primary p-7 md:p-8">
+                        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-6">
+                            <div>
+                                <h3 class="font-heading font-bold text-white text-xl md:text-2xl tracking-tight mb-1">
+                                    Stream 1: Society and Social Formation
+                                </h3>
+                                <p class="text-secondary font-body font-medium text-[10px] tracking-widest uppercase">
+                                    BA Sociology - Major
+                                </p>
+                            </div>
+                            <div class="text-right flex-shrink-0">
+                                <p class="text-white/35 font-body text-[9px] tracking-widest uppercase mb-1">Academic
+                                    Cycle</p>
+                                <p class="font-heading font-black text-secondary text-base">ILP 3, 4, 5</p>
+                            </div>
+                        </div>
+                        <p class="text-white/55 font-body font-light text-sm leading-relaxed mb-6">
+                            Examine how societies are shaped by culture, faith, institutions, and human behavior. This
+                            stream integrates sociological inquiry with Islamic intellectual traditions, preparing
+                            students to understand social change, community development, and contemporary societal
+                            challenges through both academic and ethical perspectives.
+                        </p>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <p class="font-heading font-bold text-secondary text-sm mb-3">Core Integration</p>
+                                <ul class="space-y-1.5">
+                                    <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
+                                            class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>
+                                        Islamic Studies in Depth
+                                    </li>
+                                    <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
+                                            class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>
+                                        Community Leadership & Social Engagement
+                                    </li>
+                                    <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
+                                            class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>
+                                        Talent Discovery & Personal Formation
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stream 2 -->
+                <div class="c-fade grid sm:grid-cols-5 gap-0 rounded-2xl overflow-hidden shadow-lg"
+                     style="transition-delay: 0.14s">
+                    <div class="sm:col-span-3 bg-primary p-7 md:p-8 order-2 sm:order-1">
+                        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-5">
+                            <div>
+                                <h3 class="font-heading font-bold text-white text-xl md:text-2xl tracking-tight mb-1">
+                                    Stream 2: Arabic Communication & Literature
+                                </h3>
+                                <p class="text-secondary font-body font-medium text-[10px] tracking-widest uppercase">
+                                    BA Arabic - Major
+                                </p>
+                            </div>
+                            <div class="text-right flex-shrink-0">
+                                <p class="text-white/35 font-body text-[9px] tracking-widest uppercase mb-1">Academic
+                                    Cycle</p>
+                                <p class="font-heading font-black text-secondary text-base">ILP 3, 4, 5</p>
+                            </div>
+                        </div>
+                        <p class="text-white/55 font-body font-light text-sm leading-relaxed mb-6">
+                            Develop mastery in Arabic language, literature, and communication while engaging with
+                            classical and contemporary texts. Students gain linguistic excellence, cultural literacy,
+                            and the ability to connect with global Arabic-speaking communities and scholarly traditions.
+                        </p>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <p class="font-heading font-bold text-secondary text-sm mb-3">Core Integration</p>
+                                <ul class="space-y-1.5">
+                                    <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
+                                            class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>
+                                        Qur'anic & Classical Arabic Studies
+                                    </li>
+                                    <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
+                                            class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>
+                                        Translation and Communication Skills
+                                    </li>
+                                    <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
+                                            class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>
+                                        Creative Expression & Talent Development
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sm:col-span-2 img-zoom order-1 sm:order-2" style="min-height: 220px">
+                        <img src="{% static 'image/programs/arabic.webp' %}"
+                             alt="Students studying together — Stream 2"
+                             class="w-full h-full object-cover"
+                             style="display: block; width: 100%; height: 100%; object-fit: cover; min-height: 220px;"/>
+                    </div>
+                </div>
+
+                <!-- Stream 3 -->
+                <div class="c-fade grid sm:grid-cols-5 gap-0 rounded-2xl overflow-hidden shadow-lg"
+                     style="transition-delay: 0.06s">
+                    <div class="sm:col-span-2 img-zoom" style="min-height: 220px">
+                        <img src="{% static 'image/programs/higherstudy_1.webp' %}" alt="Students studying — Stream 1"
+                             class="w-full h-full object-cover"
+                             style="display: block; width: 100%; height: 100%; object-fit: cover; min-height: 220px;"/>
+                    </div>
+                    <div class="sm:col-span-3 bg-primary p-7 md:p-8">
+                        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-6">
+                            <div>
+                                <h3 class="font-heading font-bold text-white text-xl md:text-2xl tracking-tight mb-1">
+                                    Stream 3: Commerce & Digital Ethics
+                                </h3>
+                                <p class="text-secondary font-body font-medium text-[10px] tracking-widest uppercase">
+                                    B.com Commerce — Major
+                                </p>
+                            </div>
+                            <div class="text-right flex-shrink-0">
+                                <p class="text-white/35 font-body text-[9px] tracking-widest uppercase mb-1">Academic
+                                    Cycle</p>
+                                <p class="font-heading font-black text-secondary text-base">ILP 3, 4, 5</p>
+                            </div>
+                        </div>
+                        <p class="text-white/55 font-body font-light text-sm leading-relaxed mb-6">
+                            Explore the foundations of business, finance, entrepreneurship, and digital commerce through
+                            a framework of ethical responsibility. This stream equips students to navigate modern
+                            economic systems while upholding values of integrity, accountability, and social impact.
+                        </p>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <p class="font-heading font-bold text-secondary text-sm mb-3">Core Integration</p>
+                                <ul class="space-y-1.5">
+                                    <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
+                                            class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>
+                                        Islamic Economics & Business Ethics
+                                    </li>
+                                    <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
+                                            class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>
+                                        Entrepreneurship & Professional Skills
+                                    </li>
+                                    <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
+                                            class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>
+                                        Leadership and Innovation Development
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Stream 4 -->
+                <div class="c-fade grid sm:grid-cols-5 gap-0 rounded-2xl overflow-hidden shadow-lg"
+                     style="transition-delay: 0.14s">
+                    <div class="sm:col-span-3 bg-primary p-7 md:p-8 order-2 sm:order-1">
+                        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-5">
+                            <div>
+                                <h3 class="font-heading font-bold text-white text-xl md:text-2xl tracking-tight mb-1">
+                                    Stream 2: Computer Science & Intelligent Technologies
+                                </h3>
+                                <p class="text-secondary font-body font-medium text-[10px] tracking-widest uppercase">
+                                    BCA - Major
+                                </p>
+                            </div>
+                            <div class="text-right flex-shrink-0">
+                                <p class="text-white/35 font-body text-[9px] tracking-widest uppercase mb-1">Academic
+                                    Cycle</p>
+                                <p class="font-heading font-black text-secondary text-base">ILP 3, 4, 5</p>
+                            </div>
+                        </div>
+                        <p class="text-white/55 font-body font-light text-sm leading-relaxed mb-6">
+                            Build expertise in computing, software development, data systems, and emerging technologies.
+                            Students learn to create innovative digital solutions while examining the ethical dimensions
+                            of technology through faith-informed and human-centered perspectives.
+                        </p>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <p class="font-heading font-bold text-secondary text-sm mb-3">Core Integration</p>
+                                <ul class="space-y-1.5">
+                                    <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
+                                            class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>
+                                        Technology Ethics & Islamic Worldview
+                                    </li>
+                                    <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
+                                            class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>
+                                        Software Development & Digital Skills
+                                    </li>
+                                    <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
+                                            class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>
+                                        Innovation, Research & Future Readiness
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sm:col-span-2 img-zoom order-1 sm:order-2" style="min-height: 220px">
+                        <img src="{% static 'image/programs/bca.webp' %}"
+                             alt="Students studying together — Stream 2"
+                             class="w-full h-full object-cover"
+                             style="display: block; width: 100%; height: 100%; object-fit: cover; min-height: 220px;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="line-height: 0; margin-bottom: -2px">
+            <svg viewBox="0 0 1440 72" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                 style="display: block; width: 100%; height: 56px" aria-hidden="true">
+                <path d="M0,72 Q360,0 720,36 Q1080,72 1440,0 L1440,72 Z" fill="white"/>
+            </svg>
+        </div>
+    </section>
+
+
+    <!-- ══════════ 3. VOCATIONAL TRAINING ══════════ -->
+    <section class="bg-[#fafaf8] py-20 md:py-28 overflow-hidden" aria-label="Vocational Training">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
+            <div class="c-fade text-center mb-14 md:mb-18">
+                <h2 class="font-heading font-black text-primary text-3xl sm:text-4xl md:text-5xl tracking-tight mb-3">
+                    VOCATIONAL TRAINING
+                </h2>
+                <div class="mx-auto w-14 h-1 rounded-full bg-secondary"></div>
+            </div>
+
+            <!-- Block 1: Computer Applications -->
+            <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center mb-20 md:mb-24">
+                <div class="c-left img-zoom rounded-2xl overflow-hidden shadow-xl border-2 border-secondary/30 aspect-[4/3]">
+                    <img src="{% static 'image/programs/dca.webp' %}"
+                         alt="Students at computer lab — Computer Applications"
+                         class="w-full h-full object-cover"/>
+                </div>
+                <div class="c-right" style="transition-delay: 0.12s">
+                    <h3 class="font-heading font-black text-primary text-2xl sm:text-3xl md:text-4xl leading-tight tracking-tight mb-4">
+                        Diploma in Computer Applications
+                    </h3>
+                    <p class="text-primary/60 font-body font-light text-sm md:text-base leading-relaxed mb-6">
+                        Our Diploma in Computer Applications (DCA) is a career-oriented programme offering fundamental
+                        knowledge and practical expertise in modern computing, designed to make students industry-ready.
+                    </p>
+                    <ul class="grid grid-cols-2 gap-x-6 gap-y-2.5">
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
                             </svg>
-                            Islamic Studies Core
+                            <span>Computer Fundamentals</span>
                         </li>
-                        <li class="check-item text-white/65 font-body text-sm">
-                            <svg class="w-5 h-5 text-secondary flex-shrink-0" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="10" r="8" fill="#D1FB5F" opacity=".15" stroke="#D1FB5F"
-                                        stroke-width="1.2"/>
-                                <path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="#D1FB5F" stroke-width="1.6"
-                                      stroke-linecap="round" stroke-linejoin="round"/>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
                             </svg>
-                            Vocational Training Lab
+                            <span>Microsoft PowerPoint</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Internet Technologies</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Graphic Design Basics</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Hardware &amp; Networking</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Programming Fundamentals</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Microsoft Word</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Microsoft Excel</span>
                         </li>
                     </ul>
                 </div>
-                <div class="mt-6 border-t border-white/10 pt-5">
-                    <p class="text-white/35 font-body font-light text-xs leading-relaxed">
-                        Advanced integration of academics and practical skills preparing students for higher education
-                        and professional life.
-                    </p>
-                </div>
-            </article>
-        </div>
-    </div>
-</section>
-
-<!-- ══════════ HIGHER LEARNING ══════════ -->
-<section class="overflow-hidden pb-0" style="background: #c8f040" aria-label="Higher Learning">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12 pt-16 md:pt-20 pb-20 md:pb-32">
-        <div class="c-fade flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-10 md:mb-12">
-            <h2 class="font-heading font-black text-primary text-2xl sm:text-3xl md:text-4xl tracking-tight">
-                HIGHER LEARNING
-            </h2>
-            <span class="font-body font-semibold text-primary/55 text-xs tracking-widest uppercase">Undergraduate Streams (BA/B.COM)</span>
-        </div>
-
-        <div class="space-y-5">
-            <!-- Stream 1 -->
-            <div class="c-fade grid sm:grid-cols-5 gap-0 rounded-2xl overflow-hidden shadow-lg"
-                 style="transition-delay: 0.06s">
-                <div class="sm:col-span-2 img-zoom" style="min-height: 220px">
-                    <img src="./assets/image/programs/higherstudy.webp" alt="Students studying — Stream 1"
-                         class="w-full h-full object-cover"
-                         style="display: block; width: 100%; height: 100%; object-fit: cover; min-height: 220px;"/>
-                </div>
-                <div class="sm:col-span-3 bg-primary p-7 md:p-8">
-                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-6">
-                        <div>
-                            <h3 class="font-heading font-bold text-white text-xl md:text-2xl tracking-tight mb-1">
-                                Stream 1: Narrative &amp; Mind
-                            </h3>
-                            <p class="text-secondary font-body font-medium text-[10px] tracking-widest uppercase">
-                                English Literature &amp; Psychology — Double Main
-                            </p>
-                        </div>
-                        <div class="text-right flex-shrink-0">
-                            <p class="text-white/35 font-body text-[9px] tracking-widest uppercase mb-1">Academic
-                                Cycle</p>
-                            <p class="font-heading font-black text-secondary text-base">ILP 3, 4, 5</p>
-                        </div>
-                    </div>
-                    <div class="grid sm:grid-cols-2 gap-6">
-                        <div>
-                            <p class="font-heading font-bold text-secondary text-sm mb-3">Core Integration</p>
-                            <ul class="space-y-1.5">
-                                <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
-                                        class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>Islamic Studies
-                                    Depth
-                                </li>
-                                <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
-                                        class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>Vocational Skill
-                                    Track
-                                </li>
-                                <li class="flex items-center gap-2 text-white/60 font-body text-xs"><span
-                                        class="w-1 h-1 rounded-full bg-secondary flex-shrink-0"></span>Literary Theory
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p class="font-heading font-bold text-secondary text-sm mb-3">Yearly Progression</p>
-                            <ul class="space-y-2">
-                                <li class="text-white/55 font-body text-xs leading-snug"><span
-                                        class="font-semibold text-white/80">Year 1:</span> Foundations of Cognition
-                                </li>
-                                <li class="text-white/55 font-body text-xs leading-snug"><span
-                                        class="font-semibold text-white/80">Year 2:</span> Advanced Psychopathology
-                                </li>
-                                <li class="text-white/55 font-body text-xs leading-snug"><span
-                                        class="font-semibold text-white/80">Year 3:</span> Critical Research &amp;
-                                    Thesis
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <!-- Stream 2 -->
-            <div class="c-fade grid sm:grid-cols-5 gap-0 rounded-2xl overflow-hidden shadow-lg"
-                 style="transition-delay: 0.14s">
-                <div class="sm:col-span-3 bg-primary p-7 md:p-8 order-2 sm:order-1">
-                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-5">
-                        <div>
-                            <h3 class="font-heading font-bold text-white text-xl md:text-2xl tracking-tight mb-1">
-                                Stream 2: Society &amp; Self
-                            </h3>
-                            <p class="text-secondary font-body font-medium text-[10px] tracking-widest uppercase">
-                                Sociology &amp; Psychology — Double Main
-                            </p>
-                        </div>
-                        <div class="text-right flex-shrink-0">
-                            <p class="text-white/35 font-body text-[9px] tracking-widest uppercase mb-1">Academic
-                                Cycle</p>
-                            <p class="font-heading font-black text-secondary text-base">ILP 3, 4, 5</p>
-                        </div>
-                    </div>
-                    <p class="text-white/55 font-body font-light text-sm leading-relaxed mb-6">
-                        Exploring the dialectic between societal structures and the individual psyche, anchored in
-                        Islamic sociological traditions and modern psychology.
+            <!-- Block 2: Electrical Technician -->
+            <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center mb-20 md:mb-24">
+                <div class="c-left order-2 md:order-1">
+                    <h3 class="font-heading font-black text-primary text-2xl sm:text-3xl md:text-4xl leading-tight tracking-tight mb-4">
+                        ELECTRICAL TECHNICIAN
+                    </h3>
+                    <p class="text-primary/60 font-body font-light text-sm md:text-base leading-relaxed mb-6">
+                        The Electrical Technician certification equips students with hands-on skills in electrical
+                        wiring,
+                        maintenance, installation, and troubleshooting, paving the way for a dynamic career in technical
+                        industries.
                     </p>
-                    <div class="flex flex-wrap gap-3">
-                        <div class="bg-white/8 rounded-lg px-4 py-2">
-                            <p class="text-white/35 font-body text-[9px] tracking-widest uppercase mb-0.5">Includes</p>
-                            <p class="text-secondary font-heading font-bold text-xs">Vocational Training</p>
-                        </div>
-                        <div class="bg-white/8 rounded-lg px-4 py-2">
-                            <p class="text-white/35 font-body text-[9px] tracking-widest uppercase mb-0.5">
-                                Integration</p>
-                            <p class="text-secondary font-heading font-bold text-xs">Islamic Studies</p>
-                        </div>
-                    </div>
+                    <ul class="grid grid-cols-2 gap-x-6 gap-y-2.5">
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Electrical Wiring Fundamentals</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Safety &amp; Hazard Prevention</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Circuit Troubleshooting</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Equipment Maintenance</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Appliance Repair</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Industrial Wiring Basics</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Power Distribution</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Testing &amp; Quality Checks</span>
+                        </li>
+                    </ul>
                 </div>
-                <div class="sm:col-span-2 img-zoom order-1 sm:order-2" style="min-height: 220px">
-                    <img src="./assets/image/programs/higherstudy_1.webp" alt="Students studying together — Stream 2"
-                         class="w-full h-full object-cover"
-                         style="display: block; width: 100%; height: 100%; object-fit: cover; min-height: 220px;"/>
-                </div>
-            </div>
-
-            <!-- Stream 3 -->
-            <div class="c-fade bg-primary rounded-2xl p-7 md:p-10 shadow-lg" style="transition-delay: 0.22s">
-                <p class="text-secondary font-body font-semibold text-[10px] tracking-widest uppercase mb-3">
-                    Professional Track</p>
-                <h3 class="font-heading font-bold text-white text-2xl md:text-3xl tracking-tight mb-6">
-                    Stream 3: B.Com &amp; Digital Ethics
-                </h3>
-                <div class="grid grid-cols-3 gap-6 mb-6">
-                    <div>
-                        <p class="text-white/35 font-body text-[9px] tracking-widest uppercase mb-1.5">Year 1</p>
-                        <p class="text-white font-heading font-semibold text-sm">B.Com Core</p>
-                    </div>
-                    <div>
-                        <p class="text-white/35 font-body text-[9px] tracking-widest uppercase mb-1.5">Year 2</p>
-                        <p class="text-white font-heading font-semibold text-sm">Corporate Ethics</p>
-                    </div>
-                    <div>
-                        <p class="text-white/35 font-body text-[9px] tracking-widest uppercase mb-1.5">Year 3</p>
-                        <p class="text-white font-heading font-semibold text-sm">Strategic Commerce</p>
-                    </div>
-                </div>
-                <div class="border-l-2 border-secondary/40 pl-5 py-1">
-                    <p class="text-white/45 font-body font-light text-xs leading-relaxed italic">
-                        "All commerce streams include mandatory Islamic Studies and specialized Vocational Training
-                        modules across ILP 3, 4, and 5."
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div style="line-height: 0; margin-bottom: -2px">
-        <svg viewBox="0 0 1440 72" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
-             style="display: block; width: 100%; height: 56px" aria-hidden="true">
-            <path d="M0,72 Q360,0 720,36 Q1080,72 1440,0 L1440,72 Z" fill="white"/>
-        </svg>
-    </div>
-</section>
-
-<!-- ══════════ SOFT SKILLS ══════════ -->
-<section class="bg-white py-20 md:py-28 overflow-hidden" aria-label="Soft Skills">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
-        <div class="c-fade text-center mb-12 md:mb-16">
-            <h2 class="font-heading font-black text-primary text-3xl sm:text-4xl md:text-5xl tracking-tight mb-5">
-                SOFT SKILLS
-            </h2>
-            <p class="text-primary/55 font-body font-light text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-                Beyond academic excellence, we prioritize the holistic development of our students. Our comprehensive
-                soft skills programmes are designed to build physical vitality, enhance communication, and foster
-                leadership, ensuring our graduates are well-rounded and ready for real-world challenges.
-            </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
-            <div class="c-left">
-                <div class="img-zoom rounded-2xl overflow-hidden shadow-xl mb-6 aspect-[4/3]">
-                    <img src="./assets/image/programs/softskill1.webp" alt="Classroom lecture — soft skills programme"
+                <div class="c-right order-1 md:order-2 img-zoom rounded-2xl overflow-hidden shadow-xl border-2 border-secondary/30 aspect-[4/3]"
+                     style="transition-delay: 0.12s">
+                    <img src="{% static 'image/programs/electrician.webp' %}"
+                         alt="Students doing electrical technician work"
                          class="w-full h-full object-cover"/>
                 </div>
-                <h3 class="font-heading font-black text-primary text-xl md:text-2xl tracking-tight mb-3">
-                    PHYSICAL WELL BEING
-                </h3>
-                <p class="text-primary/60 font-body font-light text-sm md:text-base leading-relaxed">
-                    Physical education is an integral part of our curriculum. We aim to boost student engagement,
-                    confidence, and competence across a range of physical activities. The Academy offers specialized
-                    training in Yoga, Kung Fu, and Karate, alongside various team sports, athletics, and access to a
-                    fully equipped on-campus gymnasium.
+            </div>
+
+            <!-- Block 3: Graphic Designing -->
+            <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center mb-20 md:mb-24">
+                <div class="c-left img-zoom rounded-2xl overflow-hidden shadow-xl border-2 border-secondary/30 aspect-[4/3]">
+                    <img src="{% static 'image/programs/graphicdesign.webp' %}" alt="Student working on graphic design"
+                         class="w-full h-full object-cover"/>
+                </div>
+                <div class="c-right" style="transition-delay: 0.12s">
+                    <h3 class="font-heading font-black text-primary text-2xl sm:text-3xl md:text-4xl leading-tight tracking-tight mb-4">
+                        DIPLOMA IN GRAPHIC DESIGNING
+                    </h3>
+                    <p class="text-primary/60 font-body font-light text-sm md:text-base leading-relaxed mb-6">
+                        The Diploma in Graphic Designing nurtures creative talent by teaching industry-standard design
+                        software, visual communication principles, and digital artistry to prepare students for the
+                        creative
+                        sector.
+                    </p>
+                    <ul class="grid grid-cols-2 gap-x-6 gap-y-2.5">
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Visual Communication</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Typography &amp; Color Theory</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Adobe Photoshop</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Adobe Illustrator</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Layout Design</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>UI/UX Basics</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Brand Identity Design</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Portfolio Development</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Block 4: Fitness Trainer -->
+            <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center mb-20 md:mb-24">
+                <div class="c-left order-2 md:order-1">
+                    <h3 class="font-heading font-black text-primary text-2xl sm:text-3xl md:text-4xl leading-tight tracking-tight mb-4">
+                        DIPLOMA IN FITNESS TRAINER
+                    </h3>
+                    <p class="text-primary/60 font-body font-light text-sm md:text-base leading-relaxed mb-6">
+                        Our Diploma in Fitness Training provides comprehensive knowledge in human anatomy, exercise
+                        physiology, and nutrition, empowering students to become certified, professional fitness
+                        instructors.
+                    </p>
+                    <ul class="grid grid-cols-2 gap-x-6 gap-y-2.5">
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Human Anatomy &amp; Physiology</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Exercise Kinesiology</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Diet &amp; Sports Nutrition</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Strength &amp; Conditioning</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Injury Prevention</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Personal Training Strategies</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Group Fitness Leadership</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Client Assessment</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="c-right order-1 md:order-2 img-zoom rounded-2xl overflow-hidden shadow-xl border-2 border-secondary/30 aspect-[4/3]"
+                     style="transition-delay: 0.12s">
+                    <img src="{% static 'image/programs/fitness.webp' %}" alt="Martial arts fitness training"
+                         class="w-full h-full object-cover object-top"/>
+                </div>
+            </div>
+
+            <!-- Block 5: Cybersecurity -->
+            <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+                <div class="c-left img-zoom rounded-2xl overflow-hidden shadow-xl border-2 border-secondary/30 aspect-[4/3]">
+                    <img src="{% static 'image/programs/cybersecurity.webp' %}" alt="Student at computer — Cybersecurity"
+                         class="w-full h-full object-cover object-right"/>
+                </div>
+                <div class="c-right" style="transition-delay: 0.12s">
+                    <h3 class="font-heading font-black text-primary text-2xl sm:text-3xl md:text-4xl leading-tight tracking-tight mb-4">
+                        DIPLOMA IN CYBERSECURITY
+                    </h3>
+                    <p class="text-primary/60 font-body font-light text-sm md:text-base leading-relaxed mb-6">
+                        The Diploma in Cybersecurity is a specialized, job-oriented programme designed to equip students
+                        with the theoretical knowledge and practical skills required to defend networks, systems, and
+                        data
+                        against emerging cyber threats.
+                    </p>
+                    <ul class="grid grid-cols-2 gap-x-6 gap-y-2.5">
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Network Security Fundamentals</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Ethical Hacking Basics</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Cryptography</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Risk Management</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Cyber Laws &amp; Ethics</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Incident Response</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Malware Analysis</span>
+                        </li>
+                        <li class="check-item text-sm text-primary/70 font-body">
+                            <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="7" fill="#D1FB5F" opacity=".25" stroke="#00301C"
+                                        stroke-width="1"/>
+                                <path d="M5 8.5l2 2 4-4" stroke="#00301C" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Cloud Security</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ 4. ACADEMY COURSE DETAILS ══════════ -->
+
+    <!-- ══════════ SOFT SKILLS ══════════ -->
+    <section class="bg-white py-20 md:py-28 overflow-hidden" aria-label="Soft Skills">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
+            <div class="c-fade text-center mb-12 md:mb-16">
+                <h2 class="font-heading font-black text-primary text-3xl sm:text-4xl md:text-5xl tracking-tight mb-5">
+                    SOFT SKILLS
+                </h2>
+                <p class="text-primary/55 font-body font-light text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+                    Beyond academic excellence, we prioritize the holistic development of our students. Our
+                    comprehensive
+                    soft skills programmes are designed to build physical vitality, enhance communication, and foster
+                    leadership, ensuring our graduates are well-rounded and ready for real-world challenges.
                 </p>
             </div>
 
-            <div class="c-right space-y-0 divide-y divide-primary/10">
-                <div class="c-fade py-7 md:py-8 first:pt-0" style="transition-delay: 0.08s">
-                    <h4 class="font-heading font-bold text-primary text-base md:text-lg tracking-tight uppercase mb-3">
-                        Social Extension
-                    </h4>
-                    <p class="text-primary/55 font-body font-light text-sm leading-relaxed">
-                        We provide practical training that encourages prosocial behaviour, offering our students
-                        meaningful opportunities to engage with and contribute to the broader community.
-                    </p>
-                </div>
-
-                <div class="c-fade py-7 md:py-8" style="transition-delay: 0.16s">
-                    <h4 class="font-heading font-bold text-primary text-base md:text-lg tracking-tight uppercase mb-3">
-                        Assorted Skill Set
-                    </h4>
-                    <p class="text-primary/55 font-body font-light text-sm leading-relaxed">
-                        Extracurricular proficiencies including driving, archery, roller skating, and chess.
-                    </p>
-                </div>
-
-                <div class="c-fade py-7 md:py-8 last:pb-0" style="transition-delay: 0.24s">
-                    <h4 class="font-heading font-bold text-primary text-base md:text-lg tracking-tight uppercase mb-3">
-                        Management Skills
-                    </h4>
-                    <p class="text-primary/55 font-body font-light text-sm leading-relaxed">
-                        Core leadership competencies such as decision-making, problem-solving, effective communication,
-                        and interpersonal dynamics.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ══════════ SKILL DEVELOPMENT CARDS ══════════ -->
-<section class="bg-[#f5f5f3] py-20 md:py-28 overflow-hidden" aria-label="Skill Development">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
-            <!-- Writing Skill -->
-            <article class="feat-card c-fade bg-[#e8e8e5] rounded-2xl overflow-hidden flex flex-col"
-                     style="transition-delay: 0.06s">
-                <div class="img-zoom aspect-video w-full">
-                    <img src="./assets/image/programs/writingskill.webp" alt="Students in writing skills class"
-                         class="w-full h-full object-cover object-left"/>
-                </div>
-                <div class="p-6 md:p-7 flex flex-col flex-1">
-                    <h3 class="font-heading font-bold text-primary text-lg md:text-xl text-center tracking-tight mb-3">
-                        Writing Skills Development
+            <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
+                <div class="c-left">
+                    <div class="img-zoom rounded-2xl overflow-hidden shadow-xl mb-6 aspect-[4/3]">
+                        <img src="{% static 'image/programs/softskill1.webp' %}"
+                             alt="Classroom lecture — soft skills programme"
+                             class="w-full h-full object-cover"/>
+                    </div>
+                    <h3 class="font-heading font-black text-primary text-xl md:text-2xl tracking-tight mb-3">
+                        PHYSICAL WELL BEING
                     </h3>
-                    <p class="text-primary/55 font-body font-light text-sm leading-relaxed text-center flex-1">
-                        Master the ability to clearly and persuasively communicate ideas through the written word,
-                        focusing on grammar, vocabulary, structure, and professional formatting.
+                    <p class="text-primary/60 font-body font-light text-sm md:text-base leading-relaxed">
+                        Physical education is an integral part of our curriculum. We aim to boost student engagement,
+                        confidence, and competence across a range of physical activities. The Academy offers specialized
+                        training in shotokan Karate, alongside various team sports, athletics, and access to a
+                        fully equipped on-campus gymnasium.
                     </p>
                 </div>
-            </article>
 
-            <!-- Presentation Skills -->
-            <article class="feat-card c-fade bg-[#e8e8e5] rounded-2xl overflow-hidden flex flex-col"
-                     style="transition-delay: 0.16s">
-                <div class="img-zoom aspect-video w-full">
-                    <img src="assets/image/programs/presentation.webp" alt="Students in presentation skills session"
-                         class="w-full h-full object-cover object-center"/>
+                <div class="c-right space-y-0 divide-y divide-primary/10">
+                    <div class="c-fade py-7 md:py-8 first:pt-0" style="transition-delay: 0.08s">
+                        <h4 class="font-heading font-bold text-primary text-base md:text-lg tracking-tight uppercase mb-3">
+                            Social Extension
+                        </h4>
+                        <p class="text-primary/55 font-body font-light text-sm leading-relaxed">
+                            We provide practical training that encourages prosocial behaviour, offering our students
+                            meaningful opportunities to engage with and contribute to the broader community.
+                        </p>
+                    </div>
+
+                    <div class="c-fade py-7 md:py-8" style="transition-delay: 0.16s">
+                        <h4 class="font-heading font-bold text-primary text-base md:text-lg tracking-tight uppercase mb-3">
+                            Assorted Skill Set
+                        </h4>
+                        <p class="text-primary/55 font-body font-light text-sm leading-relaxed">
+                            Extracurricular proficiencies including driving, swimming, chess, etc.
+                        </p>
+                    </div>
+
+                    <div class="c-fade py-7 md:py-8 last:pb-0" style="transition-delay: 0.24s">
+                        <h4 class="font-heading font-bold text-primary text-base md:text-lg tracking-tight uppercase mb-3">
+                            Management Skills
+                        </h4>
+                        <p class="text-primary/55 font-body font-light text-sm leading-relaxed">
+                            Core leadership competencies such as decision-making, problem-solving, effective
+                            communication,
+                            and interpersonal dynamics.
+                        </p>
+                    </div>
                 </div>
-                <div class="p-6 md:p-7 flex flex-col flex-1">
-                    <h3 class="font-heading font-bold text-primary text-lg md:text-xl text-center tracking-tight mb-3">
-                        Presentation Skills Mastery
-                    </h3>
-                    <p class="text-primary/55 font-body font-light text-sm leading-relaxed text-center flex-1">
-                        Acquire the techniques and confidence needed to effectively convey information and ideas to
-                        diverse audiences using oral, visual, and written mediums.
-                    </p>
-                </div>
-            </article>
-
-            <!-- Language Development -->
-            <article
-                    class="feat-card c-fade bg-[#e8e8e5] rounded-2xl overflow-hidden flex flex-col sm:col-span-2 lg:col-span-1"
-                    style="transition-delay: 0.26s">
-                <div class="img-zoom aspect-video w-full">
-                    <img src="assets/image/programs/languagedevelopment.webp" alt="Student focused on language learning"
-                         class="w-full h-full object-cover object-right"/>
-                </div>
-                <div class="p-6 md:p-7 flex flex-col flex-1">
-                    <h3 class="font-heading font-bold text-primary text-lg md:text-xl text-center tracking-tight mb-3">
-                        Language Proficiency
-                    </h3>
-                    <p class="text-primary/55 font-body font-light text-sm leading-relaxed text-center flex-1">
-                        Enhance core linguistic abilities to communicate fluently, comprehend complex concepts, and
-                        bridge cultural gaps in a globalized world.
-                    </p>
-                </div>
-            </article>
-        </div>
-    </div>
-</section>
-
-<!-- ══════════ FOOTER ══════════ -->
-<footer class="bg-primary pt-14 pb-0" aria-label="Site footer">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 pb-14 border-b border-white/10">
-
-            <div>
-                <div class="flex items-center gap-2.5 mb-5">
-            <span class="w-9 h-9 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 2C8 2 4 5 4 10c0 4 3 7 8 12 5-5 8-8 8-12 0-5-4-8-8-8z" fill="#00301C"/>
-              </svg>
-            </span>
-                    <span class="font-heading font-black text-white text-base tracking-tight">GREEN<span
-                            class="text-secondary">VALLEY</span></span>
-                </div>
-                <ul class="space-y-3.5 text-white/50 text-sm font-body font-light">
-                    <li class="flex items-start gap-2.5">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <path d="M8 8.5a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" stroke-width="1.4"/>
-                            <path d="M8 14s5-4 5-7a5 5 0 00-10 0c0 3 5 7 5 7z" stroke="currentColor"
-                                  stroke-width="1.4"/>
-                        </svg>
-                        <span>Green Valley Academy, Pulpatta P.O., Manjeri, Malappuram, Kerala – 676123</span>
-                    </li>
-                    <li class="flex items-start gap-2.5">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <path d="M13 10.7l-2-1a.8.8 0 00-.9.2l-.9 1a7.4 7.4 0 01-3.3-3.3l1-.9a.8.8 0 00.2-.9l-1-2A.8.8 0 005.4 4H4a.8.8 0 00-.8.8A9.6 9.6 0 0012.8 14a.8.8 0 00.8-.8v-1.7a.8.8 0 00-.6-.8z"
-                                  stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                        </svg>
-                        <span>+91 48329 44429 | +91 48329699 66</span>
-                    </li>
-                    <li class="flex items-start gap-2.5">
-                        <svg class="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
-                            <rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
-                            <path d="M2 6l6 4 6-4" stroke="currentColor" stroke-width="1.4"/>
-                        </svg>
-                        <a href="mailto:greenvalleymanjeri@gmail.com"
-                           class="hover:text-secondary transition-colors break-all">greenvalleymanjeri@gmail.com</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="font-heading font-bold text-white text-base mb-5 tracking-tight">Courses</h4>
-                <ul class="space-y-2.5">
-                    <li><a class="cursor-pointer foot-link text-white/50 text-sm font-body font-light">Computer
-                        Application</a></li>
-                    <li><a class="cursor-pointer foot-link text-white/50 text-sm font-body font-light">Graphic
-                        Designing</a></li>
-                    <li><a class="cursor-pointer foot-link text-white/50 text-sm font-body font-light">Electrical
-                        Technician</a></li>
-                    <li><a class="cursor-pointer foot-link text-white/50 text-sm font-body font-light">Account
-                        Executive</a></li>
-                    <li><a class="cursor-pointer foot-link text-white/50 text-sm font-body font-light">Arabic
-                        Translator</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="font-heading font-bold text-white text-base mb-5 tracking-tight">Quick Links</h4>
-                <ul class="space-y-2.5">
-                    <li><a href="./application.html" class="foot-link text-white/50 text-sm font-body font-light">Admission
-                        Form</a></li>
-                    <li><a href="./about.html" class="foot-link text-white/50 text-sm font-body font-light">About Us</a>
-                    </li>
-                    <li><a href="./programmes.html" class="foot-link text-white/50 text-sm font-body font-light">Programmes</a>
-                    </li>
-                    <li><a href="./activities.html" class="foot-link text-white/50 text-sm font-body font-light">Activities</a>
-                    </li>
-                    <li><a href="./womens_academy.html" class="foot-link text-white/50 text-sm font-body font-light">Women's
-                        Academy</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="font-heading font-bold text-white text-base mb-5 tracking-tight">Connect</h4>
-                <ul class="space-y-3.5">
-                    <li>
-                        <a href="#" class="foot-sl text-white/50 text-sm font-body font-light">
-                <span class="w-7 h-7 rounded-lg bg-white/8 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-3.5 h-3.5 text-secondary" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M8 1.6a6.4 6.4 0 100 12.8A6.4 6.4 0 008 1.6zM5.5 5.5h1.8V4.7c0-1.2.6-1.8 2-1.8h1.3v1.8H9.4c-.5 0-.5.2-.5.5V5.5h1.7l-.2 2H8.9V13H7V7.5H5.8l.2-2z"/>
-                  </svg>
-                </span>Facebook
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="foot-sl text-white/50 text-sm font-body font-light">
-                <span class="w-7 h-7 rounded-lg bg-white/8 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-3.5 h-3.5 text-secondary" viewBox="0 0 16 16" fill="none" stroke="currentColor"
-                       stroke-width="1.3">
-                    <rect x="3" y="3" width="10" height="10" rx="3"/>
-                    <circle cx="8" cy="8" r="2.5"/>
-                    <circle cx="11.2" cy="4.8" r=".7" fill="currentColor" stroke="none"/>
-                  </svg>
-                </span>Instagram
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="foot-sl text-white/50 text-sm font-body font-light">
-                <span class="w-7 h-7 rounded-lg bg-white/8 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-3.5 h-3.5 text-secondary" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M15 3.5a6 6 0 01-1.65.46 2.9 2.9 0 001.26-1.6 5.8 5.8 0 01-1.83.7A2.9 2.9 0 008 5.57a8.2 8.2 0 01-5.96-3.02 2.9 2.9 0 00.9 3.86 2.87 2.87 0 01-1.31-.36v.04a2.9 2.9 0 002.32 2.84 2.9 2.9 0 01-1.3.05 2.9 2.9 0 002.7 2.01A5.82 5.82 0 011 12.4a8.2 8.2 0 004.44 1.3c5.33 0 8.25-4.42 8.25-8.25l-.01-.38A5.9 5.9 0 0015 3.5z"/>
-                  </svg>
-                </span>Twitter
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="foot-sl text-white/50 text-sm font-body font-light">
-                <span class="w-7 h-7 rounded-lg bg-white/8 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-3.5 h-3.5 text-secondary" viewBox="0 0 16 16" fill="currentColor">
-                    <circle cx="10" cy="10" r="4.5" fill="#25D366"/>
-                    <path d="M8.5 9.2c.2.9.9 1.5 1.7 1.7l.6-.6c.1-.1.3-.1.5 0l.9.7c.1.1.1.3 0 .5-.5.5-1.3.7-1.9.4A4 4 0 017.9 9.5c-.4-.6-.2-1.4.4-1.9.1-.1.3-.1.5 0l.7.9c.1.1.1.3 0 .5l-.9.2z"
-                          fill="white"/>
-                  </svg>
-                </span>WhatsApp
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div>
+    </section>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 py-5 text-white/30 text-xs font-body font-light">
-            <p>© COPYRIGHT 2026 GREEN VALLEY ACADEMY. ALL RIGHTS RESERVED.</p>
+    <!-- ══════════ SKILL DEVELOPMENT CARDS ══════════ -->
+    <section class="bg-[#f5f5f3] py-20 md:py-28 overflow-hidden" aria-label="Skill Development">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
+                <!-- Writing Skill -->
+                <article class="feat-card c-fade bg-[#e8e8e5] rounded-2xl overflow-hidden flex flex-col"
+                         style="transition-delay: 0.06s">
+                    <div class="img-zoom aspect-video w-full">
+                        <img src="{% static 'image/programs/writingskill.webp' %}"
+                             alt="Students in writing skills class"
+                             class="w-full h-full object-cover object-left"/>
+                    </div>
+                    <div class="p-6 md:p-7 flex flex-col flex-1">
+                        <h3 class="font-heading font-bold text-primary text-lg md:text-xl text-center tracking-tight mb-3">
+                            Writing Skills Development
+                        </h3>
+                        <p class="text-primary/55 font-body font-light text-sm leading-relaxed text-center flex-1">
+                            Master the ability to clearly and persuasively communicate ideas through the written word,
+                            focusing on grammar, vocabulary, structure, and professional formatting.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Presentation Skills -->
+                <article class="feat-card c-fade bg-[#e8e8e5] rounded-2xl overflow-hidden flex flex-col"
+                         style="transition-delay: 0.16s">
+                    <div class="img-zoom aspect-video w-full">
+                        <img src="{% static 'image/programs/presentation.webp' %}"
+                             alt="Students in presentation skills session"
+                             class="w-full h-full object-cover object-center"/>
+                    </div>
+                    <div class="p-6 md:p-7 flex flex-col flex-1">
+                        <h3 class="font-heading font-bold text-primary text-lg md:text-xl text-center tracking-tight mb-3">
+                            Presentation Skills Mastery
+                        </h3>
+                        <p class="text-primary/55 font-body font-light text-sm leading-relaxed text-center flex-1">
+                            Acquire the techniques and confidence needed to effectively convey information and ideas to
+                            diverse audiences using oral, visual, and written mediums.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Language Development -->
+                <article
+                        class="feat-card c-fade bg-[#e8e8e5] rounded-2xl overflow-hidden flex flex-col sm:col-span-2 lg:col-span-1"
+                        style="transition-delay: 0.26s">
+                    <div class="img-zoom aspect-video w-full">
+                        <img src="{% static 'image/programs/languagedevelopment.webp' %}"
+                             alt="Student focused on language learning"
+                             class="w-full h-full object-cover object-right"/>
+                    </div>
+                    <div class="p-6 md:p-7 flex flex-col flex-1">
+                        <h3 class="font-heading font-bold text-primary text-lg md:text-xl text-center tracking-tight mb-3">
+                            Language Proficiency
+                        </h3>
+                        <p class="text-primary/55 font-body font-light text-sm leading-relaxed text-center flex-1">
+                            Enhance core linguistic abilities to communicate fluently, comprehend complex concepts, and
+                            bridge cultural gaps in a globalized world.
+                        </p>
+                    </div>
+                </article>
+            </div>
         </div>
-    </div>
-</footer>
+    </section>
+{% endblock %}
 
-<script>
-    // Mobile nav
-    var mT = document.getElementById("mob-toggle"),
-        mM = document.getElementById("mob-menu");
-    var mb1 = document.getElementById("mb1"),
-        mb2 = document.getElementById("mb2"),
-        mb3 = document.getElementById("mb3");
-    var mO = false;
-    mT.addEventListener("click", function () {
-        mO = !mO;
-        mM.classList.toggle("open", mO);
-        mT.setAttribute("aria-expanded", mO);
-        mb1.style.transform = mO ? "rotate(45deg) translate(4px,5px)" : "";
-        mb2.style.opacity = mO ? "0" : "1";
-        mb3.style.transform = mO ? "rotate(-45deg) translate(4px,-5px)" : "";
-        mb3.style.width = mO ? "20px" : "";
-    });
-    mM.querySelectorAll("a").forEach(function (a) {
-        a.addEventListener("click", function () {
-            mO = false;
-            mM.classList.remove("open");
-            mb1.style.transform = mb2.style.opacity = mb3.style.transform = "";
-            mb3.style.width = "";
+{% block js %}
+    <script>
+        // Mobile nav
+        let mT = document.getElementById("mob-toggle"),
+            mM = document.getElementById("mob-menu");
+        let mb1 = document.getElementById("mb1"),
+            mb2 = document.getElementById("mb2"),
+            mb3 = document.getElementById("mb3");
+        let mO = false;
+        mT.addEventListener("click", function () {
+            mO = !mO;
+            mM.classList.toggle("open", mO);
+            mT.setAttribute("aria-expanded", mO);
+            mb1.style.transform = mO ? "rotate(45deg) translate(4px,5px)" : "";
+            mb2.style.opacity = mO ? "0" : "1";
+            mb3.style.transform = mO ? "rotate(-45deg) translate(4px,-5px)" : "";
+            mb3.style.width = mO ? "20px" : "";
         });
-    });
-
-    // Scroll reveal
-    var els = document.querySelectorAll(".c-fade,.c-left,.c-right");
-    var obs = new IntersectionObserver(
-        function (entries) {
-            entries.forEach(function (e) {
-                if (e.isIntersecting) {
-                    e.target.classList.add("vis");
-                    obs.unobserve(e.target);
-                }
+        mM.querySelectorAll("a").forEach(function (a) {
+            a.addEventListener("click", function () {
+                mO = false;
+                mM.classList.remove("open");
+                mb1.style.transform = mb2.style.opacity = mb3.style.transform = "";
+                mb3.style.width = "";
             });
-        },
-        {threshold: 0.1},
-    );
-    els.forEach(function (el) {
-        obs.observe(el);
-    });
-</script>
-</body>
-</html>
+        });
+
+        // Scroll reveal
+        let els = document.querySelectorAll(".c-fade,.c-left,.c-right");
+        let obs = new IntersectionObserver(
+            function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add("vis");
+                        obs.unobserve(e.target);
+                    }
+                });
+            },
+            {threshold: 0.1},
+        );
+        els.forEach(function (el) {
+            obs.observe(el);
+        });
+    </script>
+{% endblock %}

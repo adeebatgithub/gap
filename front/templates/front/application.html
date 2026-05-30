@@ -56,7 +56,7 @@
                     </div>
 
                     <!-- Application Form -->
-                    <form method="post" action="{% url 'academics:academicyear:create' %}" novalidate class="space-y-12"
+                    <form hx-post="{% url 'academics:admission:create' %}" class="space-y-12"
                           aria-label="Admission application form">
                         {% csrf_token %}
                         <!-- ── SECTION 01: Personal Identity ── -->
@@ -76,16 +76,25 @@
                                                for="applicant-name">
                                             Name of Applicant
                                         </label>
-                                        <input id="applicant-name" type="text" placeholder="Full Legal Name"
+                                        <input id="applicant-name" name="full_name" type="text"
+                                               placeholder="Full Legal Name"
                                                autocomplete="name" class="form-input" required/>
+                                        {% if form.full_name.errors %}
+                                            {{ form.full_name.errors|join:", " }}
+                                        {% endif %}
+
                                     </div>
                                     <div>
                                         <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
                                                for="guardian-name">
                                             Father / Guardian Name
                                         </label>
-                                        <input id="guardian-name" type="text" placeholder="Full Name" autocomplete="off"
+                                        <input id="guardian-name" name="guardian_name" type="text"
+                                               placeholder="Full Name" autocomplete="off"
                                                class="form-input" required/>
+                                        {% if form.guardian_name.errors %}
+                                            {{ form.guardian_name.errors|join:", " }}
+                                        {% endif %}
                                     </div>
                                 </div>
 
@@ -96,16 +105,24 @@
                                                for="dob">
                                             Date of Birth
                                         </label>
-                                        <input id="dob" type="date" placeholder="mm/dd/yyyy" class="form-input"
+                                        <input id="dob" type="date" name="dob" placeholder="mm/dd/yyyy"
+                                               class="form-input"
                                                required/>
+                                        {% if form.dob.errors %}
+                                            {{ form.dob.errors|join:", " }}
+                                        {% endif %}
                                     </div>
                                     <div>
                                         <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
                                                for="mother-tongue">
                                             Mother Tongue
                                         </label>
-                                        <input id="mother-tongue" type="text" placeholder="Native Language"
+                                        <input id="mother-tongue" name="mother_tongue" type="text"
+                                               placeholder="Native Language"
                                                autocomplete="off" class="form-input"/>
+                                        {% if form.mother_tongue.errors %}
+                                            {{ form.mother_tongue.errors|join:", " }}
+                                        {% endif %}
                                     </div>
                                 </div>
 
@@ -116,7 +133,7 @@
                                         Preferred Course
                                     </label>
                                     <div class="relative">
-                                        <select id="preferred-course" class="form-select pr-8" required>
+                                        <select id="preferred-course" name="course" class="form-select pr-8" required>
                                             <option value="" disabled selected>Select Academic Program</option>
                                             <option>Integrated Learning Programme (ILP | Boys) — 5 Years</option>
                                             <option>Islamic Life Solutions (ILS | Girls) — 3 Years</option>
@@ -129,6 +146,9 @@
                                                   stroke-linecap="round" stroke-linejoin="round"></path>
                                         </svg>
                                     </div>
+                                    {% if form.course.errors %}
+                                        {{ form.course.errors|join:", " }}
+                                    {% endif %}
                                 </div>
                             </div>
                         </fieldset>
@@ -152,17 +172,23 @@
                                                for="address">
                                             House Name / No
                                         </label>
-                                        <input id="address" type="text" placeholder="Street Address"
+                                        <input id="address" name="house_name" type="text" placeholder="Street Address"
                                                autocomplete="street-address" class="form-input"/>
+                                        {% if form.house_name.errors %}
+                                            {{ form.house_name.errors|join:", " }}
+                                        {% endif %}
                                     </div>
                                     <div>
                                         <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
                                                for="pincode">
                                             Pin Code
                                         </label>
-                                        <input id="pincode" type="text" placeholder="Postal Code"
+                                        <input id="pincode" name="pincode" type="text" placeholder="Postal Code"
                                                autocomplete="postal-code"
                                                maxlength="10" class="form-input"/>
+                                        {% if form.pincode.errors %}
+                                            {{ form.pincode.errors|join:", " }}
+                                        {% endif %}
                                     </div>
                                 </div>
 
@@ -173,24 +199,34 @@
                                                for="city">
                                             Post Office / City
                                         </label>
-                                        <input id="city" type="text" placeholder="Locality"
+                                        <input id="city" name="post" type="text" placeholder="Locality"
                                                autocomplete="address-level2"
                                                class="form-input"/>
+                                        {% if form.post.errors %}
+                                            {{ form.post.errors|join:", " }}
+                                        {% endif %}
                                     </div>
                                     <div>
                                         <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
                                                for="district">
                                             District
                                         </label>
-                                        <input id="district" type="text" placeholder="Region" class="form-input"/>
+                                        <input id="district" name="district" type="text" placeholder="Region"
+                                               class="form-input"/>
+                                        {% if form.district.errors %}
+                                            {{ form.district.errors|join:", " }}
+                                        {% endif %}
                                     </div>
                                     <div>
                                         <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
                                                for="state">
                                             State
                                         </label>
-                                        <input id="state" type="text" placeholder="State/Province"
+                                        <input id="state" name="state" type="text" placeholder="State/Province"
                                                autocomplete="address-level1" class="form-input"/>
+                                        {% if form.state.errors %}
+                                            {{ form.state.errors|join:", " }}
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -215,16 +251,24 @@
                                                for="primary-phone">
                                             Primary Mobile No
                                         </label>
-                                        <input id="primary-phone" type="tel" placeholder="+1 (000) 000-0000"
+                                        <input id="primary-phone" name="phone_1" type="tel"
+                                               placeholder="+1 (000) 000-0000"
                                                autocomplete="tel" class="form-input" required/>
+                                        {% if form.phone_1.errors %}
+                                            {{ form.phone_1.errors|join:", " }}
+                                        {% endif %}
                                     </div>
                                     <div>
                                         <label class="block text-primary/50 font-body font-semibold text-xs tracking-widest uppercase mb-3"
                                                for="secondary-phone">
                                             Secondary Contact No
                                         </label>
-                                        <input id="secondary-phone" type="tel" placeholder="Alternative Phone"
+                                        <input id="secondary-phone" name="phone_2" type="tel"
+                                               placeholder="Alternative Phone"
                                                class="form-input"/>
+                                        {% if form.phone_2.errors %}
+                                            {{ form.phone_2.errors|join:", " }}
+                                        {% endif %}
                                     </div>
                                 </div>
 
@@ -235,7 +279,7 @@
                                         Preferred Entrance Exam Center
                                     </label>
                                     <div class="relative">
-                                        <select id="exam-center" class="form-select pr-8">
+                                        <select id="exam-center" name="center" class="form-select pr-8">
                                             <option value="" disabled selected>Select Location</option>
                                             <option>Kollam</option>
                                             <option>Aluva</option>
@@ -248,13 +292,16 @@
                                                   stroke-linecap="round" stroke-linejoin="round"></path>
                                         </svg>
                                     </div>
+                                    {% if form.center.errors %}
+                                        {{ form.center.errors|join:", " }}
+                                    {% endif %}
                                 </div>
                             </div>
                         </fieldset>
 
                         <!-- ── SUBMIT BUTTON ── -->
                         <div class="pt-2">
-                            <button type="submit"
+                            <button id="btn-submit" type="submit"
                                     class="submit-btn bg-secondary text-primary font-heading font-black text-base px-10 py-4 rounded-full shadow-lg">
                                 Submit Application
                             </button>
@@ -266,6 +313,42 @@
                         </div>
 
                     </form>
+                    <!-- SUCCESS MESSAGE -->
+                    <div id="success-message"
+                         class="hidden rounded-3xl border border-green-200 bg-green-50 p-8 text-center shadow-lg">
+
+                        <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                            <svg class="h-8 w-8 text-green-600"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24">
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                        </div>
+
+                        <h3 class="font-heading text-2xl font-black text-green-700 mb-3">
+                            Application Submitted Successfully
+                        </h3>
+
+                        <p class="mx-auto max-w-xl text-sm leading-relaxed text-green-700/80">
+                            Thank you for submitting your admission application to Green Valley Academy.
+                            Our admissions team will review your details and contact you shortly regarding
+                            the next steps in the admission process.
+                        </p>
+
+                        <div class="mt-6">
+                            <button type="button"
+                                    onclick="window.location.reload()"
+                                    class="cursor-pointer rounded-full bg-green-600 px-6 py-3 text-white text-sm font-bold transition hover:bg-green-700">
+                                Submit Another Response
+                            </button>
+                        </div>
+
+                    </div>
                 </div>
 
             </div>
@@ -352,6 +435,9 @@
 
         fadeEls.forEach(function (el) {
             obs.observe(el);
+        });
+        document.body.addEventListener("SubmitSuccess", function () {
+            document.getElementById("success-message").classList.remove("hidden")
         });
     </script>
 {% endblock %}
