@@ -138,6 +138,14 @@
         Gallery
     </a>
 
+    <a href="{% url 'notification:list' %}"
+       class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+              {% if request.resolver_match.app_name == 'notification' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"
+       {% if request.resolver_match.app_name == 'notification' %}aria-current="page"{% endif %}>
+        <i class="bi bi-chat-left-text-fill text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'notification' %}group-hover:scale-110{% endif %}"></i>
+        Notifications
+    </a>
+
     <a href="{% url 'underdev-mode' %}"
        class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
               {% if request.resolver_match.url_name == 'inquiry-list' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"

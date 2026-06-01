@@ -16,4 +16,5 @@ urlpatterns = [
     path('inquiry/detail/<int:pk>/',views.InquiryDetailView.as_view(),name='inquiry-detail'),
     path('inquiry/delete/<int:pk>/',views.InquiryDeleteView.as_view(),name='inquiry-delete'),
     path('gallery/', include('front.gallery.urls')),
+    path('notification/', include('front.notification.urls')),
 ]
