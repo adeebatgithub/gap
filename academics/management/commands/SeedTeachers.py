@@ -46,11 +46,13 @@ class Command(BaseCommand):
             if User.objects.filter(email=email).exists():
                 self.stdout.write("wxists")
 
+            parts = name.strip().split()
+
             user = User.objects.create_user(
                 username=email,
                 email=email,
-                first_name=name.split()[0],
-                last_name=name.split()[1:],
+                first_name=parts[0],
+                last_name = " ".join(parts[1:]) if len(parts) > 1 else "",
             )
 
             Teacher.objects.create(
