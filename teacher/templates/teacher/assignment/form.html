@@ -6,7 +6,7 @@
 
 {% block navbar_btns %}
     {% if request.GET.teacher %}
-        {% url 'academics:teacher:detail' pk=request.GET.teacher as back_destination %}
+        {% url 'teacher:teacher:detail' pk=request.GET.teacher as back_destination %}
     {% elif request.GET.schoolclass %}
         {% url 'academics:schoolclass:detail' pk=request.GET.schoolclass as back_destination %}
     {% endif %}
@@ -22,7 +22,7 @@
 
             <div class="p-4 sm:p-6">
                 {% if request.GET.teacher %}
-                    {% url 'academics:teacher:detail' pk=request.GET.teacher as cancel_destination %}
+                    {% url 'teacher:teacher:detail' pk=request.GET.teacher as cancel_destination %}
                 {% elif request.GET.schoolclass %}
                     {% url 'academics:schoolclass:detail' pk=request.GET.schoolclass as cancel_destination %}
                 {% endif %}
