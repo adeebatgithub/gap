@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
 from openpyxl import load_workbook
 
@@ -36,6 +37,8 @@ class Command(BaseCommand):
             )
             return
 
+        group = Group.objects.get(name="Teacher")
+
         for row in ws.iter_rows(min_row=3, values_only=True):
             name = row[name_idx]
             email = row[email_idx]
@@ -54,6 +57,8 @@ class Command(BaseCommand):
                 first_name=parts[0],
                 last_name = " ".join(parts[1:]) if len(parts) > 1 else "",
             )
+
+            user.groups.add(group)
 
             Teacher.objects.create(
                 user=user,
