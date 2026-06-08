@@ -58,6 +58,10 @@ class SchoolClassCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'academics/schoolclass/form.html'
     success_url = reverse_lazy('academics:schoolclass:list')
 
+    def form_valid(self, form):
+        form.instance.academic_year_id = get_academic_year(self.request)
+        return super().form_valid(form)
+
 
 class SchoolClassUpdateView(PermissionRequiredMixin, RedirectToDetail, UpdateView):
     permission_required = "academics.change_schoolclass"
