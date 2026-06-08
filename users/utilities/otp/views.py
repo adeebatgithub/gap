@@ -14,7 +14,14 @@ from .forms import OTPForm
 def generate_otp():
     min_ = "1" + ("0" * (settings.OTP_LENGTH - 1))
     max_ = "9" * settings.OTP_LENGTH
-    return random.randint(int(min_), int(max_))
+    otp = random.randint(int(min_), int(max_))
+
+    last_otp = OTPModel.objects.last()
+    if last_otp and otp == last_otp.otp:
+        return generate_otp()
+
+    return otp
+
 
 
 class OTPCreateView(View):
