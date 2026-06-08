@@ -31,7 +31,7 @@ class TeacherListView(PermissionRequiredMixin, ListView):
                 Q(user__last_name__icontains=search)
             )
 
-        return queryset
+        return queryset.order_by("user__first_name", "user__last_name")
 
 
 class TeacherDetailView(PermissionRequiredMixin, DetailView):
