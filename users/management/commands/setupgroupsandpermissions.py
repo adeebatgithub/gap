@@ -15,12 +15,16 @@ class Command(BaseCommand):
             "teacher.Teacher": ["view"],
             "academics.SchoolClass": ["view"],
             "teacher.Movement": ["view"],
+            "teacher.assessment": ["add", "change", "delete", "view"],
+            "teacher.Grade": ["add", "change", "delete", "view"],
         },
         "Exam": {
-            "academics.assessment": ["view"],
-            "academics.Grade": ["view"],
+            "teacher.assessment": ["view"],
+            "teacher.Grade": ["view"],
             "teacher.Attendance": ["view"],
             "teacher.Session": ["view"],
+            "academics.Enrollment": ["view"],
+            "academics.SchoolClass": ["view"],
         }
     }
 
