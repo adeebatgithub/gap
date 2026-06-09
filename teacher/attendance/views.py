@@ -19,10 +19,15 @@ from .forms import SessionForm, SessionUpdateForm
 
 
 class SessionListView(PermissionRequiredMixin, ListView):
-    permission_required = 'academics.view_session'
+    permission_required = 'teacher.view_session'
     model = Session
     template_name = 'teacher/sessions/list.html'
     context_object_name = 'sessions'
+
+    def get_template_names(self):
+        if self.request.htmx:
+            return ["teacher/sessions/partial_list.html"]
+        return super().get_template_names()
 
     def get_filters(self):
         filters = {}
@@ -53,7 +58,7 @@ class SessionDetailView(PermissionRequiredMixin, DetailView):
 
 
 class SessionCreateView(PermissionRequiredMixin, CreateView):
-    permission_required = 'academics.add_session'
+    permission_required = 'teacher.add_session'
     model = Session
     form_class = SessionForm
     template_name = 'teacher/sessions/form.html'
@@ -78,7 +83,7 @@ class SessionCreateView(PermissionRequiredMixin, CreateView):
 
 
 class SessionUpdateView(PermissionRequiredMixin, UpdateView):
-    permission_required = 'academics.change_session'
+    permission_required = 'teacher.change_session'
     model = Session
     form_class = SessionUpdateForm
     template_name = 'teacher/sessions/form.html'
