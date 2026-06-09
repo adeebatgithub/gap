@@ -1,0 +1,12 @@
+{% extends "includes/base.html" %}
+
+{% block navbar_title %}Timetable{% endblock %}
+
+{% block navbar_btns %}
+    {% now "d-m-Y" %}
+{% endblock %}
+
+{% block content %}
+	<img src="{{ timetable.image.url }}" alt="timetable">
+{% endblock %}
+

@@ -1,12 +1,14 @@
 from django import forms
 
-from academics.models import Session, SchoolClass, Subject, SubjectClass
+from teacher.attendance.models import Session, SubjectClass
+from academics.subject.models import Subject
+from academics.schoolclass.models import SchoolClass
 
 
 class SessionForm(forms.ModelForm):
     class Meta:
         model = Session
-        fields = ('date', 'school_class', 'subject')
+        fields = ('date', 'period', 'subject_class')
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
         }
@@ -14,22 +16,28 @@ class SessionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        self.fields['school_class'].queryset = SchoolClass.objects.filter(
-            id__in=SubjectClass.objects.filter(teacher__user=user).values_list('id', flat=True)
-        ).order_by("name")
-        self.fields['subject'].queryset = Subject.objects.filter(
-            id__in=SubjectClass.objects.filter(teacher__user=user).values_list('id', flat=True)
-        ).order_by('name')
+        self.fields['subject_class'].queryset = SubjectClass.objects.filter(
+            teacher__user=user
+        ).order_by('subject__name')
+
+    def clean_period(self):
+        period = self.cleaned_data['period']
+        if period and period > 10:
+            raise forms.ValidationError("invalid option")
+        return period
 
 
 class SessionUpdateForm(forms.ModelForm):
     class Meta:
         model = Session
-        fields = ('date', 'subject')
+        fields = ('date', 'period', 'subject_class')
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
         }
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        self.fields['subject'].queryset = Subject.objects.order_by('name')
+        self.fields['subject_class'].queryset = SubjectClass.objects.filter(
+            teacher__user=user
+        ).order_by('subject__name')

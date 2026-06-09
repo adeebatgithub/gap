@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import redirect
@@ -7,7 +9,23 @@ from django.views.generic import TemplateView, View, ListView
 
 from academics.schoolclass.models import SchoolClass
 from academics.subject.models import SubjectClass
-from timetable.models import Timetable, TimetableClass, TimetablePeriod, TimetableCell
+from timetable.models import Timetable, TimetableClass, TimetablePeriod, TimetableCell, TimetableImage
+
+
+class TimetableImageView(TemplateView):
+    template_name = "timetable/image.html"
+
+    def get_table(self):
+        today = datetime.today().strftime('%A')
+        table = TimetableImage.objects.filter(day=today)
+        if table:
+            return table.last()
+        return Timetable.objects.none()
+
+    def get_context_data(self, **kwargs):
+        return {
+            "timetable": self.get_table(),
+        }
 
 
 class TimetableView(TemplateView):
@@ -94,3 +112,4 @@ class TimeTableSubjectsPartialView(ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(**self.get_filters())
+

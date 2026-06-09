@@ -11,7 +11,7 @@ class Subject(TimeStampedModel):
     code = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
-        return self.code if self.code else self.name
+        return self.name if self.name else self.code
 
 
 class SubjectClass(TimeStampedModel):
@@ -20,4 +20,4 @@ class SubjectClass(TimeStampedModel):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.subject.code} - {self.teacher.code}"
+        return self.subject.name[:16]

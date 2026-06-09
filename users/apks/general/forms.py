@@ -22,7 +22,7 @@ class UserLoginForm(auth_forms.AuthenticationForm):
         clean_data = self.cleaned_data
         username = clean_data.get("username")
 
-        if "@" in username:
+        if username and "@" in username:
             where = {"email": username}
         else:
             where = {"username": username}

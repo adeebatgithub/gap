@@ -6,3 +6,7 @@ from .models import *
 @admin.register(Timetable)
 class TimetableAdmin(admin.ModelAdmin):
     list_display = ("id", "created_at")
+
+@admin.register(TimetableImage)
+class TimetableImage(admin.ModelAdmin):
+    list_display = ("day", )

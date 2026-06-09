@@ -1,6 +1,3 @@
-from collections import defaultdict
-from operator import index
-
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db import transaction
@@ -9,15 +6,36 @@ from django.http.response import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import DetailView, DeleteView, View, TemplateView
+from django.views.generic import DetailView, DeleteView, View, TemplateView, ListView, CreateView, UpdateView
 from openpyxl.workbook.workbook import Workbook
-from requests import session
 
 from academics.enrollment.models import Enrollment
 from academics.schoolclass.models import SchoolClass
 from controller.utils import get_academic_year
 from teacher.attendance.models import Session, Attendance
+from teacher.teacher.models import Teacher
 from timetable.models import TimetableCell
+from .forms import SessionForm, SessionUpdateForm
+
+
+class SessionListView(PermissionRequiredMixin, ListView):
+    permission_required = 'academics.view_session'
+    model = Session
+    template_name = 'teacher/sessions/list.html'
+    context_object_name = 'sessions'
+
+    def get_filters(self):
+        filters = {}
+        if self.request.GET.get('date'):
+            filters['date__gte'] = self.request.GET.get('date')
+        else:
+            filters['date'] = timezone.localdate()
+
+        return filters
+
+    def get_queryset(self):
+        return Session.objects.filter(subject_class__teacher__user=self.request.user, **self.get_filters()).order_by(
+            '-date', '-id')
 
 
 class SessionDetailView(PermissionRequiredMixin, DetailView):
@@ -32,6 +50,44 @@ class SessionDetailView(PermissionRequiredMixin, DetailView):
             "attendances": Attendance.objects.filter(session=self.object),
         })
         return context
+
+
+class SessionCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = 'academics.add_session'
+    model = Session
+    form_class = SessionForm
+    template_name = 'teacher/sessions/form.html'
+    success_url = reverse_lazy('teacher:attendance:list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.teacher = Teacher.objects.get(user=self.request.user)
+        with transaction.atomic():
+            self.object = form.save()
+            enrollments = Enrollment.objects.filter(school_class=self.object.subject_class.school_class)
+            for enrollment in enrollments:
+                Attendance.objects.create(
+                    session=self.object,
+                    student=enrollment.student,
+                )
+        return redirect(self.get_success_url())
+
+
+class SessionUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = 'academics.change_session'
+    model = Session
+    form_class = SessionUpdateForm
+    template_name = 'teacher/sessions/form.html'
+    success_url = reverse_lazy('teacher:attendance:list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class SessionDeleteView(PermissionRequiredMixin, DeleteView):
@@ -94,7 +150,7 @@ class MarkAttendance(View):
         return session
 
     def get_success_url(self):
-        return reverse_lazy('teacher:timetable')
+        return reverse_lazy("teacher:attendance:list")
 
     def get_cell(self):
         session = self.get_object()
@@ -110,7 +166,7 @@ class MarkAttendance(View):
             session = self.get_object()
             if session is None:
                 messages.info(self.request, "not allowed")
-                return redirect(reverse_lazy("teacher:timetable"))
+                return redirect(reverse_lazy("teacher:attendance:list"))
 
             attendances = Attendance.objects.filter(session=session)
 
@@ -174,7 +230,7 @@ class AttendanceReportView(PermissionRequiredMixin, TemplateView):
             if class_name not in data:
                 data[class_name] = {
                     "subjects": {"zTotal", "zz%"},
-                    "students": {"out of":{"zTotal": 0, "zz%": "100"}}
+                    "students": {"out of": {"zTotal": 0, "zz%": "100"}}
                 }
 
             data[class_name]["subjects"].add(subject_full)
@@ -182,7 +238,6 @@ class AttendanceReportView(PermissionRequiredMixin, TemplateView):
                 data[class_name]["students"][student_name] = {}
                 data[class_name]["students"][student_name]["zTotal"] = 0
                 data[class_name]["students"][student_name]["zz%"] = 0
-
 
             data[class_name]["students"][student_name][subject_full] = present_count
             data[class_name]["students"][student_name]["zTotal"] += present_count
@@ -196,9 +251,10 @@ class AttendanceReportView(PermissionRequiredMixin, TemplateView):
                 data[class_name]["students"]["out of"][subject_full] = session_total
                 data[class_name]["students"]["out of"]["zTotal"] += session_total
 
-            data[class_name]["students"][student_name]["zz%"] = round(
-                (data[class_name]["students"][student_name]["zTotal"] / data[class_name]["students"]["out of"]["zTotal"]) * 100
-            )
+            if data[class_name]["students"]["out of"]["zTotal"] > 0:
+                data[class_name]["students"][student_name]["zz%"] = round(
+                    (data[class_name]["students"][student_name]["zTotal"] / data[class_name]["students"]["out of"]["zTotal"]) * 100
+                )
 
         for class_data in data.values():
             class_data["subjects"] = sorted(class_data["subjects"])
@@ -215,7 +271,7 @@ class AttendanceReportView(PermissionRequiredMixin, TemplateView):
 
 
 class AttendanceExportView(AttendanceReportView):
-    permission_required = ('academics.view_session', 'academics.view_attendance')
+    permission_required = ('teacher.view_session', 'teacher.view_attendance')
 
     @staticmethod
     def remove_z(header):

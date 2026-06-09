@@ -31,3 +31,8 @@ class TimetableCell(TimeStampedModel):
     school_class = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
     subject_class = models.ForeignKey(SubjectClass, on_delete=models.CASCADE, null=True, blank=True)
     is_marked = models.BooleanField(default=False)
+
+
+class TimetableImage(TimeStampedModel):
+    day = models.CharField(max_length=10)
+    image = models.ImageField(upload_to='images/timetable/')

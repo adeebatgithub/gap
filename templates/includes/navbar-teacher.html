@@ -51,12 +51,20 @@
         Dashboard
     </a>
 
-    <a href="{% url 'teacher:timetable' %}"
+    <a href="{% url 'timetable:preview' %}"
        class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
-              {% if request.resolver_match.url_name == 'timetable' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"
-       {% if request.resolver_match.url_name == 'timetable' %}aria-current="page"{% endif %}>
-        <i class="bi bi-calendar-week text-lg transition-transform duration-200 {% if request.resolver_match.url_name != 'timetable' %}group-hover:scale-110{% endif %}"></i>
+              {% if request.resolver_match.app_name == 'timetable' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"
+       {% if request.resolver_match.app_name == 'timetable' %}aria-current="page"{% endif %}>
+        <i class="bi bi-calendar-week text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'timetable' %}group-hover:scale-110{% endif %}"></i>
         Time Table
+    </a>
+
+    <a href="{% url 'teacher:attendance:list' %}"
+       class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+              {% if request.resolver_match.app_name == 'teacher:attendance' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"
+       {% if request.resolver_match.app_name == 'teacher:attendance' %}aria-current="page"{% endif %}>
+            <i class="bi bi-journal-check text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'teacher:attendance' %}group-hover:scale-110{% endif %}"></i>
+        Attendance
     </a>
 
     <a href="{% url 'teacher:schoolclass:list' %}"
@@ -84,10 +92,10 @@
 
         <a href="{% url 'teacher:attendance:report' %}"
            class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
-                  {% if request.resolver_match.app_name == 'teacher:attendance' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"
-           {% if request.resolver_match.app_name == 'teacher:attendance' %}aria-current="page"{% endif %}>
+                  {% if request.resolver_match.app_name == 'teacher:attendance' and request.resolver_match.url_name == 'report' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"
+           {% if request.resolver_match.app_name == 'teacher:attendance' and request.resolver_match.url_name == 'report' %}aria-current="page"{% endif %}>
             <i class="bi bi-journal-check text-lg transition-transform duration-200 {% if request.resolver_match.app_name != 'teacher:attendance' %}group-hover:scale-110{% endif %}"></i>
-            Attendance
+            Attendance Report
         </a>
     {% endif %}
 

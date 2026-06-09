@@ -96,9 +96,10 @@ class EnrollmentDetailView(PermissionRequiredMixin, DetailView):
             data["counts"]["out of"][subject_full] = session_total
             data["counts"]["out of"]["zTotal"] += session_total
 
-        data["counts"]["subjects"]["zz%"] = round(
-            (data["counts"]["subjects"]["zTotal"] / data["counts"]["out of"]["zTotal"]) * 100
-        )
+        if data["counts"]["out of"]["zTotal"] > 0:
+            data["counts"]["subjects"]["zz%"] = round(
+                (data["counts"]["subjects"]["zTotal"] / data["counts"]["out of"]["zTotal"]) * 100
+            )
         data["subjects"] = sorted(data["subjects"])
 
         return data
