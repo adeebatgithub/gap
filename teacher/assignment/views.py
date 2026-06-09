@@ -41,7 +41,7 @@ class SubjectClassDeleteView(PermissionRequiredMixin, DeleteView):
 
     def get_success_url(self):
         if self.request.POST.get("teacher"):
-            return reverse_lazy("academics:teacher:detail", kwargs={"pk": self.request.POST.get("teacher")})
+            return reverse_lazy("teacher:teacher:detail", kwargs={"pk": self.request.POST.get("teacher")})
 
         elif self.request.POST.get("schoolclass"):
             return reverse_lazy("academics:schoolclass:detail", kwargs={"pk": self.request.POST.get("schoolclass")})
