@@ -252,7 +252,7 @@
                             <thead>
                             <tr class="tt-title-row" id="tt-title-row">
                                 <th colspan="1" id="tt-title-cell">
-                                    WEDNESDAY &nbsp;
+                                    {% now "D" %}
                                     {% if timetable %}
                                         {{ timetable.created_at|date:"d-m-Y" }}
                                     {% else %}
