@@ -11,11 +11,6 @@ class Session(TimeStampedModel):
     period = models.IntegerField()
     date = models.DateField()
 
-    def save(self, *args, **kwargs):
-        if not self.academic_year_id:
-            self.academic_year = AcademicYear.objects.get(is_active=True)
-        return super().save(*args, **kwargs)
-
 
 class Attendance(TimeStampedModel):
     PENDING = 0
