@@ -100,7 +100,7 @@ class MarkAttendance(View):
         session = self.get_object()
         cell = TimetableCell.objects.filter(
             school_class=session.subject_class.school_class,
-            subject_class__subject=session.subject_class.subject,
+            subject_class=session.subject_class,
             period_number=session.period,
             created_at__date=session.date
         )
