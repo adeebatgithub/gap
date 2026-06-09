@@ -102,7 +102,6 @@ class MarkAttendance(View):
             school_class=session.subject_class.school_class,
             subject_class=session.subject_class,
             period_number=session.period,
-            created_at__date=session.date
         )
         return cell
 
