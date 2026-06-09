@@ -434,7 +434,7 @@
                                         <td class="period-cell">
                                             <div class="period-inner">
                                                 <input type="number" name="period_numbers[]" value="{{ period.number }}"
-                                                       min="1" placeholder="#">
+                                                       min="0" placeholder="#">
                                                 <input type="text" name="period_names[]" value="{{ period.time_range }}"
                                                        placeholder="09:00-10:00">
                                                 <button type="button" class="btn-remove-row" title="Remove">
@@ -464,7 +464,7 @@
                                 <tr>
                                     <td class="period-cell">
                                         <div class="period-inner">
-                                            <input type="number" name="period_numbers[]" value="1" min="1"
+                                            <input type="number" name="period_numbers[]" value="1" min="0"
                                                    placeholder="#">
                                             <input type="text" name="period_names[]" placeholder="09:00-10:00">
                                             <button type="button" class="btn-remove-row" title="Remove">
@@ -600,7 +600,7 @@
                 let html = `
             <td class="period-cell">
                 <div class="period-inner">
-                    <input type="number" name="period_numbers[]" value="${nextNum}" min="1" placeholder="#"
+                    <input type="number" name="period_numbers[]" value="${nextNum}" min="0" placeholder="#"
                         style="width:26px;border:1px solid #bbc4d4;border-radius:3px;background:#fff;font-size:0.6rem;font-weight:800;text-align:center;padding:1px;color:#1a2744;">
                     <input type="text" name="period_names[]" placeholder="09:00-10:00"
                         style="width:100%;border:none;background:transparent;font-size:0.58rem;font-weight:600;text-align:center;color:#5a6478;padding:0 1px;">
