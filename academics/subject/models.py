@@ -20,4 +20,4 @@ class SubjectClass(TimeStampedModel):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.subject.name[:16]
+        return f"{self.subject.name[:16]}-{self.school_class.name}"
