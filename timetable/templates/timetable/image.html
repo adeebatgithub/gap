@@ -1,12 +1,97 @@
 {% extends "includes/base.html" %}
 
-{% block navbar_title %}Timetable{% endblock %}
+{% block navbar_title %}
+    Timetable
+{% endblock %}
 
 {% block navbar_btns %}
-    {% now "d-m-Y" %}
+    <div class="inline-flex items-center px-3 py-1.5 bg-white sm:bg-gray-100 text-gray-700 text-sm font-medium rounded-lg sm:shadow-sm border-0 sm:border border-gray-200">
+        <i class="bi bi-calendar3 mr-2 text-gray-500"></i>
+        {% now "F j, Y" %}
+    </div>
 {% endblock %}
 
 {% block content %}
-	<img src="{{ timetable.image.url }}" alt="timetable">
+    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-50 print:border-0 print:shadow-none print:p-0">
+
+        {% if timetable and timetable.image %}
+            <div class="flex justify-center w-full">
+                <img src="{{ timetable.image.url }}"
+                     alt="Class Timetable"
+                     onclick="openTimetableModal()"
+                     class="max-w-full h-auto rounded-lg border border-gray-200 shadow-sm object-contain cursor-zoom-in hover:opacity-90 transition-opacity duration-200 print:cursor-auto"
+                     title="Click to view full size"
+                     loading="lazy">
+            </div>
+
+            <div id="timetableModal"
+                 class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gray-900/95 backdrop-blur-sm opacity-0 transition-opacity duration-300 print:hidden">
+
+                <button onclick="closeTimetableModal()"
+                        class="absolute top-4 right-4 sm:top-6 sm:right-6 text-gray-400 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white rounded-full p-2 z-50"
+                        aria-label="Close modal">
+                    <i class="bi bi-x-lg text-2xl sm:text-3xl"></i>
+                </button>
+
+                <div class="relative w-full h-full p-4 sm:p-12 flex justify-center items-center"
+                     onclick="closeTimetableModal()">
+                    <img src="{{ timetable.image.url }}"
+                         alt="Full Size Timetable"
+                         class="max-w-full max-h-full object-contain rounded-md shadow-2xl cursor-zoom-out"
+                         onclick="event.stopPropagation();">
+                </div>
+            </div>
+
+        {% else %}
+            <div class="py-16 flex flex-col items-center justify-center text-center text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
+                <div class="h-16 w-16 bg-white rounded-full flex items-center justify-center mb-3 shadow-sm">
+                    <i class="bi bi-image text-3xl text-gray-400"></i>
+                </div>
+                <p class="text-base font-medium text-gray-900">No timetable available</p>
+                <p class="text-sm mt-1">An image for the timetable hasn't been uploaded yet.</p>
+            </div>
+        {% endif %}
+
+    </div>
 {% endblock %}
 
+{% block extra_js %}
+    <script>
+        function openTimetableModal() {
+            const modal = document.getElementById('timetableModal');
+            if (!modal) return;
+
+            // Remove 'hidden' to display block, then fade in via opacity
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+
+            // Lock background scrolling when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeTimetableModal() {
+            const modal = document.getElementById('timetableModal');
+            if (!modal) return;
+
+            // Fade out via opacity, then hide after transition ends
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                // Restore background scrolling
+                document.body.style.overflow = '';
+            }, 300); // 300ms matches the duration-300 Tailwind class
+        }
+
+        // Allow closing the modal by pressing the Escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === "Escape") {
+                const modal = document.getElementById('timetableModal');
+                if (modal && !modal.classList.contains('hidden')) {
+                    closeTimetableModal();
+                }
+            }
+        });
+    </script>
+{% endblock %}
