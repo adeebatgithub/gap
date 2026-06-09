@@ -5,8 +5,8 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import TemplateView, View, ListView
 
-from academics.subject.models import SubjectClass
 from academics.schoolclass.models import SchoolClass
+from academics.subject.models import SubjectClass
 from timetable.models import Timetable, TimetableClass, TimetablePeriod, TimetableCell
 
 
@@ -27,7 +27,7 @@ class TimetablePreview(TemplateView):
     template_name = "timetable/preview.html"
 
     def get_table(self):
-        if date:=self.request.GET.get('date'):
+        if date := self.request.GET.get('date'):
             table = Timetable.objects.filter(created_at__date=date)
             if table:
                 return table.first()
@@ -79,6 +79,7 @@ class TimetableUpsertView(View):
         messages.success(request, "Timetable Saved")
         return redirect(reverse_lazy('timetable:preview'))
 
+
 class TimeTableSubjectsPartialView(ListView):
     model = SubjectClass
     context_object_name = 'subjects'
@@ -90,7 +91,6 @@ class TimeTableSubjectsPartialView(ListView):
         if class_names:
             filters['school_class_id'] = class_names[0]
         return filters
-
 
     def get_queryset(self):
         return super().get_queryset().filter(**self.get_filters())

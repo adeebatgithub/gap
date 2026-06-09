@@ -33,7 +33,7 @@ class SchoolClassListView(PermissionRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(**self.get_filters())
+        return queryset.filter(**self.get_filters()).order_by('name')
 
 
 class SchoolClassDetailView(PermissionRequiredMixin, DetailView):

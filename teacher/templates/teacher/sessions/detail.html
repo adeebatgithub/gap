@@ -132,7 +132,7 @@
                 {% endfor %}
             </div>
 
-            {% if attendances and attendances.0.created_at.date == TODAY %}
+            {% if attendances and attendances.0.created_at.date == TODAY and session.subject_class.teacher.user == request.user %}
                 <div class="bg-gray-50/80 border-t border-gray-100 p-4 sm:px-8 sm:py-4 flex justify-end mt-4 sm:mt-0 rounded-xl sm:rounded-none sm:rounded-b-xl">
                     <button type="submit"
                             class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 sm:py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-md">

@@ -24,7 +24,13 @@ class TeacherForm(forms.ModelForm):
             self.fields['first_name'].initial = self.instance_user.first_name
             self.fields['last_name'].initial = self.instance_user.last_name
             self.fields['email'].initial = self.instance_user.email
-            self.fields['phone'].initial = self.instance_user.email
+            self.fields['phone'].initial = self.instance_user.phone
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if "@gmail.com" not in email:
+            raise forms.ValidationError("Email address is not valid")
+        return email
 
     def save(self, commit=True):
         teacher = super().save(commit=False)

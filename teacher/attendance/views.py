@@ -21,7 +21,7 @@ from timetable.models import TimetableCell
 
 
 class SessionDetailView(PermissionRequiredMixin, DetailView):
-    permission_required = ('academics.view_session', 'academics.view_attendance')
+    permission_required = ('teacher.view_session', 'teacher.view_attendance')
     model = Session
     template_name = 'teacher/sessions/detail.html'
     context_object_name = 'session'
@@ -35,7 +35,7 @@ class SessionDetailView(PermissionRequiredMixin, DetailView):
 
 
 class SessionDeleteView(PermissionRequiredMixin, DeleteView):
-    permission_required = ('academics.delete_session', 'academics.delete_attendance')
+    permission_required = ('teacher.delete_session', 'teacher.delete_attendance')
     http_method_names = ('post',)
     model = Session
     success_url = reverse_lazy('teacher:attendance:list')
@@ -55,6 +55,9 @@ class AttendanceSheetUpsertView(View):
 
     def get_object(self):
         cell = TimetableCell.objects.get(id=self.kwargs['pk'])
+        if self.request.user.is_member("Admin"):
+            return cell
+
         if cell.subject_class.teacher.user != self.request.user:
             return None
         return cell
@@ -96,8 +99,8 @@ class MarkAttendance(View):
     def get_cell(self):
         session = self.get_object()
         cell = TimetableCell.objects.filter(
-            school_class=session.school_class,
-            subject_class__subject=session.subject,
+            school_class=session.subject_class.school_class,
+            subject_class__subject=session.subject_class.subject,
             period_number=session.period,
             created_at__date=session.date
         )
@@ -128,7 +131,7 @@ class MarkAttendance(View):
 
 
 class AttendanceReportView(PermissionRequiredMixin, TemplateView):
-    permission_required = ('academics.view_session', 'academics.view_attendance')
+    permission_required = ('teacher.view_session', 'teacher.view_attendance')
     template_name = 'teacher/report/attendance.html'
 
     def get_template_names(self):

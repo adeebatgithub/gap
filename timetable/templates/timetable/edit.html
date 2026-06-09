@@ -364,7 +364,7 @@
                             <!-- Title row -->
                             <tr class="tt-title-row" id="tt-title-row">
                                 <th colspan="99" id="tt-title-cell">
-                                    WEDNESDAY &nbsp;
+                                    {% now "D" %} &nbsp;
                                     {% if timetable %}{{ timetable.created_at|date:"d-m-Y" }}{% else %}
                                         {% now "d-m-Y" %}{% endif %}
                                 </th>

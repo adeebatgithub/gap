@@ -41,7 +41,7 @@ class EnrollmentListView(PermissionRequiredMixin, ListView):
     def get_queryset(self):
         queryset = Enrollment.objects.filter(**self.get_filters()).select_related(
             'student', 'school_class'
-        ).order_by('student__name')
+        ).order_by('school_class', 'student__name')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -163,6 +163,14 @@ class EnrollmentUpdateView(PermissionRequiredMixin, RedirectToDetail, UpdateView
         if self.request.GET.get('schoolclass'):
             return reverse_lazy('academics:schoolclass:detail', kwargs={'pk': self.request.GET.get('schoolclass')})
         return super().get_success_url()
+
+    def form_valid(self, form):
+        with transaction.atomic():
+            self.object = form.save()
+            Enrollment.objects.filter(
+                student=self.object,
+            ).update(school_class=form.cleaned_data['school_class'])
+        return redirect(self.get_success_url())
 
 
 class EnrollmentDeleteView(PermissionRequiredMixin, DeleteView):

@@ -122,6 +122,12 @@
         Enrollments
     </a>
 
+    <div class="mb-1 px-3">
+        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center">
+            Content Management
+        </p>
+    </div>
+
     <a href="{% url 'academics:admission:list' %}"
        class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
               {% if request.resolver_match.app_name == 'academics:admission' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"

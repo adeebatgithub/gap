@@ -23,7 +23,7 @@ class SubjectListView(PermissionRequiredMixin, ListView):
         search = self.request.GET.get('search')
         if search:
             queryset = queryset.filter(Q(name__icontains=search) | Q(code__icontains=search))
-        return queryset
+        return queryset.order_by('name')
 
 
 class SubjectDetailView(PermissionRequiredMixin, DetailView):

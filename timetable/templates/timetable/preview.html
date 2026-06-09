@@ -261,7 +261,10 @@
                            name="date"
                            type="date"
                            onchange="this.form.submit()"
-                           value="{% if timetable %}{{ timetable.created_at|date:'Y-m-d' }}{% else %}{% now 'Y-m-d' %}{% endif %}">
+                           value="
+
+
+                                   {% if timetable %}{{ timetable.created_at|date:'Y-m-d' }}{% else %}{% now 'Y-m-d' %}{% endif %}">
                 </div>
             </form>
             <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
@@ -282,7 +285,7 @@
                             <thead>
                             <tr class="tt-title-row" id="tt-title-row">
                                 <th colspan="1" id="tt-title-cell">
-                                    WEDNESDAY &nbsp;
+                                    {% now "D" %} &nbsp;
                                     {% if timetable %}
                                         {{ timetable.created_at|date:"d-m-Y" }}
                                     {% else %}
@@ -322,9 +325,15 @@
                                         {% for t_class in timetable.classes.all %}
                                             {% for cell in timetable.cells.all %}
                                                 {% if cell.period_number == period.number and cell.school_class == t_class.school_class %}
-                                                    <td {% if cell.is_marked %}style="background-color: green;color: white"{% endif %}>
-                                                        {{ cell.subject_class }}
-                                                    </td>
+                                                    {% if cell.is_marked %}
+                                                        <td {% if cell.is_marked %}style="background-color: green;color: white"{% endif %}>
+                                                            <a href="{% url 'teacher:attendance:upsert' cell.pk %}">{{ cell.subject_class }}</a>
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            {{ cell.subject_class }}
+                                                        </td>
+                                                    {% endif %}
                                                 {% endif %}
                                             {% endfor %}
                                         {% endfor %}

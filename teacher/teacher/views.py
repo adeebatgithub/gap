@@ -53,7 +53,7 @@ class TeacherCreateView(PermissionRequiredMixin, CreateView):
     model = Teacher
     form_class = TeacherForm
     template_name = 'teacher/teachers/form.html'
-    success_url = reverse_lazy('academics:teacher:list')
+    success_url = reverse_lazy('teacher:teacher:list')
 
 
 class TeacherUpdateView(PermissionRequiredMixin, RedirectToDetail, UpdateView):
@@ -61,20 +61,20 @@ class TeacherUpdateView(PermissionRequiredMixin, RedirectToDetail, UpdateView):
     model = Teacher
     form_class = TeacherForm
     template_name = 'teacher/teachers/form.html'
-    success_url = reverse_lazy('academics:teacher:list')
+    success_url = reverse_lazy('teacher:teacher:list')
 
     def get_detail_url(self):
-        return reverse_lazy('academics:teacher:detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy('teacher:teacher:detail', kwargs={'pk': self.object.pk})
 
 
 class TeacherDeleteView(PermissionRequiredMixin, RedirectToDetail, DeleteView):
     permission_required = "teacher.delete_teacher"
     http_method_names = ['post']
     model = Teacher
-    success_url = reverse_lazy('academics:teacher:list')
+    success_url = reverse_lazy('teacher:teacher:list')
 
     def get_detail_url(self):
-        reverse_lazy('academics:teacher:detail', kwargs={'pk': self.object.pk})
+        reverse_lazy('teacher:teacher:detail', kwargs={'pk': self.object.pk})
 
 
 class AddToGroup(PermissionRequiredMixin, DetailView):
