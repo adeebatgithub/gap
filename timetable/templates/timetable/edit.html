@@ -1,5 +1,11 @@
 {% extends 'includes/base.html' %}
 
+{% block extra_css %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+{% endblock %}
+
 {% block navbar_title %}
     Timetable
 {% endblock %}
@@ -12,7 +18,6 @@
 
 {% block content %}
     <style>
-        /* Override any base layout padding/margins so table can use full viewport */
         :root {
             --tt-border: #b0b8c1;
             --tt-header-bg: #e8eaed;
@@ -27,7 +32,6 @@
             --tt-accent: #1565c0;
         }
 
-        /* Kill any overflow on parent containers */
         html, body {
             height: 100%;
         }
@@ -44,7 +48,6 @@
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
-        /* ─── Top toolbar ─── */
         #tt-toolbar {
             display: flex;
             align-items: center;
@@ -116,7 +119,6 @@
             background: #c96200;
         }
 
-        /* ─── Table wrapper: fills remaining height, NO scroll ─── */
         #tt-table-wrapper {
             flex: 1 1 0;
             overflow: hidden;
@@ -125,7 +127,6 @@
             padding: 4px;
         }
 
-        /* The form fills its wrapper */
         #timetable-form {
             flex: 1 1 0;
             overflow: hidden;
@@ -133,7 +134,6 @@
             flex-direction: column;
         }
 
-        /* ─── Scale container: shrinks table to fit ─── */
         #tt-scale-outer {
             flex: 1;
             overflow: hidden;
@@ -142,15 +142,12 @@
         }
 
         #tt-scale-inner {
-            /* JS will set transform-origin + scale to fit */
             transform-origin: top left;
             position: absolute;
             top: 0;
             left: 0;
-            /* width/height set by JS */
         }
 
-        /* ─── The actual table ─── */
         #timetable {
             border-collapse: collapse;
             width: 100%;
@@ -172,7 +169,6 @@
             hyphens: auto;
         }
 
-        /* Title row */
         #timetable .tt-title-row th {
             background: #dce3f0;
             font-size: 0.72rem;
@@ -182,7 +178,6 @@
             padding: 4px;
         }
 
-        /* Column header row */
         #timetable thead tr:nth-child(2) th,
         #timetable-head-row th {
             background: var(--tt-header-bg);
@@ -194,7 +189,6 @@
             text-overflow: ellipsis;
         }
 
-        /* Period label column */
         #timetable .td-period-label {
             background: var(--tt-header-bg);
             font-weight: 700;
@@ -203,7 +197,6 @@
             white-space: nowrap;
         }
 
-        /* Regular cells */
         #timetable tbody td {
             background: var(--tt-cell-bg);
             font-size: 0.58rem;
@@ -216,7 +209,6 @@
             background: #f0f4ff;
         }
 
-        /* Supervised / study rows */
         #timetable tr.tt-row-study td {
             background: var(--tt-study-bg);
             font-size: 0.58rem;
@@ -228,7 +220,6 @@
             background: var(--tt-fashion-bg);
         }
 
-        /* Selects inside header & cells */
         #timetable select {
             width: 100%;
             border: 1px solid #d0d7e3;
@@ -251,7 +242,6 @@
             box-shadow: 0 0 0 2px rgba(41, 98, 255, 0.15);
         }
 
-        /* Period inputs in first sticky column */
         #timetable .period-cell {
             background: var(--tt-header-bg) !important;
             min-width: 90px;
@@ -293,7 +283,6 @@
             border-radius: 2px;
         }
 
-        /* Remove buttons */
         .btn-remove-col,
         .btn-remove-row {
             display: none;
@@ -313,7 +302,6 @@
             display: inline-flex;
         }
 
-        /* Column header th layout */
         #timetable-head-row th .th-inner {
             display: flex;
             flex-direction: column;
@@ -329,9 +317,6 @@
             color: #1a2744;
         }
 
-        /* =========================================
-            5. Force Landscape on Mobile
-        ========================================= */
         @media (max-width: 768px) and (orientation: portrait) {
             #tt-outer {
                 transform: rotate(90deg);
@@ -352,8 +337,8 @@
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                 <span class="tt-title">&#128197; Timetable Builder</span>
                 <span class="tt-date-badge">
-                {% if timetable %}{{ timetable.created_at|date:"l d-m-Y" }}{% else %}{% now "l d-m-Y" %}{% endif %}
-            </span>
+                    {% if timetable %}{{ timetable.created_at|date:"l d-m-Y" }}{% else %}{% now "l d-m-Y" %}{% endif %}
+                </span>
             </div>
             <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
                 <button type="button" id="btn-add-col" class="tt-btn tt-btn-col">
@@ -376,7 +361,7 @@
                     <div id="tt-scale-inner">
                         <table id="timetable">
                             <thead>
-                            <!-- Title row spanning all columns -->
+                            <!-- Title row -->
                             <tr class="tt-title-row" id="tt-title-row">
                                 <th colspan="99" id="tt-title-cell">
                                     WEDNESDAY &nbsp;
@@ -444,10 +429,12 @@
                                         </td>
                                         {% for t_class in timetable.classes.all %}
                                             <td>
-                                                <select name="timetable_cells[]">
+                                                {# ── data-class on each option so JS can filter ── #}
+                                                <select name="timetable_cells[]" class="subject-select">
                                                     <option value="">— Free —</option>
                                                     {% for subject in subjects %}
                                                         <option value="{{ subject.pk }}"
+                                                                data-class="{{ subject.school_class.pk }}"
                                                                 {% for cell in timetable.cells.all %}
                                                                 {% if cell.period_number == period.number and cell.school_class == t_class.school_class and cell.subject_class.pk == subject.pk %}selected
                                                                 {% endif %}
@@ -473,10 +460,14 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <select name="timetable_cells[]">
+                                        {# ── data-class on each option so JS can filter ── #}
+                                        <select name="timetable_cells[]" class="subject-select">
                                             <option value="">— Free —</option>
                                             {% for subject in subjects %}
-                                                <option value="{{ subject.pk }}">{{ subject }}</option>
+                                                <option value="{{ subject.pk }}"
+                                                        data-class="{{ subject.school_class.pk }}">
+                                                    {{ subject.code }}-{{ subject.teacher.code }}({{ subject.school_class.name }})
+                                                </option>
                                             {% endfor %}
                                         </select>
                                     </td>
@@ -502,7 +493,6 @@
             const table = document.getElementById('timetable');
 
             function fitTable() {
-                // Reset scale first to measure natural size
                 inner.style.transform = 'scale(1)';
                 inner.style.width = '';
                 inner.style.height = '';
@@ -516,16 +506,14 @@
 
                 const scaleX = availW / naturalW;
                 const scaleY = availH / naturalH;
-                const scale = Math.min(scaleX, scaleY, 1); // never upscale
+                const scale = Math.min(scaleX, scaleY, 1);
 
                 inner.style.transform = `scale(${scale})`;
                 inner.style.transformOrigin = 'top left';
-                // So the outer div doesn't report wrong size after scaling:
                 inner.style.width = naturalW + 'px';
                 inner.style.height = naturalH + 'px';
             }
 
-            // Run on load and on resize
             fitTable();
             const ro = new ResizeObserver(fitTable);
             ro.observe(outer);
@@ -540,24 +528,81 @@
 
             updateTitleColspan();
 
-            /* ─── Subject select HTML ─────────────────────────────────────── */
+            /* ─── Subject options HTML (all subjects, with data-class) ──────
+               Each option carries data-class so the filter function can
+               show/hide by comparing to the column's selected class PK.
+            ─────────────────────────────────────────────────────────────── */
             const selectHTML = `
-        <select name="timetable_cells[]" style="width:100%;border:1px solid #d0d7e3;border-radius:3px;background:#f7f9ff;font-size:0.58rem;font-weight:600;color:#1a1a2e;padding:1px 2px;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center;">
-            <option value="">— Free —</option>
-            {% for subject in subjects %}
-                <option value="{{ subject.pk }}">{{ subject|escapejs }}</option>
-            {% endfor %}
-        </select>
-    `;
+                <select class="subject-select" name="timetable_cells[]">
+                    <option value="">— Free —</option>
+                    {% for subject in subjects %}
+                        <option value="{{ subject.pk }}" data-class="{{ subject.school_class.pk }}">
+                {{ subject|escapejs }}</option>
+                    {% endfor %}
+                </select>`;
 
             const classSelectHTML = `
-        <select name="class_names[]" style="width:100%;border:1px solid #d0d7e3;border-radius:3px;background:#f7f9ff;font-size:0.58rem;font-weight:600;color:#1a1a2e;padding:1px 2px;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center;">
-            <option value="">-- Class --</option>
-            {% for s_class in school_classes %}
-                <option value="{{ s_class.pk }}">{{ s_class.name|escapejs }}</option>
-            {% endfor %}
-        </select>
-    `;
+                <select name="class_names[]">
+                    <option value="">-- Class --</option>
+                    {% for s_class in school_classes %}
+                        <option value="{{ s_class.pk }}">{{ s_class.name|escapejs }}</option>
+                    {% endfor %}
+                </select>`;
+
+            /* ─── Filter helpers ──────────────────────────────────────────── */
+
+            /**
+             * Show only subjects whose data-class matches the selected class
+             * in the header of column `colIndex` (1-based index in the row).
+             */
+            function filterColumnSubjects(colIndex) {
+                const headRow = document.getElementById('timetable-head-row');
+                const tbody = document.getElementById('timetable-body');
+
+                const classSelect = headRow.children[colIndex]
+                    && headRow.children[colIndex].querySelector('select[name="class_names[]"]');
+                if (!classSelect) return;
+
+                const selectedClass = classSelect.value; // PK string or ""
+
+                tbody.querySelectorAll('tr').forEach(row => {
+                    const cell = row.children[colIndex];
+                    if (!cell) return;
+                    const sel = cell.querySelector('select');
+                    if (!sel) return;
+
+                    const currentVal = sel.value;
+
+                    sel.querySelectorAll('option').forEach(opt => {
+                        if (!opt.value) return; // always keep "— Free —"
+                        // Hide if a class is selected and this subject doesn't belong to it
+                        opt.hidden = !!(selectedClass && opt.dataset.class !== selectedClass);
+                    });
+
+                    // If the currently selected subject got hidden, reset to Free
+                    const currentOpt = sel.querySelector(`option[value="${currentVal}"]`);
+                    if (currentOpt && currentOpt.hidden) sel.value = '';
+                });
+            }
+
+            /** Run filterColumnSubjects for every data column. */
+            function filterAllColumns() {
+                const headRow = document.getElementById('timetable-head-row');
+                Array.from(headRow.children).forEach((_, i) => {
+                    if (i > 0) filterColumnSubjects(i);
+                });
+            }
+
+            // Filter on initial page load (handles the pre-filled timetable case)
+            filterAllColumns();
+
+            // Re-filter the affected column whenever a class header dropdown changes
+            document.getElementById('timetable-head-row').addEventListener('change', function (e) {
+                if (!e.target.matches('select[name="class_names[]"]')) return;
+                const th = e.target.closest('th');
+                const idx = Array.from(th.parentNode.children).indexOf(th);
+                filterColumnSubjects(idx);
+            });
 
             /* ─── Add Column ──────────────────────────────────────────────── */
             document.getElementById('btn-add-col').addEventListener('click', function () {
@@ -566,10 +611,12 @@
 
                 const th = document.createElement('th');
                 th.innerHTML = `
-            <div class="th-inner">
-                ${classSelectHTML}
-                <button type="button" class="btn-remove-col" title="Remove"><i class="bi bi-x-circle-fill"></i></button>
-            </div>`;
+                    <div class="th-inner">
+                        ${classSelectHTML}
+                        <button type="button" class="btn-remove-col" title="Remove">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </button>
+                    </div>`;
                 headRow.appendChild(th);
 
                 tbody.querySelectorAll('tr').forEach(row => {
@@ -579,6 +626,7 @@
                 });
 
                 updateTitleColspan();
+                filterAllColumns(); // filter the newly added column (no class selected yet → show all)
                 fitTable();
                 th.querySelector('select').focus();
             });
@@ -598,20 +646,25 @@
 
                 const tr = document.createElement('tr');
                 let html = `
-            <td class="period-cell">
-                <div class="period-inner">
-                    <input type="number" name="period_numbers[]" value="${nextNum}" min="0" placeholder="#"
-                        style="width:26px;border:1px solid #bbc4d4;border-radius:3px;background:#fff;font-size:0.6rem;font-weight:800;text-align:center;padding:1px;color:#1a2744;">
-                    <input type="text" name="period_names[]" placeholder="09:00-10:00"
-                        style="width:100%;border:none;background:transparent;font-size:0.58rem;font-weight:600;text-align:center;color:#5a6478;padding:0 1px;">
-                    <button type="button" class="btn-remove-row" title="Remove"><i class="bi bi-x-circle-fill"></i></button>
-                </div>
-            </td>`;
+                    <td class="period-cell">
+                        <div class="period-inner">
+                            <input type="number" name="period_numbers[]" value="${nextNum}" min="0" placeholder="#"
+                                style="width:26px;border:1px solid #bbc4d4;border-radius:3px;background:#fff;font-size:0.6rem;font-weight:800;text-align:center;padding:1px;color:#1a2744;">
+                            <input type="text" name="period_names[]" placeholder="09:00-10:00"
+                                style="width:100%;border:none;background:transparent;font-size:0.58rem;font-weight:600;text-align:center;color:#5a6478;padding:0 1px;">
+                            <button type="button" class="btn-remove-row" title="Remove">
+                                <i class="bi bi-x-circle-fill"></i>
+                            </button>
+                        </div>
+                    </td>`;
+
                 for (let i = 0; i < numCols; i++) {
                     html += `<td>${selectHTML}</td>`;
                 }
                 tr.innerHTML = html;
                 tbody.appendChild(tr);
+
+                filterAllColumns(); // apply existing class filters to new row's selects
                 fitTable();
                 tr.querySelector('input[name="period_names[]"]').focus();
             });

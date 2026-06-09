@@ -73,7 +73,7 @@ class AttendanceSheetUpsertView(View):
             )
 
             if created:
-                enrollments = Enrollment.objects.filter(school_class=session.school_class)
+                enrollments = Enrollment.objects.filter(school_class=session.subject_class.school_class)
                 for enrollment in enrollments:
                     Attendance.objects.create(
                         session=session,
