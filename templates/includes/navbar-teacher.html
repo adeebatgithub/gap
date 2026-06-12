@@ -33,7 +33,7 @@
         </p>
     </div>
 
-    {% if request.user|has_group:"Admin" %}
+    {% if "Admin" in USER_GROUPS %}
         <a href="{% url 'academics:dashboard' %}"
            class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
                   {% if request.resolver_match.app_name == 'academics' and request.resolver_match.url_name == 'dashboard' %}bg-gray-900 text-white shadow-md shadow-gray-900/10{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}"
@@ -83,7 +83,7 @@
         Assessment
     </a>
 
-    {% if request.user|has_group:"Exam" %}
+    {% if "Exam" in USER_GROUPS %}
         <div class="mt-4 mb-1 px-3">
             <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center">
                 Exam

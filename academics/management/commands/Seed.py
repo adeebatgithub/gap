@@ -1,50 +1,41 @@
-from django.contrib.auth.models import Group
-from django.core.management.base import BaseCommand
-from openpyxl import load_workbook
+import random
 
-from django.contrib.auth import get_user_model
-from academics.subject.models import Subject
-User = get_user_model()
+from django.core.management.base import BaseCommand
+from django.utils import timezone
+
+from academics.enrollment.models import Enrollment
+from academics.subject.models import SubjectClass
+from teacher.attendance.models import Session, Attendance
 
 
 class Command(BaseCommand):
-    help = "Import teachers from an Excel file"
+    help = "Seed Attendance"
 
-    def add_arguments(self, parser):
-        parser.add_argument(
-            "file_path",
-            type=str,
-            help="Path to the Excel file"
-        )
+    def handle(self, *args, **kwargs):
+        allocations = SubjectClass.objects.all()
+        for allocation in allocations:
+            count = 0
+            for i in range(1, 31):
+                session = Session.objects.create(
+                    subject_class=allocation,
+                    period=i,
+                    date=timezone.localdate()
+                )
+                count += 1
+                enrollments = Enrollment.objects.filter(school_class=allocation.school_class)
+                attendances = []
+                for enrollment in enrollments:
+                    attendance = Attendance(
+                        session=session,
+                        student=enrollment.student,
+                        status=random.choice((Attendance.PRESENT, Attendance.ABSENT))
+                    )
+                    attendances.append(attendance)
+                Attendance.objects.bulk_create(attendances)
 
-    def handle(self, *args, **options):
-        file_path = options["file_path"]
-
-        wb = load_workbook(file_path)
-        ws = wb.active
-
-        # Read header row
-        headers = [cell.value for cell in ws[1]]
-        print(headers)
-
-        try:
-            name_idx = headers.index("subject")
-            code_idx = headers.index("code")
-        except ValueError:
             self.stdout.write(
-                self.style.ERROR("Name or Email column not found")
+                self.style.SUCCESS(f"Successfully seeded for {allocation.subject}: {count}")
             )
-            return
-
-
-        for row in ws.iter_rows(min_row=2, values_only=True):
-            name = row[name_idx]
-            code = row[code_idx]
-            if not name:
-                continue
-            self.stdout.write(self.style.SUCCESS(f"Name: {name}"))
-            Subject.objects.filter(name=name).update(code=code)
-
         self.stdout.write(
-            self.style.SUCCESS("Import completed successfully")
+            self.style.SUCCESS("Successfully seeded attendance")
         )

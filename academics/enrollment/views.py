@@ -1,10 +1,13 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.core.cache import cache
 from django.db import transaction
 from django.db.models.aggregates import Count
 from django.db.models.expressions import F
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import SingleObjectMixin
@@ -51,12 +54,29 @@ class EnrollmentListView(PermissionRequiredMixin, ListView):
         })
         return context
 
-
 class EnrollmentDetailView(PermissionRequiredMixin, DetailView):
     permission_required = "academics.view_enrollment"
     model = Enrollment
     template_name = 'academics/enrollments/detail.html'
     context_object_name = 'enrollment'
+
+    def get_session_lookup(self):
+        session_totals = (
+            Session.objects.filter(
+                subject_class__school_class_id=self.object.school_class_id
+            )
+            .annotate(
+                teacher_code=F("subject_class__teacher__code"),
+                subject_name=F("subject_class__subject__name"),
+            )
+            .values("teacher_code", "subject_name")
+            .annotate(total=Count("id"))
+        )
+        session_lookup = {
+            (row["teacher_code"], row["subject_name"]): row["total"]
+            for row in session_totals
+        }
+        return session_lookup
 
     def get_attendance_report(self):
         queryset = (
@@ -77,6 +97,7 @@ class EnrollmentDetailView(PermissionRequiredMixin, DetailView):
             "subjects": {"zTotal", "zz%"},
             "counts": {"out of": {"zTotal": 0, "zz%": 100}, "subjects": {"zTotal": 0, "zz%": 0}}
         }
+        session_lookup = self.get_session_lookup()
         for row in queryset:
             subject_name = row["subject_name"]
             teacher_code = row["teacher_code"]
@@ -88,11 +109,10 @@ class EnrollmentDetailView(PermissionRequiredMixin, DetailView):
             data["counts"]["subjects"][subject_full] = present_count
             data["counts"]["subjects"]["zTotal"] += present_count
 
-            session_total = Session.objects.filter(
-                subject_class__subject__name=subject_name,
-                subject_class__school_class__id=self.object.school_class.id,
-                subject_class__teacher__code=teacher_code,
-            ).count()
+            session_total = session_lookup.get(
+                (teacher_code, subject_name),
+                0,
+            )
             data["counts"]["out of"][subject_full] = session_total
             data["counts"]["out of"]["zTotal"] += session_total
 
@@ -106,8 +126,9 @@ class EnrollmentDetailView(PermissionRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context.update({
-            "attendance_report": self.get_attendance_report()
+            "attendance_report": self.get_attendance_report(),
         })
         return context
 

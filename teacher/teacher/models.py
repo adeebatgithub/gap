@@ -1,6 +1,7 @@
 import uuid
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from controller.consts import BLOOD_GROUP_CHOICES
@@ -29,12 +30,26 @@ class Teacher(TimeStampedModel):
     cv = models.FileField(upload_to=teacher_cv_path, null=True, blank=True)
 
     def __str__(self):
-        return self.user.first_name + " " + self.user.last_name
+        return self.user.get_full_name()
 
     def save(self, *args, **kwargs):
         if not self.uid:
             self.uid = uuid.uuid4()
         return super(Teacher, self).save(*args, **kwargs)
+
+    @property
+    def is_admin(self):
+        return any(
+            group.name == "Admin"
+            for group in self.user.groups.all()
+        )
+
+    @property
+    def is_exam(self):
+        return any(
+            group.name == "Exam"
+            for group in self.user.groups.all()
+        )
 
     @property
     def qualification_list(self):

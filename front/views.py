@@ -11,7 +11,7 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            "images": Gallery.objects.filter(position=Gallery.IN_HOME_PAGE)[:5],
+            "images": Gallery.objects.filter(position=Gallery.IN_HOME_PAGE).values("image")[:5],
             "notification": Notification.objects.last(),
         })
         return context

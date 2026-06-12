@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     "django_htmx",
+    'debug_toolbar',
 
     'academics.apps.AcademicsConfig',
     'teacher.apps.TeacherConfig',
@@ -62,6 +63,7 @@ INSTALLED_APPS = [
 
 TAILWIND_APP_NAME = 'theme'
 NPM_BIN_PATH = r"D:\Adeeb\programfiles\node\npm.cmd"
+INTERNAL_IPS = ["127.0.0.1"]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -72,6 +74,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_htmx.middleware.HtmxMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'gap.urls'
@@ -89,6 +92,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'controller.context_processors.global_data',
                 'academics.context_processors.global_data',
+                'users.context_processors.global_data',
             ],
         },
     },

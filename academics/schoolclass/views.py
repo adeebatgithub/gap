@@ -1,15 +1,13 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.views.generic.base import RedirectView
-from django.views.generic.detail import SingleObjectMixin
 
+from academics.enrollment.models import Enrollment
+from academics.schoolclass.models import SchoolClass
+from academics.subject.models import SubjectClass
 from controller.mixins import RedirectToDetail
 from controller.utils import get_academic_year
 from .forms import SchoolClassForm
-from academics.schoolclass.models import SchoolClass
-from academics.subject.models import SubjectClass
-from academics.enrollment.models import Enrollment
 
 
 class SchoolClassListView(PermissionRequiredMixin, ListView):
@@ -42,11 +40,20 @@ class SchoolClassDetailView(PermissionRequiredMixin, DetailView):
     template_name = 'academics/schoolclass/detail.html'
     context_object_name = 'school_class'
 
+    def get_queryset(self):
+        return super().get_queryset().select_related('class_teacher', 'academic_year')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            "assigned_teachers": SubjectClass.objects.filter(school_class=self.object),
-            "enrollments": Enrollment.objects.filter(school_class=self.object),
+            "assigned_teachers": SubjectClass.objects.filter(school_class=self.object).select_related(
+                'teacher',
+                'teacher__user',
+                'subject'
+            ),
+            "enrollments": Enrollment.objects.filter(school_class=self.object).select_related(
+                'student'
+            ),
         })
         return context
 

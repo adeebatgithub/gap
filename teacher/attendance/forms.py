@@ -38,6 +38,9 @@ class SessionUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        self.fields['subject_class'].queryset = SubjectClass.objects.filter(
+        self.fields['subject_class'].queryset = SubjectClass.objects.select_related(
+            "subject",
+            "school_class",
+        ).filter(
             teacher__user=user
         ).order_by('subject__name')

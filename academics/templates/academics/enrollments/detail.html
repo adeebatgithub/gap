@@ -11,7 +11,7 @@
         <i class="bi bi-arrow-left"></i> Back to List
     </a>
 
-    <a href="{% url 'academics:enrollment:update' enrollment.pk %}?back_to=detail"
+    <a href="{% url 'academics:enrollment:update' enrollment.student.pk %}?back_to=detail"
        class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
         <i class="bi bi-pencil"></i> <span class="hidden sm:inline">Edit Enrollment</span>
     </a>

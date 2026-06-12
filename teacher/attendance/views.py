@@ -39,8 +39,15 @@ class SessionListView(PermissionRequiredMixin, ListView):
         return filters
 
     def get_queryset(self):
-        return Session.objects.filter(subject_class__teacher__user=self.request.user, **self.get_filters()).order_by(
-            '-date', '-id')
+        return (
+                Session.objects.select_related(
+                "subject_class__teacher__user",
+                "subject_class__school_class",
+                "subject_class__subject",
+            )
+            .filter(subject_class__teacher__user=self.request.user, **self.get_filters())
+            .order_by('-date', '-id')
+        )
 
 
 class SessionDetailView(PermissionRequiredMixin, DetailView):
@@ -49,10 +56,17 @@ class SessionDetailView(PermissionRequiredMixin, DetailView):
     template_name = 'teacher/sessions/detail.html'
     context_object_name = 'session'
 
+    def get_queryset(self):
+        return super().get_queryset().select_related(
+            "subject_class__school_class",
+            "subject_class__teacher",
+            "subject_class__teacher__user",
+        )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            "attendances": Attendance.objects.filter(session=self.object),
+            "attendances": Attendance.objects.select_related("student").filter(session=self.object),
         })
         return context
 
@@ -207,6 +221,31 @@ class AttendanceReportView(PermissionRequiredMixin, TemplateView):
             filters["session__subject_class__school_class__name"] = self.request.GET.get('class_name')
         return Attendance.objects.filter(**filters)
 
+    def get_session_lookup(self):
+        session_totals = (
+            Session.objects
+            .annotate(
+                class_name=F("subject_class__school_class__name"),
+                teacher_code=F("subject_class__teacher__code"),
+                subject_name=F("subject_class__subject__name"),
+            )
+            .values(
+                "class_name",
+                "teacher_code",
+                "subject_name",
+            )
+            .annotate(total=Count("id"))
+        )
+        session_lookup = {
+            (
+                row["class_name"],
+                row["teacher_code"],
+                row["subject_name"],
+            ): row["total"]
+            for row in session_totals
+        }
+        return session_lookup
+
     def get_report(self):
         queryset = (
             self.get_queryset()
@@ -221,9 +260,8 @@ class AttendanceReportView(PermissionRequiredMixin, TemplateView):
             .annotate(present_count=Count("id"))
         )
 
-        print(queryset)
-
         data = {}
+        session_lookup = self.get_session_lookup()
         for row in queryset:
             class_name = row["class_name"]
             subject_name = row["subject_name"]
@@ -247,11 +285,10 @@ class AttendanceReportView(PermissionRequiredMixin, TemplateView):
             data[class_name]["students"][student_name][subject_full] = present_count
             data[class_name]["students"][student_name]["zTotal"] += present_count
 
-            session_total = Session.objects.filter(
-                subject_class__subject__name=subject_name,
-                subject_class__school_class__name=class_name,
-                subject_class__teacher__code=teacher_code,
-            ).count()
+            session_total = session_lookup.get(
+                (class_name, teacher_code, subject_name),
+                0
+            )
             if subject_full not in data[class_name]["students"]["out of"]:
                 data[class_name]["students"]["out of"][subject_full] = session_total
                 data[class_name]["students"]["out of"]["zTotal"] += session_total

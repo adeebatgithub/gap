@@ -35,7 +35,7 @@
         </p>
     </div>
 
-    {% if request.user|has_group:"Teacher" %}
+    {% if "Teacher" in USER_GROUPS %}
         <a href="{% url 'teacher:dashboard' %}"
            class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
            {% if request.resolver_match.app_name == 'teacher' %}aria-current="page"{% endif %}>

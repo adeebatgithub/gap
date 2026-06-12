@@ -24,7 +24,7 @@ class TeacherListView(PermissionRequiredMixin, ListView):
 
     def get_queryset(self):
         search = self.request.GET.get("search", "")
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().select_related("user").prefetch_related("user__groups")
         if search:
             queryset = queryset.filter(
                 Q(user__first_name__icontains=search) |
@@ -40,10 +40,17 @@ class TeacherDetailView(PermissionRequiredMixin, DetailView):
     template_name = 'teacher/teachers/detail.html'
     context_object_name = 'teacher'
 
+    def get_queryset(self):
+        return super().get_queryset().select_related("user")
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            "assigned_subjects": SubjectClass.objects.filter(teacher=self.object),
+            "assigned_subjects": SubjectClass.objects.filter(teacher=self.object).select_related(
+                "teacher",
+                "subject",
+                "school_class"
+            ),
         })
         return context
 

@@ -71,9 +71,9 @@
                 </button>
             </div>
 
-            {% if request.user|has_group:"Admin" and request.session.navbar == "admin" %}
+            {% if "Admin" in USER_GROUPS and request.session.navbar == "admin" %}
                 {% include 'includes/navbar-admin.html' %}
-            {% elif request.user|has_group:"Teacher" and request.session.navbar == "teacher" %}
+            {% elif "Teacher" in USER_GROUPS and request.session.navbar == "teacher" %}
                 {% include 'includes/navbar-teacher.html' %}
             {% endif %}
 

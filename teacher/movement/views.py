@@ -39,13 +39,16 @@ class MovementListView(PermissionRequiredMixin, ListView):
         return filters
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().select_related("teacher").select_related("teacher__user")
         return queryset.filter(**self.get_filters())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            "teachers": Teacher.objects.only("id"),
+            "teachers": Teacher.objects.only("id", "user__first_name", "user__last_name").annotate(
+                first_name=F("user__first_name"),
+                last_name=F("user__last_name"),
+            ),
         })
         return context
 

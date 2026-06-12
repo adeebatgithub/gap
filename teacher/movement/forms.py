@@ -1,4 +1,6 @@
 from django import forms
+
+from teacher.teacher.models import Teacher
 from .models import Movement
 
 
@@ -11,6 +13,13 @@ class MovementForm(forms.ModelForm):
             "start_time": forms.TimeInput(attrs={"type": "time"}),
             "end_time": forms.TimeInput(attrs={"type": "time"}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["teacher"].queryset = (
+            Teacher.objects.select_related("user")
+        )
 
     def clean(self):
         cleaned_data = super().clean()

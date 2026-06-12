@@ -151,32 +151,20 @@
                                         <i class="bi bi-eye"></i> <span class="sm:hidden lg:inline">View</span>
                                     </a>
 
-                                    <a href="{% url 'academics:enrollment:onleave' enrollment.pk %}"
-                                       onclick="return confirm('Change leave status of {{ enrollment.student.name }}?');"
-                                       class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md transition-colors"
-                                       title="Toggle Leave Status">
-                                        {% if enrollment.on_leave %}
-                                            <i class="bi bi-person-check"></i>
-                                            <span class="sm:hidden lg:inline">Set Active</span>
-                                        {% else %}
-                                            <i class="bi bi-person-dash"></i>
-                                            <span class="sm:hidden lg:inline">Set Leave</span>
-                                        {% endif %}
-                                    </a>
-
-                                    <form method="POST"
-                                          action="{% url 'academics:enrollment:delete' enrollment.pk %}?schoolclass={{ school_class.pk }}"
-                                          class="flex-1 sm:flex-none inline-block m-0 p-0"
-                                          onsubmit="return confirm('Remove {{ enrollment.student.name }} from this class?');">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="class_id" value="{{ school_class.pk }}">
-                                        <button type="submit"
-                                                class="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-md transition-colors cursor-pointer"
-                                                title="Remove from Class">
-                                            <i class="bi bi-trash"></i> <span class="sm:hidden lg:inline">Remove</span>
-                                        </button>
-                                    </form>
-
+                                    {% if school_class.class_teacher.user == request.user %}
+                                        <a href="{% url 'academics:enrollment:onleave' enrollment.pk %}"
+                                           onclick="return confirm('Change leave status of {{ enrollment.student.name }}?');"
+                                           class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md transition-colors"
+                                           title="Toggle Leave Status">
+                                            {% if enrollment.on_leave %}
+                                                <i class="bi bi-person-check"></i>
+                                                <span class="sm:hidden lg:inline">Set Active</span>
+                                            {% else %}
+                                                <i class="bi bi-person-dash"></i>
+                                                <span class="sm:hidden lg:inline">Set Leave</span>
+                                            {% endif %}
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </td>
                         </tr>
@@ -222,9 +210,6 @@
                         <th scope="col" class="px-6 py-4 font-semibold tracking-wider">
                             Subject
                         </th>
-                        <th scope="col" class="px-6 py-4 text-right font-semibold tracking-wider">
-                            Actions
-                        </th>
                     </tr>
                     </thead>
 
@@ -247,33 +232,6 @@
                             <td class="flex sm:table-cell justify-between items-center px-2 sm:px-6 py-2 sm:py-4 border-b border-gray-50 sm:border-0 font-medium text-gray-600">
                                 <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Subject</span>
                                 <span>{{ assigned_teacher.subject.name }}</span>
-                            </td>
-
-                            <!-- Actions -->
-                            <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 pt-4 sm:pt-4">
-                                <div class="flex items-center justify-between sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
-
-                                    <a href="{% url 'teacher:teacher:detail' assigned_teacher.teacher.pk %}"
-                                       class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
-                                       title="View Teacher">
-                                        <i class="bi bi-eye"></i> <span class="sm:hidden lg:inline">View</span>
-                                    </a>
-
-                                    <form method="POST"
-                                          action="{% url 'teacher:assignment:delete' assigned_teacher.pk %}"
-                                          class="flex-1 sm:flex-none inline-block m-0 p-0"
-                                          onsubmit="return confirm('Remove {{ assigned_teacher.teacher.user.get_full_name }} from teaching this class?');">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="schoolclass" value="{{ school_class.pk }}">
-                                        <button type="submit"
-                                                class="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-md transition-colors cursor-pointer"
-                                                title="Unassign Teacher">
-                                            <i class="bi bi-dash-circle"></i> <span
-                                                class="sm:hidden lg:inline">Unassign</span>
-                                        </button>
-                                    </form>
-
-                                </div>
                             </td>
                         </tr>
                     {% empty %}

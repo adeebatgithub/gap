@@ -1,12 +1,14 @@
 from django.db.models.aggregates import Count, Sum
 from django.db.models.query_utils import Q
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
 from users.mixins import GroupRequiredMixin
 
 from academics.academicyear.models import AcademicYear
 from academics.enrollment.models import Enrollment
 
-
+@method_decorator(cache_page(60*15), name="dispatch")
 class DashboardView(GroupRequiredMixin, TemplateView):
     group_name = "Admin"
     template_name = 'academics/dashboard.html'

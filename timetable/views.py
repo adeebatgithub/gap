@@ -17,10 +17,8 @@ class TimetableImageView(TemplateView):
 
     def get_table(self):
         today = datetime.today().strftime('%A')
-        table = TimetableImage.objects.filter(day=today)
-        if table:
-            return table.last()
-        return Timetable.objects.none()
+        table = TimetableImage.objects.get(day=today)
+        return table
 
     def get_context_data(self, **kwargs):
         return {
