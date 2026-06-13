@@ -17,7 +17,8 @@ def teacher_cv_path(instance, filename):
 
 
 class Teacher(TimeStampedModel):
-    uid = models.UUIDField(editable=False)
+    uid = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     code = models.CharField(max_length=100, null=True, blank=True)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     address = models.TextField(null=True, blank=True)
