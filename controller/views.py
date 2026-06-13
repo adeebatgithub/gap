@@ -52,7 +52,7 @@ class TestView(ListView):
                 "subject_class__school_class",
                 "subject_class__subject",
             )
-            .filter(subject_class__teacher__user=self.request.user, **self.get_filters())
+            .filter(subject_class__teacher__user_id=6, **self.get_filters())
             .order_by('-date', '-id')
         )
 
