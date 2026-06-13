@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'theme',
     "django_htmx",
     'debug_toolbar',
+    'silk',
 
     'academics.apps.AcademicsConfig',
     'teacher.apps.TeacherConfig',
@@ -66,6 +67,7 @@ NPM_BIN_PATH = r"D:\Adeeb\programfiles\node\npm.cmd"
 INTERNAL_IPS = ["127.0.0.1"]
 
 MIDDLEWARE = [
+    "silk.middleware.SilkyMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
