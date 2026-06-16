@@ -121,3 +121,8 @@ class ExportAsXlsxView(View):
         workbook = self.get_sheet()
         workbook.save(response)
         return response
+
+
+class ManifestView(TemplateView):
+    template_name = "pwa/manifest.json"
+    content_type = "application/json"

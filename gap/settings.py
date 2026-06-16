@@ -229,3 +229,4 @@ PWA_APP_SCREENSHOTS = [
 ]
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'en-US'
+PWA_APP_ID = "/accounts/login/"

@@ -16,6 +16,7 @@ class UserLoginForm(auth_forms.AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["username"].widget.attrs["placeholder"] = "Email"
+        self.fields["username"].label = "Email"
         self.fields["password"].widget.attrs["placeholder"] = "Password"
 
     def clean(self):

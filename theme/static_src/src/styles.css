@@ -11,6 +11,9 @@
 @theme {
   --color-primary: #00301C;
   --color-secondary: #D1FB5F;
+  --color-charcoal-900: #121212;
+  --color-charcoal-800: #1E1E1E;
+  --color-charcoal-700: #2D2D2D;
 
   --font-heading: "Roboto", sans-serif;
   --font-body: "Poppins", sans-serif;
