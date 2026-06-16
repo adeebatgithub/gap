@@ -24,12 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%f@w4h=rj#kk7n3rqmv*8*xcr6v83b@h9icr@cy=feus@2#b1^'
+SECRET_KEY = env.str("SECRET_KEY")
+ADMIN_KEY = env.str("ADMIN_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG")
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 PROJECT_NAME = "GAP"
 
@@ -52,8 +53,7 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     "django_htmx",
-    'debug_toolbar',
-    'pwa',
+    "pwa",
 
     'academics.apps.AcademicsConfig',
     'teacher.apps.TeacherConfig',
@@ -63,11 +63,10 @@ INSTALLED_APPS = [
 ]
 
 TAILWIND_APP_NAME = 'theme'
-NPM_BIN_PATH = r"D:\Adeeb\programfiles\node\npm.cmd"
-INTERNAL_IPS = ["127.0.0.1"]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,7 +74,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_htmx.middleware.HtmxMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'gap.urls'
@@ -106,8 +104,13 @@ WSGI_APPLICATION = 'gap.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': env.str("DB_NAME"),
+        'USER': env.str('DB_USER'),
+        'PASSWORD': env.str('DB_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'CONN_MAX_AGE': 0
     }
 }
 
@@ -153,9 +156,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "static"
 
 MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = env.str("MEDIA_ROOT")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -171,10 +175,8 @@ AUTO_LOGOUT_DELAY = 1209600
 MIN_LOGIN_ATTEMPT_LIMIT = 5
 MAX_LOGIN_ATTEMPT_LIMIT = 20
 
-DEFAULT_USER_GROUP_NAME = 'users'  # Add new users to this default group
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = env.str("EMAIL_HOST")
 EMAIL_PORT = 587
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")  # Your Gmail ID
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")  # Google app password (use an app-specific password)
@@ -192,6 +194,29 @@ OTP_EXPIRY = {
     "seconds": 30,
 }
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": "logs/django.log",
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": True,
+        },
+    },
+}
 # PWA Settings
 PWA_APP_NAME = 'GAP'
 PWA_APP_DESCRIPTION = "Greenvalley Academy Portal"
@@ -229,4 +254,3 @@ PWA_APP_SCREENSHOTS = [
 ]
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'en-US'
-PWA_APP_ID = "/accounts/login/"

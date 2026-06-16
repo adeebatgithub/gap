@@ -29,7 +29,6 @@ urlpatterns = [
     path('', include("controller.urls")),
 
     path('', include('pwa.urls')),
-    path("__debug__/", include("debug_toolbar.urls")),
 ]
 
 if settings.DEBUG:
