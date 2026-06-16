@@ -76,7 +76,9 @@ class SessionCreateView(PermissionRequiredMixin, CreateView):
     model = Session
     form_class = SessionForm
     template_name = 'teacher/sessions/form.html'
-    success_url = reverse_lazy('teacher:attendance:list')
+
+    def get_success_url(self):
+        return reverse_lazy("teacher:attendance:detail", kwargs={"pk": self.object.pk})
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
