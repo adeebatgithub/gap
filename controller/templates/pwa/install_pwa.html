@@ -1,0 +1,94 @@
+{% load static %}
+<!-- PWA Install Prompt -->
+<div id="pwa-install-banner" style="display:none; position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+     background:#fff; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.15); padding:16px 20px;
+     display:flex; align-items:center; gap:12px; z-index:9999; max-width:380px; width:90%;
+     border-left:4px solid #4F46E5; font-family:sans-serif;">
+
+  <div style="flex:1">
+    <div style="font-weight:600; font-size:15px; color:#111;">Install GAP App</div>
+    <div style="font-size:13px; color:#666; margin-top:2px;">Add to home screen for quick access</div>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:6px;">
+    <button id="pwa-install-btn" style="background:#4F46E5; color:#fff; border:none; border-radius:8px;
+            padding:7px 14px; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap;">
+      Install
+    </button>
+    <button id="pwa-dismiss-btn" style="background:transparent; color:#888; border:none;
+            font-size:12px; cursor:pointer;">
+      Not now
+    </button>
+  </div>
+</div>
+
+<script>
+  let deferredPrompt = null;
+  const banner = document.getElementById('pwa-install-banner');
+  const installBtn = document.getElementById('pwa-install-btn');
+  const dismissBtn = document.getElementById('pwa-dismiss-btn');
+
+  // Capture the install prompt event
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    // Don't show if user already dismissed
+    if (!localStorage.getItem('pwa-dismissed')) {
+      // Show after 3 seconds
+      setTimeout(() => {
+        banner.style.display = 'flex';
+      }, 3000);
+    }
+  });
+
+  // Install button clicked
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === 'accepted') {
+      console.log('PWA installed');
+    }
+
+    deferredPrompt = null;
+    banner.style.display = 'none';
+  });
+
+  // Dismiss button clicked
+  dismissBtn.addEventListener('click', () => {
+    banner.style.display = 'none';
+    // Remember dismissal for 7 days
+    localStorage.setItem('pwa-dismissed', Date.now());
+  });
+
+  // Hide banner once installed
+  window.addEventListener('appinstalled', () => {
+    banner.style.display = 'none';
+    deferredPrompt = null;
+  });
+
+  // Check if 7-day dismissal has expired
+  const dismissed = localStorage.getItem('pwa-dismissed');
+  if (dismissed) {
+    const sevenDays = 7 * 24 * 60 * 60 * 1000;
+    if (Date.now() - parseInt(dismissed) > sevenDays) {
+      localStorage.removeItem('pwa-dismissed');
+    }
+  }
+
+  // iOS Safari (doesn't support beforeinstallprompt)
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches;
+
+  if (isIOS && !isInStandaloneMode && !localStorage.getItem('pwa-dismissed')) {
+    // Show a different message for iOS
+    document.querySelector('#pwa-install-banner .flex-1 div:first-child').textContent = 'Install GAP App';
+    document.querySelector('#pwa-install-banner .flex-1 div:last-child').textContent =
+      'Tap the Share button then "Add to Home Screen"';
+    installBtn.style.display = 'none'; // No programmatic install on iOS
+    setTimeout(() => { banner.style.display = 'flex'; }, 3000);
+  }
+</script>

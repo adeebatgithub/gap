@@ -28,8 +28,8 @@ urlpatterns = [
     path('', include("front.urls")),
     path('', include("controller.urls")),
 
+    path('', include('pwa.urls')),
     path("__debug__/", include("debug_toolbar.urls")),
-    path("silk/", include("silk.urls", namespace="silk")),
 ]
 
 if settings.DEBUG:

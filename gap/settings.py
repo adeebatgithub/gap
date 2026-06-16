@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'theme',
     "django_htmx",
     'debug_toolbar',
-    'silk',
+    'pwa',
 
     'academics.apps.AcademicsConfig',
     'teacher.apps.TeacherConfig',
@@ -67,7 +67,6 @@ NPM_BIN_PATH = r"D:\Adeeb\programfiles\node\npm.cmd"
 INTERNAL_IPS = ["127.0.0.1"]
 
 MIDDLEWARE = [
-    "silk.middleware.SilkyMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -192,3 +191,41 @@ OTP_LENGTH = 6  # Preferred length of OTP (4 or 6 digits)
 OTP_EXPIRY = {
     "seconds": 30,
 }
+
+# PWA Settings
+PWA_APP_NAME = 'GAP'
+PWA_APP_DESCRIPTION = "Greenvalley Academy Portal"
+PWA_APP_THEME_COLOR = '#000000'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = "/accounts/login/"
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+    {
+        "src": "/static/image/ico/favicon-circle.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any"
+    },
+]
+PWA_APP_SPLASH_SCREEN = [{'src': '/static/images/splash-640x1136.png', 'media': '(device-width: 320px)'}]
+PWA_APP_SCREENSHOTS = [
+    {
+        'src': '/static/images/screenshots/desktop-screenshot.png',
+        'sizes': '1312x663',
+        'type': 'image/png',
+        'form_factor': 'wide',  # Required for desktop
+        'label': 'GAP Desktop View'
+    },
+    {
+        'src': '/static/images/screenshots/mobile-screenshot.png',
+        'sizes': '320x711',
+        'type': 'image/png',
+        # No form_factor = mobile (or set to 'narrow')
+        'label': 'GAP Mobile View'
+    },
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'
