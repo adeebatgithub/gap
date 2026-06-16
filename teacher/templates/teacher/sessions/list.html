@@ -38,25 +38,3 @@
         {% include "teacher/sessions/partial_list.html" with sessions=sessions %}
     </div>
 {% endblock %}
-
-{% block extra_js %}
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // Updated to delegate the event listener to the table body.
-            // This ensures clicking works even after HTMX swaps new rows in.
-            const tableContainer = document.getElementById("hx-list-table");
-
-            if (tableContainer) {
-                tableContainer.addEventListener("click", (e) => {
-                    const row = e.target.closest(".list-item");
-                    if (!row) return;
-
-                    // Ignore clicks on links, buttons, or forms inside the row
-                    if (e.target.closest("a, button, form")) return;
-
-                    window.location.href = row.dataset.detailUrl;
-                });
-            }
-        });
-    </script>
-{% endblock %}

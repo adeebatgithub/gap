@@ -16,52 +16,66 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Filter Section -->
-    <div class="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-50 print:hidden">
-        <form hx-get="{% url 'teacher:movement:list' %}"
-              hx-target="#hx-list-table"
-              hx-swap="innerHTML"
-              hx-trigger="change, submit"
-              class="flex flex-col sm:flex-row gap-4 items-end">
+    <div class="bg-white p-3 sm:p-4 rounded-xl shadow-sm mb-6 border border-gray-50 print:hidden overflow-hidden transition-all duration-200">
 
-            <div class="w-full sm:w-auto flex-1 max-w-sm">
-                <label for="date" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
-                    Filter by Date
-                </label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="bi bi-calendar-event text-gray-400"></i>
-                    </div>
-                    <input type="date" name="date" id="date" value="{{ request.GET.date }}"
-                           class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-700 bg-gray-50 focus:bg-white outline-none">
+        <div class="flex justify-between items-center sm:hidden cursor-pointer"
+             onclick="document.getElementById('filter-wrapper').classList.toggle('hidden'); document.getElementById('filter-icon').classList.toggle('rotate-180');">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-500">
+                    <i class="bi bi-funnel text-sm"></i>
                 </div>
+                <span class="font-semibold text-gray-900 text-sm">Filter Movements</span>
             </div>
+            <i id="filter-icon" class="bi bi-chevron-down text-gray-400 transition-transform duration-200 pr-2"></i>
+        </div>
 
-            <div class="w-full sm:w-auto flex-1 max-w-sm">
-                <label for="teacher" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
-                    Select Teacher
-                </label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="bi bi-person text-gray-400"></i>
-                    </div>
-                    <select name="teacher" id="teacher"
-                            class="block w-full pl-10 pr-10 py-2 border border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 transition-colors appearance-none text-gray-700 bg-gray-50 focus:bg-white outline-none cursor-pointer">
-                        <option value="">All Teachers</option>
-                        {% for teacher in teachers %}
-                            <option value="{{ teacher.id }}"
-                                    {% if request.GET.teacher == teacher.id|stringformat:"s" %}selected{% endif %}>
-                                {{ teacher.first_name }} {{ teacher.last_name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                        <i class="bi bi-chevron-down text-gray-400 text-xs"></i>
+        <div id="filter-wrapper" class="hidden sm:block mt-4 sm:mt-0">
+            <form hx-get="{% url 'teacher:movement:list' %}"
+                  hx-target="#hx-list-table"
+                  hx-swap="innerHTML"
+                  hx-trigger="change, submit"
+                  class="flex flex-col sm:flex-row gap-4 items-end">
+
+                <div class="w-full sm:w-auto flex-1 max-w-sm">
+                    <label for="date" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+                        Filter by Date
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="bi bi-calendar-event text-gray-400"></i>
+                        </div>
+                        <input type="date" name="date" id="date" value="{{ request.GET.date }}"
+                               class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-700 bg-gray-50 focus:bg-white outline-none">
                     </div>
                 </div>
-            </div>
 
-        </form>
+                <div class="w-full sm:w-auto flex-1 max-w-sm">
+                    <label for="teacher"
+                           class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+                        Select Teacher
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="bi bi-person text-gray-400"></i>
+                        </div>
+                        <select name="teacher" id="teacher"
+                                class="block w-full pl-10 pr-10 py-2 border border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 transition-colors appearance-none text-gray-700 bg-gray-50 focus:bg-white outline-none cursor-pointer">
+                            <option value="">All Teachers</option>
+                            {% for teacher in teachers %}
+                                <option value="{{ teacher.id }}"
+                                        {% if request.GET.teacher == teacher.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ teacher.first_name }} {{ teacher.last_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <i class="bi bi-chevron-down text-gray-400 text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
     </div>
 
     <div id="hx-list-table" class="bg-transparent sm:bg-white sm:shadow-sm rounded-xl sm:overflow-hidden">

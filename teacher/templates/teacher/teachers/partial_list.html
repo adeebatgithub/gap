@@ -1,49 +1,93 @@
 {% load users %}
+<style>
+    /* CSS to handle smooth downward slide animation on mobile */
+    @media (max-width: 639px) {
+        .mobile-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            border-bottom-width: 0 !important;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
+        }
+
+        /* Expanded state - max-height increased to 500px to accommodate multiple action buttons wrapping */
+        .mobile-row.is-expanded .mobile-content {
+            max-height: 500px;
+            opacity: 1;
+            border-bottom-width: 1px !important;
+        }
+
+        .mobile-row.is-expanded .mobile-padding-standard {
+            padding-top: 0.75rem !important;
+            padding-bottom: 0.75rem !important;
+        }
+
+        .mobile-row.is-expanded .mobile-padding-actions {
+            padding-top: 1rem !important;
+            padding-bottom: 1rem !important;
+        }
+
+        .dropdown-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-row.is-expanded .dropdown-icon {
+            transform: rotate(180deg);
+        }
+    }
+</style>
+
 <div class="w-full overflow-x-auto">
     <table class="w-full text-sm text-left text-gray-500 block sm:table">
 
         <thead class="hidden sm:table-header-group text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-100">
         <tr class="sm:table-row">
-            <th scope="col" class="px-6 py-4 font-semibold tracking-wider">
-                Teacher Name
-            </th>
-            <th scope="col" class="px-6 py-4 font-semibold tracking-wider">
-                Privileges
-            </th>
-            <th scope="col" class="px-6 py-4 text-right font-semibold tracking-wider">
-                Actions
-            </th>
+            <th scope="col" class="px-6 py-4 font-semibold tracking-wider">Teacher Name</th>
+            <th scope="col" class="px-6 py-4 font-semibold tracking-wider">Privileges</th>
+            <th scope="col" class="px-6 py-4 text-right font-semibold tracking-wider">Actions</th>
         </tr>
         </thead>
 
         <tbody class="block sm:table-row-group sm:divide-y sm:divide-gray-100 space-y-4 sm:space-y-0">
         {% for teacher in teachers %}
-            <tr class="block sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-4 sm:p-0 hover:bg-gray-50 transition-colors duration-150 group">
+            <tr class="mobile-row flex flex-col sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-0 sm:p-0 hover:bg-gray-50 transition-colors duration-150 group">
 
-                <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-50 sm:border-0 pb-3 sm:pb-4">
+                <td class="order-1 flex sm:table-cell justify-between items-center px-4 sm:px-6 py-4 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-100 sm:border-0 cursor-pointer sm:cursor-auto"
+                    onclick="if(window.innerWidth < 640) this.parentElement.classList.toggle('is-expanded')">
+
                     <div class="flex items-center gap-3">
                         <div class="h-10 w-10 sm:hidden rounded-full bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0">
                             <i class="bi bi-person"></i>
                         </div>
-                        <span>{{ teacher }}</span>
+
+                        <a href="{% url 'teacher:teacher:detail' teacher.pk %}"
+                           onclick="event.stopPropagation();"
+                           class="hover:text-blue-600 hover:underline transition-colors"
+                           title="View {{ teacher }} Details">
+                            {{ teacher }}
+                        </a>
                     </div>
+
+                    <i class="bi bi-chevron-down dropdown-icon sm:hidden text-gray-400"></i>
                 </td>
 
-                <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-50 sm:border-0 pb-3 sm:pb-4">
+                <td class="mobile-content mobile-padding-standard order-2 block sm:table-cell px-4 sm:px-6 py-3 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-50 sm:border-0">
                     <div class="flex items-center sm:items-start sm:flex-col lg:flex-row gap-2">
                         <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider mr-2">Privileges:</span>
 
                         <div class="flex flex-wrap gap-2">
                             {% if teacher.user|has_group:"Admin" %}
                                 <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-purple-50 text-purple-700 border border-purple-100">
-                                        <i class="bi bi-shield-lock mr-1"></i> Admin
-                                    </span>
+                                    <i class="bi bi-shield-lock mr-1"></i> Admin
+                                </span>
                             {% endif %}
 
                             {% if teacher.user|has_group:"Exam" %}
                                 <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
-                                        <i class="bi bi-journal-text mr-1"></i> Exam Controller
-                                    </span>
+                                    <i class="bi bi-journal-text mr-1"></i> Exam Controller
+                                </span>
                             {% endif %}
 
                             {% if not teacher.user|has_group:"Admin" and not teacher.user|has_group:"Exam" %}
@@ -53,7 +97,7 @@
                     </div>
                 </td>
 
-                <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 pt-3 sm:pt-4">
+                <td class="mobile-content mobile-padding-actions order-3 block sm:table-cell px-4 sm:px-6 py-4 sm:pt-4 text-right bg-gray-50 sm:bg-transparent rounded-b-xl sm:rounded-none">
                     <div class="flex flex-wrap items-center justify-start sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
 
                         {% if teacher.user|has_group:"Admin" %}
@@ -68,8 +112,7 @@
                                onclick="return confirm('Are you sure you want to grant Admin privileges to this teacher?');"
                                class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-md transition-colors"
                                title="Grant Admin privileges">
-                                <i class="bi bi-shield-plus"></i> <span
-                                    class="sm:hidden lg:inline">Add Admin</span>
+                                <i class="bi bi-shield-plus"></i> <span class="sm:hidden lg:inline">Add Admin</span>
                             </a>
                         {% endif %}
 
@@ -85,8 +128,7 @@
                                onclick="return confirm('Are you sure you want to grant Exam Controller privileges?');"
                                class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-md transition-colors"
                                title="Grant Exam privileges">
-                                <i class="bi bi-journal-plus"></i> <span
-                                    class="sm:hidden lg:inline">Add Exam</span>
+                                <i class="bi bi-journal-plus"></i> <span class="sm:hidden lg:inline">Add Exam</span>
                             </a>
                         {% endif %}
 

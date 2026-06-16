@@ -1,3 +1,43 @@
+<style>
+    /* CSS to handle smooth downward slide animation on mobile */
+    @media (max-width: 639px) {
+        .mobile-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            border-bottom-width: 0 !important;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
+        }
+
+        /* Expanded state */
+        .mobile-row.is-expanded .mobile-content {
+            max-height: 250px; /* High enough to fit the date and action buttons */
+            opacity: 1;
+            border-bottom-width: 1px !important;
+        }
+
+        .mobile-row.is-expanded .mobile-padding-standard {
+            padding-top: 0.75rem !important;
+            padding-bottom: 0.75rem !important;
+        }
+
+        .mobile-row.is-expanded .mobile-padding-actions {
+            padding-top: 1rem !important;
+            padding-bottom: 1rem !important;
+        }
+
+        .dropdown-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-row.is-expanded .dropdown-icon {
+            transform: rotate(180deg);
+        }
+    }
+</style>
+
 <div class="w-full">
     <table class="w-full text-sm text-left text-gray-500 block sm:table">
         <thead class="hidden sm:table-header-group text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-100">
@@ -12,29 +52,43 @@
         <tbody class="block sm:table-row-group sm:divide-y sm:divide-gray-100 space-y-4 sm:space-y-0">
         {% for session in sessions %}
             <tr data-detail-url="{% url 'teacher:attendance:detail' session.pk %}"
-                class="list-item cursor-pointer block sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-4 sm:p-0 hover:bg-gray-50 transition-colors duration-150 group">
+                class="mobile-row list-item block sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-0 sm:p-0 hover:bg-gray-50 transition-colors duration-150 group flex flex-col cursor-pointer sm:cursor-auto">
 
-                <td class="flex sm:table-cell justify-between items-center px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-900 text-sm border-b border-gray-50 sm:border-0 pb-4 sm:pb-4">
-                    <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</span>
-                    Period: {{ session.period }}<br>
-                    <span class="text-gray-500 font-normal">{{ session.date|date:"M d, Y" }}</span>
-                </td>
+                <td class="order-1 flex sm:table-cell justify-between items-center px-4 sm:px-6 py-4 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-50 sm:border-0 cursor-pointer sm:cursor-auto"
+                    onclick="if(window.innerWidth < 640) { this.parentElement.classList.toggle('is-expanded'); event.stopPropagation(); }">
 
-                <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-50 sm:border-0 pb-3 sm:pb-4">
                     <div class="flex items-center gap-3">
                         <div class="h-10 w-10 sm:hidden rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
                             <i class="bi bi-calendar-event"></i>
                         </div>
-                        {{ session.subject_class.school_class }}
+
+                        <a href="{% url 'teacher:attendance:detail' session.pk %}"
+                           onclick="event.stopPropagation();"
+                           class="hover:text-blue-600 hover:underline transition-colors"
+                           title="View Session Details">
+                            {{ session.subject_class.school_class }}
+                        </a>
+                    </div>
+
+                    <i class="bi bi-chevron-down dropdown-icon sm:hidden text-gray-400"></i>
+                </td>
+
+                <td class="order-2 flex sm:table-cell justify-between items-center px-4 sm:px-6 py-3 sm:py-4 font-medium text-gray-600 text-sm border-b border-gray-50 sm:border-0 cursor-pointer sm:cursor-auto"
+                    onclick="if(window.innerWidth < 640) { this.parentElement.classList.toggle('is-expanded'); event.stopPropagation(); }">
+
+                    <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Subject</span>
+                    <span class="text-right sm:text-left">{{ session.subject_class.subject }}</span>
+                </td>
+
+                <td class="mobile-content mobile-padding-standard order-3 flex sm:table-cell justify-between items-center px-4 sm:px-6 py-3 sm:py-4 font-medium text-gray-900 text-sm border-b border-gray-50 sm:border-0">
+                    <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</span>
+                    <div class="text-right sm:text-left">
+                        Period: {{ session.period }}<br>
+                        <span class="text-gray-500 font-normal">{{ session.date|date:"M d, Y" }}</span>
                     </div>
                 </td>
 
-                <td class="flex sm:table-cell justify-between items-center px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-600 text-sm border-b border-gray-50 sm:border-0">
-                    <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Subject</span>
-                    {{ session.subject_class.subject }}
-                </td>
-
-                <td class="block sm:table-cell px-2 sm:px-6 py-2 sm:py-4 pt-4 sm:pt-4 text-right">
+                <td class="mobile-content mobile-padding-actions order-4 block sm:table-cell px-4 sm:px-6 py-4 sm:pt-4 text-right bg-gray-50 sm:bg-transparent rounded-b-xl sm:rounded-none">
                     <div class="flex items-center justify-between sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
 
                         <a href="{% url 'teacher:attendance:detail' session.pk %}"

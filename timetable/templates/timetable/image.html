@@ -16,30 +16,14 @@
 
         {% if timetable and timetable.image %}
             <div class="flex justify-center w-full">
-                <img src="{{ timetable.image.url }}"
-                     alt="Class Timetable"
-                     onclick="openTimetableModal()"
-                     class="max-w-full h-auto rounded-lg border border-gray-200 shadow-sm object-contain cursor-zoom-in hover:opacity-90 transition-opacity duration-200 print:cursor-auto"
-                     title="Click to view full size"
-                     loading="lazy">
-            </div>
-
-            <div id="timetableModal"
-                 class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gray-900/95 backdrop-blur-sm opacity-0 transition-opacity duration-300 print:hidden">
-
-                <button onclick="closeTimetableModal()"
-                        class="absolute top-4 right-4 sm:top-6 sm:right-6 text-gray-400 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white rounded-full p-2 z-50"
-                        aria-label="Close modal">
-                    <i class="bi bi-x-lg text-2xl sm:text-3xl"></i>
-                </button>
-
-                <div class="relative w-full h-full p-4 sm:p-12 flex justify-center items-center"
-                     onclick="closeTimetableModal()">
+                <a href="{{ timetable.image.url }}">
                     <img src="{{ timetable.image.url }}"
-                         alt="Full Size Timetable"
-                         class="max-w-full max-h-full object-contain rounded-md shadow-2xl cursor-zoom-out"
-                         onclick="event.stopPropagation();">
-                </div>
+                         alt="Class Timetable"
+                         onclick="openTimetableModal()"
+                         class="max-w-full h-auto rounded-lg border border-gray-200 shadow-sm object-contain cursor-zoom-in hover:opacity-90 transition-opacity duration-200 print:cursor-auto"
+                         title="Click to view full size"
+                         loading="lazy">
+                </a>
             </div>
 
         {% else %}
