@@ -16,6 +16,7 @@ from teacher.attendance.models import Session, Attendance
 from teacher.teacher.models import Teacher
 from timetable.models import TimetableCell
 from .forms import SessionForm, SessionUpdateForm
+from .utils import get_leafnodes
 
 
 class SessionListView(PermissionRequiredMixin, ListView):
@@ -65,6 +66,7 @@ class SessionDetailView(PermissionRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        print(get_leafnodes(self.object.subject_class.school_class))
         context.update({
             "attendances": Attendance.objects.select_related("student").filter(session=self.object),
         })
@@ -89,7 +91,7 @@ class SessionCreateView(PermissionRequiredMixin, CreateView):
         form.instance.teacher = Teacher.objects.get(user=self.request.user)
         with transaction.atomic():
             self.object = form.save()
-            enrollments = Enrollment.objects.filter(school_class=self.object.subject_class.school_class)
+            enrollments = Enrollment.objects.filter(school_class__in=get_leafnodes(self.object.subject_class.school_class))
             for enrollment in enrollments:
                 Attendance.objects.create(
                     session=self.object,
