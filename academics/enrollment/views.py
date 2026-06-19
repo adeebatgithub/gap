@@ -23,7 +23,7 @@ from openpyxl.worksheet.datavalidation import DataValidation
 
 from academics.enrollment.models import Student, Enrollment
 from academics.schoolclass.models import SchoolClass
-from attendance.utils import get_all_leafnodes
+from teacher.attendance.utils import get_all_leafnodes
 from controller.consts import BLOOD_GROUP_CHOICES
 from controller.mixins import RedirectToDetail
 from controller.utils import get_academic_year
