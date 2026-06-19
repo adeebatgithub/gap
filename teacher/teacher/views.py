@@ -73,6 +73,11 @@ class TeacherUpdateView(PermissionRequiredMixin, RedirectToDetail, UpdateView):
     def get_detail_url(self):
         return reverse_lazy('teacher:teacher:detail', kwargs={'pk': self.object.pk})
 
+    def get_success_url(self):
+        if self.request.GET.get("back_to") == "dash":
+            return reverse_lazy('teacher:dashboard')
+        return super().get_success_url()
+
 
 class TeacherDeleteView(PermissionRequiredMixin, RedirectToDetail, DeleteView):
     permission_required = "teacher.delete_teacher"

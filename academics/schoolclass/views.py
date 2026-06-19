@@ -8,6 +8,7 @@ from academics.subject.models import SubjectClass
 from controller.mixins import RedirectToDetail
 from controller.utils import get_academic_year
 from .forms import SchoolClassForm
+from teacher.attendance.utils import get_leafnodes
 
 
 class SchoolClassListView(PermissionRequiredMixin, ListView):
@@ -31,7 +32,7 @@ class SchoolClassListView(PermissionRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(**self.get_filters()).order_by('name')
+        return queryset.filter(**self.get_filters()).order_by("parent", "name")
 
 
 class SchoolClassDetailView(PermissionRequiredMixin, DetailView):
@@ -41,17 +42,18 @@ class SchoolClassDetailView(PermissionRequiredMixin, DetailView):
     context_object_name = 'school_class'
 
     def get_queryset(self):
-        return super().get_queryset().select_related('class_teacher', 'academic_year')
+        return super().get_queryset().prefetch_related("parent").select_related('class_teacher', 'academic_year')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        print(get_leafnodes(self.object))
         context.update({
             "assigned_teachers": SubjectClass.objects.filter(school_class=self.object).select_related(
                 'teacher',
                 'teacher__user',
                 'subject'
             ),
-            "enrollments": Enrollment.objects.filter(school_class=self.object).select_related(
+            "enrollments": Enrollment.objects.filter(school_class__in=get_leafnodes(self.object)).select_related(
                 'student'
             ),
         })
