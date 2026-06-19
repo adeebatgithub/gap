@@ -8,7 +8,6 @@ from users.mixins import GroupRequiredMixin
 from academics.academicyear.models import AcademicYear
 from academics.enrollment.models import Enrollment
 
-@method_decorator(cache_page(60*15), name="dispatch")
 class DashboardView(GroupRequiredMixin, TemplateView):
     group_name = "Admin"
     template_name = 'academics/dashboard.html'

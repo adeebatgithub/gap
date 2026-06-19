@@ -6,7 +6,9 @@ from .views import (
     EnrollmentCreateView,
     EnrollmentUpdateView,
     EnrollmentDeleteView,
-    EnrollmentChangeLeaveStatusView
+    EnrollmentChangeLeaveStatusView,
+    StudentImportView,
+    StudentImportTemplateView,
 )
 
 app_name = 'enrollment'
@@ -19,4 +21,6 @@ urlpatterns = [
     path('<int:pk>/delete/', EnrollmentDeleteView.as_view(), name='delete'),
 
     path('<int:pk>/onleave/', EnrollmentChangeLeaveStatusView.as_view(), name='onleave'),
+    path('<int:pk>/import/', StudentImportView.as_view(), name='import'),
+    path('download/template/', StudentImportTemplateView.as_view(), name='template'),
 ]

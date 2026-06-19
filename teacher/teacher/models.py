@@ -31,7 +31,7 @@ class Teacher(TimeStampedModel):
     cv = models.FileField(upload_to=teacher_cv_path, null=True, blank=True)
 
     def __str__(self):
-        return self.user.get_full_name()
+        return self.user.get_full_name().title()
 
     def save(self, *args, **kwargs):
         if not self.uid:

@@ -16,6 +16,9 @@ class TeacherForm(forms.ModelForm):
         model = Teacher
         fields = ('first_name', 'last_name', 'email', 'phone', 'address', 'dob', 'blood_type', 'qualifications', 'experiences',
                   'department', 'photo', 'cv')
+        widgets = {
+            "dob": forms.DateInput(attrs={"type": "date"}),
+        }
 
     def __init__(self, *args, **kwargs):
         self.instance_user = kwargs.get('instance').user if kwargs.get('instance') else None

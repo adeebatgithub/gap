@@ -264,27 +264,30 @@
         </div>
 
         <!-- Danger Zone -->
-        <div class="bg-red-50 border border-red-100 rounded-xl overflow-hidden p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left">
-            <div class="flex-1">
-                <h3 class="text-base font-semibold text-red-800">Danger Zone</h3>
-                <p class="text-sm text-red-600 mt-1">
-                    Deleting this enrollment will permanently remove their records, enrollment status, and history from
-                    the system. This action cannot be undone.
-                </p>
-            </div>
+        {% if "Admin" in USER_GROUPS %}
+            <div class="bg-red-50 border border-red-100 rounded-xl overflow-hidden p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left">
+                <div class="flex-1">
+                    <h3 class="text-base font-semibold text-red-800">Danger Zone</h3>
+                    <p class="text-sm text-red-600 mt-1">
+                        Deleting this enrollment will permanently remove their records, enrollment status, and history
+                        from
+                        the system. This action cannot be undone.
+                    </p>
+                </div>
 
-            <div class="w-full sm:w-auto mt-2 sm:mt-0 flex items-center">
-                <form method="POST" action="{% url 'academics:enrollment:delete' enrollment.pk %}?back_to=list"
-                      class="w-full sm:w-auto"
-                      onsubmit="return confirm('Are you sure you want to completely delete {{ enrollment.student.name }}? All associated records will be lost.');">
-                    {% csrf_token %}
-                    <button type="submit"
-                            class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-red-50">
-                        <i class="bi bi-person-x"></i> Delete Enrollment
-                    </button>
-                </form>
+                <div class="w-full sm:w-auto mt-2 sm:mt-0 flex items-center">
+                    <form method="POST" action="{% url 'academics:enrollment:delete' enrollment.pk %}?back_to=list"
+                          class="w-full sm:w-auto"
+                          onsubmit="return confirm('Are you sure you want to completely delete {{ enrollment.student.name }}? All associated records will be lost.');">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-red-50">
+                            <i class="bi bi-person-x"></i> Delete Enrollment
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
+        {% endif %}
 
     </div>
 {% endblock %}

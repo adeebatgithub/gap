@@ -1,3 +1,5 @@
+from django.db.models import Count
+
 from academics.schoolclass.models import SchoolClass
 
 
@@ -21,3 +23,9 @@ def get_leafnodes(root):
 
     dfs(root)
     return leaves
+
+def get_all_leafnodes():
+    leaf_nodes = SchoolClass.objects.annotate(
+        num_children=Count("children")
+    ).filter(num_children=0)
+    return leaf_nodes
