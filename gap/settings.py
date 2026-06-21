@@ -204,27 +204,16 @@ PWA_APP_START_URL = "/accounts/login/"
 PWA_APP_STATUS_BAR_COLOR = 'default'
 PWA_APP_ICONS = [
     {
-        "src": "/static/image/ico/favicon-circle.png",
+        "src": "/static/pwa/icons/icon-192x192.png",
         "sizes": "192x192",
         "type": "image/png",
         "purpose": "any"
     },
-]
-PWA_APP_SPLASH_SCREEN = [{'src': '/static/images/splash-640x1136.png', 'media': '(device-width: 320px)'}]
-PWA_APP_SCREENSHOTS = [
     {
-        'src': '/static/images/screenshots/desktop-screenshot.png',
-        'sizes': '1312x663',
-        'type': 'image/png',
-        'form_factor': 'wide',  # Required for desktop
-        'label': 'GAP Desktop View'
-    },
-    {
-        'src': '/static/images/screenshots/mobile-screenshot.png',
-        'sizes': '320x711',
-        'type': 'image/png',
-        # No form_factor = mobile (or set to 'narrow')
-        'label': 'GAP Mobile View'
+        "src": "/static/pwa/icons/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
     },
 ]
 PWA_APP_DIR = 'ltr'
