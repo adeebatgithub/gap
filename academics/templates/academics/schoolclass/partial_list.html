@@ -1,111 +1,78 @@
+{% load users %}
 <style>
     /* CSS to handle smooth downward slide animation on mobile */
     @media (max-width: 639px) {
-        .mobile-content {
-            max-height: 0;
+        .mobile-content-wrap {
+            display: grid;
+            grid-template-rows: 0fr;
             opacity: 0;
+            transition: grid-template-rows 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        .mobile-content-inner {
             overflow: hidden;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            border-bottom-width: 0 !important;
-            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
+            min-height: 0;
         }
 
-        /* Expanded state */
-        .mobile-row.is-expanded .mobile-content {
-            max-height: 300px; /* High enough to fit the action buttons */
+        .mobile-card.is-expanded .mobile-content-wrap {
+            grid-template-rows: 1fr;
             opacity: 1;
-            border-bottom-width: 1px !important;
-        }
-
-        .mobile-row.is-expanded .mobile-padding-actions {
-            padding-top: 1rem !important;
-            padding-bottom: 1rem !important;
         }
 
         .dropdown-icon {
             transition: transform 0.3s ease-in-out;
         }
 
-        .mobile-row.is-expanded .dropdown-icon {
+        .mobile-card.is-expanded .dropdown-icon {
             transform: rotate(180deg);
         }
     }
 </style>
 
 <div class="w-full overflow-x-auto">
-    <table class="w-full text-sm text-left text-gray-500 block sm:table">
-
-        <thead class="hidden sm:table-header-group text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-100">
-        <tr class="sm:table-row">
-            <th scope="col" class="px-6 py-4 font-semibold tracking-wider">
-                Class Name
-            </th>
-            <th scope="col" class="px-6 py-4 font-semibold tracking-wider">
-                Class Teacher
-            </th>
-            <th scope="col" class="px-6 py-4 text-right font-semibold tracking-wider">
-                Actions
-            </th>
+    <table class="w-full text-sm text-left text-gray-500 hidden sm:table">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-100">
+        <tr>
+            <th scope="col" class="px-6 py-4 font-semibold tracking-wider">Class Name</th>
+            <th scope="col" class="px-6 py-4 font-semibold tracking-wider">Class Teacher</th>
+            <th scope="col" class="px-6 py-4 text-right font-semibold tracking-wider">Actions</th>
         </tr>
         </thead>
 
-        <tbody class="block sm:table-row-group sm:divide-y sm:divide-gray-100 space-y-4 sm:space-y-0">
+        <tbody class="divide-y divide-gray-100">
         {% for school_class in classes %}
-            <tr class="mobile-row flex flex-col sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-0 sm:p-0 hover:bg-gray-50 transition-colors duration-150 group">
-
-                <!-- 1. Class Name Column (Always Visible) -->
-                <td class="order-1 flex sm:table-cell justify-between items-center px-4 sm:px-6 py-4 sm:py-4 font-medium text-gray-900 text-base sm:text-sm border-b border-gray-50 sm:border-0 cursor-pointer sm:cursor-auto"
-                    onclick="if(window.innerWidth < 640) this.parentElement.classList.toggle('is-expanded')">
-
-                    <div class="flex items-center gap-3">
-                        <div class="h-10 w-10 sm:hidden rounded-full bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0">
-                            <i class="bi bi-easel"></i>
-                        </div>
-
-                        <!-- Clickable Link directly to details -->
-                        <a href="{% url 'academics:schoolclass:detail' school_class.pk %}"
-                           onclick="event.stopPropagation();"
-                           class="hover:text-blue-600 hover:underline transition-colors"
-                           title="View {{ school_class }} Details">
-                            {{ school_class }}
-                        </a>
-                    </div>
-
-                    <i class="bi bi-chevron-down dropdown-icon sm:hidden text-gray-400"></i>
+            <tr class="bg-white hover:bg-gray-50 transition-colors duration-150 group">
+                <td class="px-6 py-4 font-medium text-gray-900 text-sm">
+                    <a href="{% url 'academics:schoolclass:detail' school_class.pk %}"
+                       class="hover:text-blue-600 hover:underline transition-colors"
+                       title="View {{ school_class }} Details">
+                        {{ school_class }}
+                    </a>
                 </td>
 
-                <!-- 2. Class Teacher Column (Always Visible) -->
-                <!-- Also has the onclick to expand the dropdown for a larger clickable area on mobile -->
-                <td class="order-2 flex sm:table-cell justify-between items-center px-4 sm:px-6 py-3 sm:py-4 font-medium text-gray-600 text-sm border-b border-gray-50 sm:border-0 cursor-pointer sm:cursor-auto"
-                    onclick="if(window.innerWidth < 640) this.parentElement.classList.toggle('is-expanded')">
-
-                    <span class="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Teacher</span>
-                    <span class="text-right sm:text-left">{{ school_class.class_teacher.user.get_full_name|default:"<span class='text-gray-400 font-normal italic'>Not Assigned</span>"|safe }}</span>
+                <td class="px-6 py-4 font-medium text-gray-600 text-sm">
+                    {{ school_class.class_teacher.user.get_full_name|default:"<span class='text-gray-400 font-normal italic'>Not Assigned</span>"|safe }}
                 </td>
 
-                <!-- 3. Actions Column (Hidden inside Accordion on Mobile) -->
-                <td class="mobile-content mobile-padding-actions order-3 block sm:table-cell px-4 sm:px-6 py-4 sm:pt-4 text-right bg-gray-50 sm:bg-transparent rounded-b-xl sm:rounded-none">
-                    <div class="flex items-center justify-start sm:justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
-
+                <td class="px-6 py-4 text-right">
+                    <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                         <a href="{% url 'academics:schoolclass:detail' school_class.pk %}"
-                           class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
+                           class="inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
                            title="View Details">
                             <i class="bi bi-eye"></i> View
                         </a>
 
                         <a href="{% url 'academics:schoolclass:update' school_class.pk %}"
-                           class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 px-3 py-2 sm:py-1.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md transition-colors"
+                           class="inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md transition-colors"
                            title="Edit class">
                             <i class="bi bi-pencil"></i> Edit
                         </a>
-
                     </div>
                 </td>
             </tr>
         {% empty %}
-            <tr class="block sm:table-row bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-4 sm:p-0">
-                <td colspan="3" class="block sm:table-cell px-6 py-12 text-center text-gray-500">
+            <tr class="bg-white">
+                <td colspan="3" class="px-6 py-12 text-center text-gray-500">
                     <div class="flex flex-col items-center justify-center">
                         <div class="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
                             <i class="bi bi-easel text-3xl text-gray-400"></i>
@@ -122,4 +89,70 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <div class="sm:hidden space-y-4">
+        {% for school_class in classes %}
+            <div class="mobile-card bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="flex justify-between items-center px-4 py-4 cursor-pointer"
+                     onclick="this.closest('.mobile-card').classList.toggle('is-expanded')">
+
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0">
+                            <i class="bi bi-easel"></i>
+                        </div>
+
+                        <a href="{% url 'academics:schoolclass:detail' school_class.pk %}"
+                           onclick="event.stopPropagation();"
+                           class="font-medium text-gray-900 text-base hover:text-blue-600 hover:underline transition-colors"
+                           title="View {{ school_class }} Details">
+                            {{ school_class }}
+                        </a>
+                    </div>
+
+                    <i class="bi bi-chevron-down dropdown-icon text-gray-400"></i>
+                </div>
+
+                <div class="mobile-content-wrap">
+                    <div class="mobile-content-inner">
+
+                        <div class="flex justify-between items-center px-4 py-3 border-t border-gray-50">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Teacher</span>
+                            <span class="font-medium text-gray-600 text-sm">
+                                {{ school_class.class_teacher.user.get_full_name|default:"<span class='text-gray-400 font-normal italic'>Not Assigned</span>"|safe }}
+                            </span>
+                        </div>
+
+                        <div class="flex items-center gap-2 px-4 py-4 bg-gray-50 border-t border-gray-100 rounded-b-xl">
+                            <a href="{% url 'academics:schoolclass:detail' school_class.pk %}"
+                               class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
+                               title="View Details">
+                                <i class="bi bi-eye"></i> View
+                            </a>
+
+                            <a href="{% url 'academics:schoolclass:update' school_class.pk %}"
+                               class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md transition-colors"
+                               title="Edit class">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="bg-white rounded-xl shadow-sm px-6 py-12 text-center text-gray-500">
+                <div class="flex flex-col items-center justify-center">
+                    <div class="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
+                        <i class="bi bi-easel text-3xl text-gray-400"></i>
+                    </div>
+                    <p class="text-base font-medium text-gray-900">No classes found</p>
+                    <p class="text-sm mt-1">Get started by adding a new class to the system.</p>
+                    <a href="{% url 'academics:schoolclass:create' %}"
+                       class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800">
+                        <i class="bi bi-plus-lg"></i> Add your first class
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 </div>

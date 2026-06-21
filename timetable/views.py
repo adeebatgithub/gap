@@ -17,6 +17,8 @@ class TimetableImageView(TemplateView):
 
     def get_table(self):
         today = datetime.today().strftime('%A')
+        if today == "Sunday":
+            return TimetableImage.objects.none()
         table = TimetableImage.objects.get(day=today)
         return table
 
