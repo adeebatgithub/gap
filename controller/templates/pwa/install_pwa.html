@@ -26,142 +26,29 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    let deferredPrompt;
+    const installBtn = document.getElementById('pwa-install-btn');
+    const banner = document.getElementById('pwa-install-banner')
 
-        let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        banner.classList.remove('hidden')
 
-        const banner = document.getElementById('pwa-install-banner');
-        const installBtn = document.getElementById('pwa-install-btn');
-        const dismissBtn = document.getElementById('pwa-dismiss-btn');
-        const title = document.getElementById('pwa-title');
-        const subtitle = document.getElementById('pwa-subtitle');
-
-        if (!banner || !installBtn || !dismissBtn) return;
-
-        const DISMISS_KEY = 'pwa-dismissed';
-        const DISMISS_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
-
-        const isStandalone =
-            window.matchMedia('(display-mode: standalone)').matches ||
-            window.navigator.standalone === true;
-
-        // Do not show if already installed
-        if (isStandalone) {
-            return;
-        }
-
-        function showBanner() {
-            banner.classList.remove('hidden');
-            banner.classList.add('flex');
-        }
-
-        function hideBanner() {
-            banner.classList.remove('flex');
-            banner.classList.add('hidden');
-        }
-
-        function isDismissed() {
-            const dismissed = localStorage.getItem(DISMISS_KEY);
-
-            if (!dismissed) {
-                return false;
-            }
-
-            const expired =
-                Date.now() - Number(dismissed) > DISMISS_DURATION;
-
-            if (expired) {
-                localStorage.removeItem(DISMISS_KEY);
-                return false;
-            }
-
-            return true;
-        }
-
-        // ==========================
-        // Android / Chromium browsers
-        // ==========================
-        window.addEventListener('beforeinstallprompt', (e) => {
-
-            e.preventDefault();
-
-            if (isDismissed()) {
-                return;
-            }
-
-            deferredPrompt = e;
-
-            setTimeout(() => {
-                if (!isStandalone) {
-                    showBanner();
-                }
-            }, 3000);
-        });
-
-        // Install button
         installBtn.addEventListener('click', async () => {
-
-            if (!deferredPrompt) {
-                return;
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const result = await deferredPrompt.userChoice;
+                console.log(`User choice: ${result.outcome}`);
+                deferredPrompt = null;
+                banner.classList.add('hidden')
             }
-
-            deferredPrompt.prompt();
-
-            const choiceResult = await deferredPrompt.userChoice;
-
-            if (choiceResult.outcome === 'accepted') {
-                console.log('PWA installed');
-            }
-
-            deferredPrompt = null;
-            hideBanner();
         });
+    });
 
-        // Dismiss button
-        dismissBtn.addEventListener('click', () => {
-
-            localStorage.setItem(
-                DISMISS_KEY,
-                Date.now().toString()
-            );
-
-            hideBanner();
-        });
-
-        // Installed
-        window.addEventListener('appinstalled', () => {
-
-            console.log('PWA successfully installed');
-
-            deferredPrompt = null;
-            hideBanner();
-
-            localStorage.removeItem(DISMISS_KEY);
-        });
-
-        // ==========================
-        // iOS Safari
-        // ==========================
-        const isIOS =
-            /iphone|ipad|ipod/i.test(window.navigator.userAgent);
-
-        if (
-            isIOS &&
-            !isStandalone &&
-            !isDismissed()
-        ) {
-
-            title.textContent = 'Install GAP App';
-
-            subtitle.textContent =
-                'Tap Share → Add to Home Screen';
-
-            installBtn.classList.add('hidden');
-
-            setTimeout(() => {
-                showBanner();
-            }, 3000);
-        }
-
+    // App installed
+    window.addEventListener('appinstalled', () => {
+        console.log('App installed successfully');
+        banner.classList.add('hidden')
     });
 </script>
