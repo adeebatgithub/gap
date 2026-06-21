@@ -22,6 +22,45 @@
     {% progressive_web_app_meta %}
 
     <script>
+        // Debug PWA setup
+        (function debugPWA() {
+            console.log('=== PWA DEBUG ===');
+
+            // Check manifest
+            const manifestLink = document.querySelector('link[rel="manifest"]');
+            console.log('Manifest link:', manifestLink ? manifestLink.href : 'NOT FOUND');
+
+            // Check service worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(regs => {
+                    console.log('Service Worker registrations:', regs.length);
+                    regs.forEach(reg => {
+                        console.log('SW scope:', reg.scope);
+                    });
+                });
+            } else {
+                console.warn('Service Workers not supported');
+            }
+
+            // Check HTTPS
+            console.log('Protocol:', window.location.hostname);
+            if (window.location.protocol !== 'https:' && window.location.hostname !== '127.0.0.1') {
+                console.warn('Not using HTTPS - PWA may not work');
+            }
+
+            // Check standalone mode
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+            console.log('Standalone mode:', isStandalone);
+
+            // Check iOS
+            const isIOS = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+            console.log('iOS device:', isIOS);
+
+            console.log('=== END DEBUG ===');
+        })();
+    </script>
+
+    <script>
         if (localStorage.getItem('sidebar-collapsed') === 'true') {
             document.documentElement.classList.add('sidebar-collapsed');
         }
