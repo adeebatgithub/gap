@@ -9,7 +9,7 @@
        class="hidden sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
         <i class="bi bi-arrow-left"></i> Back to Classes
     </a>
-    {% perms.academics.view_admin_panel %}
+    {% if perms.academics.view_admin_panel %}
         <a href="{% url 'academics:schoolclass:update' school_class.pk %}"
            class="sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
             <i class="bi bi-pencil"></i> <span class="hidden sm:inline">Edit Class</span>
