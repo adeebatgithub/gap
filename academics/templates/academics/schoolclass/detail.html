@@ -456,24 +456,26 @@
                                             </div>
 
                                             <div class="flex flex-wrap items-center gap-2 px-4 py-4 bg-gray-50 dark:bg-charcoal-900/50 border-t border-gray-100 dark:border-charcoal-700 rounded-b-xl transition-colors">
-                                                <a href="{% url 'teacher:teacher:detail' assigned_teacher.teacher.pk %}"
-                                                   class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-md transition-colors"
-                                                   title="View Teacher">
-                                                    <i class="bi bi-eye"></i> View
-                                                </a>
-                                                <form method="POST"
-                                                      action="{% url 'teacher:assignment:delete' assigned_teacher.pk %}"
-                                                      class="flex-1 m-0 p-0"
-                                                      onsubmit="return confirm('Remove {{ assigned_teacher.teacher.user.get_full_name }} from teaching this class?');">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="schoolclass"
-                                                           value="{{ school_class.pk }}">
-                                                    <button type="submit"
-                                                            class="w-full inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 rounded-md transition-colors cursor-pointer"
-                                                            title="Unassign Teacher">
-                                                        <i class="bi bi-dash-circle"></i> Unassign
-                                                    </button>
-                                                </form>
+                                                {% if perms.teacher.delete_teacher %}
+                                                    <a href="{% url 'teacher:teacher:detail' assigned_teacher.teacher.pk %}"
+                                                       class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-md transition-colors"
+                                                       title="View Teacher">
+                                                        <i class="bi bi-eye"></i> View
+                                                    </a>
+                                                    <form method="POST"
+                                                          action="{% url 'teacher:assignment:delete' assigned_teacher.pk %}"
+                                                          class="flex-1 m-0 p-0"
+                                                          onsubmit="return confirm('Remove {{ assigned_teacher.teacher.user.get_full_name }} from teaching this class?');">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="schoolclass"
+                                                               value="{{ school_class.pk }}">
+                                                        <button type="submit"
+                                                                class="w-full inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 rounded-md transition-colors cursor-pointer"
+                                                                title="Unassign Teacher">
+                                                            <i class="bi bi-dash-circle"></i> Unassign
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
                                             </div>
 
                                         </div>
