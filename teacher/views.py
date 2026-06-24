@@ -1,16 +1,24 @@
 from django.contrib import messages
-from django.views.generic import TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, RedirectView
 
 from teacher.teacher.models import Teacher
 from teacher.teacher.views import TeacherDetailView
 from timetable.models import Timetable
 
 
-class DashboardView(TeacherDetailView):
+class DashboardView(RedirectView):
+    url = reverse_lazy("timetable:preview")
+
+    def get(self, request, *args, **kwargs):
+        self.request.session["navbar"] = "teacher"
+        return super().get(request, *args, **kwargs)
+
+
+class ProfileView(TeacherDetailView):
     template_name = "teacher/dashboard.html"
 
     def get_object(self, queryset=None):
-        self.request.session["navbar"] = "teacher"
         return Teacher.objects.get(user=self.request.user)
 
 

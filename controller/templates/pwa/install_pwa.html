@@ -27,28 +27,56 @@
 
 <script>
     let deferredPrompt;
+
     const installBtn = document.getElementById('pwa-install-btn');
-    const banner = document.getElementById('pwa-install-banner')
+    const dismissBtn = document.getElementById('pwa-dismiss-btn');
+    const banner = document.getElementById('pwa-install-banner');
+
+    const DISMISS_KEY = 'pwa-install-dismissed';
+    const ONE_DAY = 24 * 60 * 60 * 1000;
+
+    function isBannerDismissed() {
+        const dismissedAt = localStorage.getItem(DISMISS_KEY);
+
+        if (!dismissedAt) return false;
+
+        return Date.now() - Number(dismissedAt) < ONE_DAY;
+    }
 
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
+
         deferredPrompt = e;
-        banner.classList.remove('hidden')
+
+        // Show banner only if it wasn't dismissed in the last 24 hours
+        if (!isBannerDismissed()) {
+            banner.classList.remove('hidden');
+        }
 
         installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const result = await deferredPrompt.userChoice;
-                console.log(`User choice: ${result.outcome}`);
-                deferredPrompt = null;
-                banner.classList.add('hidden')
-            }
+            if (!deferredPrompt) return;
+
+            deferredPrompt.prompt();
+
+            const result = await deferredPrompt.userChoice;
+            console.log(`User choice: ${result.outcome}`);
+
+            deferredPrompt = null;
+            banner.classList.add('hidden');
+        });
+
+        dismissBtn.addEventListener('click', () => {
+            localStorage.setItem(DISMISS_KEY, Date.now().toString());
+            banner.classList.add('hidden');
         });
     });
 
     // App installed
     window.addEventListener('appinstalled', () => {
         console.log('App installed successfully');
-        banner.classList.add('hidden')
+        banner.classList.add('hidden');
+
+        // Optional: clear dismissal flag after installation
+        localStorage.removeItem(DISMISS_KEY);
     });
 </script>

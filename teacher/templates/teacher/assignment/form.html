@@ -11,14 +11,14 @@
         {% url 'academics:schoolclass:detail' pk=request.GET.schoolclass as back_destination %}
     {% endif %}
     <a href="{{ back_destination }}"
-       class="hidden sm:inline-flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+       class="hidden sm:inline-flex items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
         <i class="bi bi-arrow-left"></i> Back to List
     </a>
 {% endblock %}
 
 {% block content %}
-    <div class="max-w-3xl mx-auto">
-        <div class="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100 sm:border-transparent">
+    <div class="max-w-3xl mx-auto transition-colors duration-200">
+        <div class="bg-white dark:bg-charcoal-800 shadow-sm dark:shadow-none rounded-xl overflow-hidden border border-gray-100 dark:border-charcoal-700 sm:border-transparent dark:sm:border-transparent transition-colors">
 
             <div class="p-4 sm:p-6">
                 {% if request.GET.teacher %}

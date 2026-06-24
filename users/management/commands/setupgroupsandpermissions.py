@@ -12,7 +12,7 @@ class Command(BaseCommand):
             "teacher.Attendance": ["add", "change", "delete", "view"],
             "teacher.Session": ["add", "change", "delete", "view"],
             "academics.Enrollment": ["view"],
-            "teacher.Teacher": ["view"],
+            "teacher.Teacher": ["view", "change"],
             "academics.SchoolClass": ["view"],
             "teacher.Movement": ["view"],
             "teacher.assessment": ["add", "change", "delete", "view"],

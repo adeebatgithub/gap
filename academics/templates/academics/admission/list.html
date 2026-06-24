@@ -6,7 +6,7 @@
 
 {% block navbar_btns %}
     <a href="{% url 'academics:admission:export' %}?date_from={{ request.GET.date_from }}&date_to={{ request.GET.date_to }}"
-       class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+       class="sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
         <i class="bi bi-file-earmark-spreadsheet"></i> <span class="hidden sm:inline">Export to xlsx</span>
     </a>
 {% endblock %}
@@ -17,44 +17,47 @@
           hx-trigger="keyup delay:300ms from:#default-search, change from:input"
           hx-target="#hx-list-table"
           hx-swap="innerHTML"
-          class="flex flex-col sm:flex-row items-end gap-4 mb-6">
+          class="flex flex-col sm:flex-row items-end gap-4 mb-6 transition-colors duration-200">
 
         <!-- Search -->
         <div class="w-full sm:max-w-md relative flex-1">
             <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
-                <i class="bi bi-search text-gray-400"></i>
+                <i class="bi bi-search text-gray-400 dark:text-gray-500 transition-colors"></i>
             </div>
             <input type="search" id="default-search" name="search" placeholder="Search Candidate by name..."
-                   class="block w-full p-3 pl-11 text-sm text-gray-900 border border-gray-200 rounded-xl bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all shadow-sm">
+                   class="block w-full p-3 pl-11 text-sm text-gray-900 dark:text-white border border-gray-200 dark:border-charcoal-700 rounded-xl bg-gray-50 dark:bg-charcoal-900 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 outline-none transition-all shadow-sm dark:shadow-none placeholder-gray-400 dark:placeholder-gray-500">
         </div>
 
         <!-- From Date -->
         <div class="w-full sm:w-auto">
-            <label for="date_from" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+            <label for="date_from"
+                   class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5 transition-colors">
                 From
             </label>
             <div class="relative">
                 <input type="date" id="date_from" name="date_from"
-                       class="block w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-700 bg-gray-50 focus:bg-white outline-none shadow-sm">
+                       class="block w-full px-3 py-2 border border-gray-200 dark:border-charcoal-700 rounded-lg text-sm focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-charcoal-900 focus:bg-white dark:focus:bg-charcoal-800 outline-none shadow-sm dark:shadow-none">
             </div>
         </div>
 
         <!-- To Date -->
         <div class="w-full sm:w-auto">
-            <label for="date_to" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+            <label for="date_to"
+                   class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5 transition-colors">
                 To
             </label>
             <div class="relative">
                 <input type="date" id="date_to" name="date_to"
-                       class="block w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-700 bg-gray-50 focus:bg-white outline-none shadow-sm">
+                       class="block w-full px-3 py-2 border border-gray-200 dark:border-charcoal-700 rounded-lg text-sm focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-charcoal-900 focus:bg-white dark:focus:bg-charcoal-800 outline-none shadow-sm dark:shadow-none">
             </div>
         </div>
     </form>
 
     <!-- Table Section -->
-    <div id="hx-list-table" class="bg-transparent sm:bg-white sm:shadow-sm rounded-xl sm:overflow-hidden">
+    <div id="hx-list-table"
+         class="bg-transparent sm:bg-white dark:sm:bg-charcoal-800 sm:shadow-sm dark:shadow-none rounded-xl sm:overflow-hidden transition-colors duration-200">
 
-        {% include "academics/admission/partial_list.html" admissions=admissions %}
+        {% include "academics/admission/partial_list.html" with admissions=admissions %}
 
     </div>
 {% endblock %}

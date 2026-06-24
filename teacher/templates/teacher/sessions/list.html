@@ -2,7 +2,7 @@
 
 {% block navbar_btns %}
     <a href="{% url 'teacher:attendance:create' %}"
-       class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+       class="sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
         <i class="bi bi-calendar-plus"></i> <span class="hidden sm:inline">Add Session</span>
     </a>
 {% endblock %}
@@ -12,7 +12,8 @@
 {% endblock %}
 
 {% block content %}
-    <div class="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-50 print:hidden">
+    <!-- Filter Section -->
+    <div class="bg-white dark:bg-charcoal-800 p-4 rounded-xl shadow-sm dark:shadow-none mb-6 border border-gray-50 dark:border-charcoal-700 print:hidden transition-colors duration-200">
         <form hx-get="{% url 'teacher:attendance:list' %}"
               hx-target="#hx-list-table"
               hx-swap="innerHTML"
@@ -20,21 +21,24 @@
               class="flex flex-col sm:flex-row gap-4 items-end">
 
             <div class="w-full sm:w-auto flex-1 max-w-sm">
-                <label for="date" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+                <label for="date"
+                       class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5 transition-colors">
                     Filter by Date
                 </label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="bi bi-calendar-event text-gray-400"></i>
+                        <i class="bi bi-calendar-event text-gray-400 dark:text-gray-500 transition-colors"></i>
                     </div>
                     <input type="date" name="date" id="date" value="{{ request.GET.date }}"
-                           class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-700 bg-gray-50 focus:bg-white outline-none">
+                           class="block w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-charcoal-700 rounded-lg text-sm focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-charcoal-900 focus:bg-white dark:focus:bg-charcoal-800 outline-none">
                 </div>
             </div>
         </form>
     </div>
 
-    <div id="hx-list-table" class="bg-transparent sm:bg-white sm:shadow-sm rounded-xl sm:overflow-hidden">
+    <!-- Table Section -->
+    <div id="hx-list-table"
+         class="bg-transparent sm:bg-white dark:sm:bg-charcoal-800 sm:shadow-sm dark:shadow-none rounded-xl sm:overflow-hidden transition-colors duration-200">
         {% include "teacher/sessions/partial_list.html" with sessions=sessions %}
     </div>
 {% endblock %}

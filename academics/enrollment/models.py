@@ -52,5 +52,10 @@ class Enrollment(TimeStampedModel):
     status = models.IntegerField(choices=STATUS_CHOICES, default=ACTIVE)
     on_leave = models.BooleanField(default=False)
 
+    class Meta:
+        permissions = [
+            ("can_change_leave", "Can change leave status"),
+        ]
+
     def __str__(self):
         return self.student.name.title()

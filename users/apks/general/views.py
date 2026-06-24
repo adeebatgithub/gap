@@ -6,13 +6,6 @@ from teacher.teacher.models import Teacher
 from . import forms, base_views
 
 
-def get_teacher_id(user):
-    teacher = Teacher.objects.filter(user=user)
-    if teacher:
-        return teacher[0].id
-    return None
-
-
 class RedirectUserView(base_views.RedirectUserView):
     """
     Users Redirect View, redirect logged-in user

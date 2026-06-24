@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group
 from django.db.models import Q
 from django.shortcuts import redirect
@@ -63,19 +63,25 @@ class TeacherCreateView(PermissionRequiredMixin, CreateView):
     success_url = reverse_lazy('teacher:teacher:list')
 
 
-class TeacherUpdateView(PermissionRequiredMixin, RedirectToDetail, UpdateView):
+class TeacherUpdateView(PermissionRequiredMixin, UserPassesTestMixin, RedirectToDetail, UpdateView):
     permission_required = "teacher.change_teacher"
     model = Teacher
     form_class = TeacherForm
     template_name = 'teacher/teachers/form.html'
     success_url = reverse_lazy('teacher:teacher:list')
 
+    def test_func(self):
+        teacher = self.get_object()
+        if teacher.user != self.request.user:
+            return False
+        return True
+
     def get_detail_url(self):
         return reverse_lazy('teacher:teacher:detail', kwargs={'pk': self.object.pk})
 
     def get_success_url(self):
         if self.request.GET.get("back_to") == "dash":
-            return reverse_lazy('teacher:dashboard')
+            return reverse_lazy('teacher:profile')
         return super().get_success_url()
 
 

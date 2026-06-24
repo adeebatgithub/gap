@@ -1,15 +1,33 @@
-from django.db.models.aggregates import Count, Sum
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.db.models.aggregates import Count
 from django.db.models.query_utils import Q
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
-from django.views.generic import TemplateView
-from users.mixins import GroupRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, RedirectView
 
 from academics.academicyear.models import AcademicYear
 from academics.enrollment.models import Enrollment
+from users.mixins import GroupRequiredMixin
 
-class DashboardView(GroupRequiredMixin, TemplateView):
+
+class DashboardView(GroupRequiredMixin, RedirectView):
     group_name = "Admin"
+    url = reverse_lazy("academics:stats")
+
+    def get(self, request, *args, **kwargs):
+        if AcademicYear.objects.all().count() == 0:
+            request.session["is_academic_year_set"] = 0
+        else:
+            request.session["academic_year"] = AcademicYear.objects.get(is_active=True).id
+
+        if year := request.GET.get("academic_year"):
+            request.session["academic_year"] = year
+
+        self.request.session["navbar"] = "admin"
+        return super().get(request, *args, **kwargs)
+
+
+class StatsView(PermissionRequiredMixin, TemplateView):
+    permission_required = "academics.view_stats"
     template_name = 'academics/dashboard.html'
 
     @staticmethod
@@ -30,22 +48,9 @@ class DashboardView(GroupRequiredMixin, TemplateView):
         )
         return stats
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
             "enrollment_stats": self._get_enrollment_stats(),
         })
         return context
-
-    def get(self, request, *args, **kwargs):
-        if AcademicYear.objects.all().count() == 0:
-            request.session["is_academic_year_set"] = 0
-        else:
-            request.session["academic_year"] = AcademicYear.objects.get(is_active=True).id
-
-        if year:=request.GET.get("academic_year"):
-            request.session["academic_year"] = year
-
-        self.request.session["navbar"] = "admin"
-        return super().get(request, *args, **kwargs)
