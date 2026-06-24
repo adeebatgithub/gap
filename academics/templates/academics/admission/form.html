@@ -6,20 +6,21 @@
 
 {% block navbar_btns %}
     <a href="{% url 'academics:admission:list' %}"
-       class="hidden sm:inline-flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+       class="hidden sm:inline-flex items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
         <i class="bi bi-arrow-left"></i> Back to List
     </a>
 {% endblock %}
 
 {% block content %}
-    <div class="max-w-3xl mx-auto">
-        <div class="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100 sm:border-transparent">
+    <div class="max-w-3xl mx-auto transition-colors duration-200">
+        <div class="bg-white dark:bg-charcoal-800 shadow-sm dark:shadow-none rounded-xl overflow-hidden border border-gray-100 dark:border-charcoal-700 sm:border-transparent dark:sm:border-transparent transition-colors">
 
-            <div class="px-4 py-4 sm:px-6 sm:py-5 border-b border-gray-100 bg-gray-50/50">
-                <h3 class="text-base sm:text-lg font-semibold text-gray-900">
+            <div class="px-4 py-4 sm:px-6 sm:py-5 border-b border-gray-100 dark:border-charcoal-700 bg-gray-50/50 dark:bg-charcoal-900/50 transition-colors">
+                <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white transition-colors">
                     {% if form.instance.pk %}
                         Update Details
                     {% else %}
+                        Admission Information
                     {% endif %}
                 </h3>
             </div>

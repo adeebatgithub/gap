@@ -18,3 +18,4 @@
   --font-heading: "Roboto", sans-serif;
   --font-body: "Poppins", sans-serif;
 }
+@custom-variant dark (&:where(.dark, .dark *));

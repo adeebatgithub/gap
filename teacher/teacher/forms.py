@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 
 from teacher.teacher.models import Teacher
 
@@ -47,6 +48,7 @@ class TeacherForm(forms.ModelForm):
         user.username = self.cleaned_data['email']
         user.phone = self.cleaned_data['phone']
         if commit:
+            user.groups.add(Group.objects.get(name='Teacher'))
             user.save()
             teacher.user = user
             teacher.save()

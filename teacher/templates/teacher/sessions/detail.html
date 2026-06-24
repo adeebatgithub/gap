@@ -6,55 +6,59 @@
 
 {% block navbar_btns %}
     <a href="{% url 'teacher:attendance:list' %}"
-       class="hidden sm:inline-flex justify-center items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+       class="hidden sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
         <i class="bi bi-arrow-left"></i> Back to list
     </a>
 {% endblock %}
 
 {% block content %}
-    <div class="max-w-4xl mx-auto space-y-4 sm:space-y-6 pb-20 sm:pb-0">
+    <div class="max-w-4xl mx-auto space-y-4 sm:space-y-6 pb-20 sm:pb-0 transition-colors duration-200">
 
-        <div class="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
-            <div class="px-5 py-5 sm:px-8 sm:py-6 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <!-- Session Header Card -->
+        <div class="bg-white dark:bg-charcoal-800 shadow-sm dark:shadow-none rounded-xl overflow-hidden border border-gray-100 dark:border-charcoal-700 transition-colors">
+            <div class="px-5 py-5 sm:px-8 sm:py-6 border-b border-gray-100 dark:border-charcoal-700 bg-gray-50/50 dark:bg-charcoal-900/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-colors">
                 <div class="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
-                    <div class="h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-600 flex-shrink-0">
+                    <div class="h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0 transition-colors">
                         <i class="bi bi-calendar2-check text-xl sm:text-2xl"></i>
                     </div>
                     <div class="flex-1">
-                        <h2 class="text-lg sm:text-xl font-bold text-gray-900 leading-tight">{{ session.subject.name }}</h2>
-                        <p class="text-xs sm:text-sm font-medium text-gray-500 mt-0.5 sm:mt-1">
-                            Class: <span class="text-gray-700">{{ session.subject_class.school_class.name|upper }}</span>
+                        <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight transition-colors">{{ session.subject.name }}</h2>
+                        <p class="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mt-0.5 sm:mt-1 transition-colors">
+                            Class: <span
+                                class="text-gray-700 dark:text-gray-300">{{ session.subject_class.school_class.name|upper }}</span>
                         </p>
                     </div>
                 </div>
 
-                <div class="bg-white px-3 py-1.5 rounded-lg border border-gray-200 shadow-sm text-center sm:text-right w-full sm:w-auto">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Date</p>
-                    <p class="text-sm font-bold text-gray-900">{{ session.date|date:"l, M d, Y" }}</p>
+                <div class="bg-white dark:bg-charcoal-900 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-charcoal-700 shadow-sm dark:shadow-none text-center sm:text-right w-full sm:w-auto transition-colors">
+                    <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider transition-colors">
+                        Date</p>
+                    <p class="text-sm font-bold text-gray-900 dark:text-white transition-colors">{{ session.date|date:"l, M d, Y" }}</p>
                 </div>
             </div>
 
             <div class="px-5 py-4 sm:px-8 sm:py-5">
                 <dl class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
                     <div class="flex justify-between sm:justify-start sm:gap-4 items-center">
-                        <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
-                            <i class="bi bi-person-video3 text-gray-400"></i> Teacher
+                        <dt class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-1.5 transition-colors">
+                            <i class="bi bi-person-video3 text-gray-400 dark:text-gray-500"></i> Teacher
                         </dt>
-                        <dd class="text-sm text-gray-900 font-medium">{{ session.subject_class.teacher }}</dd>
+                        <dd class="text-sm text-gray-900 dark:text-gray-200 font-medium transition-colors">{{ session.subject_class.teacher }}</dd>
                     </div>
                 </dl>
             </div>
         </div>
 
+        <!-- Attendance Form & List -->
         <form method="POST" action="{% url 'teacher:attendance:mark' pk=session.pk %}" id="attendance-form"
-              class="bg-transparent sm:bg-white sm:shadow-sm sm:rounded-xl sm:border sm:border-gray-100 overflow-hidden">
+              class="bg-transparent sm:bg-white dark:sm:bg-charcoal-800 sm:shadow-sm dark:sm:shadow-none sm:rounded-xl sm:border sm:border-gray-100 dark:sm:border-charcoal-700 overflow-hidden transition-colors">
             {% csrf_token %}
 
-            <div class="bg-white shadow-sm sm:shadow-none rounded-xl sm:rounded-none px-5 py-4 sm:px-8 sm:py-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 mb-4 sm:mb-0">
+            <div class="bg-white dark:bg-charcoal-800 shadow-sm sm:shadow-none rounded-xl sm:rounded-none px-5 py-4 sm:px-8 sm:py-5 border-b border-gray-100 dark:border-charcoal-700 flex flex-col sm:flex-row justify-between items-center gap-4 mb-4 sm:mb-0 transition-colors">
                 <div class="w-full sm:w-auto text-center sm:text-left">
-                    <h3 class="text-lg font-semibold text-gray-900 flex items-center justify-center sm:justify-start gap-2">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center justify-center sm:justify-start gap-2 transition-colors">
                         Student List
-                        <span class="bg-gray-100 text-gray-600 py-0.5 px-2.5 rounded-full text-xs font-bold border border-gray-200">
+                        <span class="bg-gray-100 dark:bg-charcoal-900 text-gray-600 dark:text-gray-300 py-0.5 px-2.5 rounded-full text-xs font-bold border border-gray-200 dark:border-charcoal-700 transition-colors">
                             {{ attendances|length }}
                         </span>
                     </h3>
@@ -62,53 +66,58 @@
 
                 <div class="w-full sm:w-auto">
                     <button type="button" id="mark-all-present"
-                            class="cursor-pointer w-full sm:w-auto inline-flex justify-center items-center gap-1.5 text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 px-4 py-2 sm:px-3 sm:py-1.5 rounded-lg transition-colors">
+                            class="cursor-pointer w-full sm:w-auto inline-flex justify-center items-center gap-1.5 text-sm font-medium text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/40 border border-green-200 dark:border-green-800/50 px-4 py-2 sm:px-3 sm:py-1.5 rounded-lg transition-colors">
                         <i class="bi bi-check-all text-lg"></i> Mark All Present
                     </button>
                 </div>
             </div>
 
-            <div class="space-y-3 sm:space-y-0 sm:divide-y sm:divide-gray-100">
+            <div class="space-y-3 sm:space-y-0 sm:divide-y sm:divide-gray-100 dark:sm:divide-charcoal-700 transition-colors">
                 {% for attendance in attendances %}
-                    <div class="bg-white rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-4 sm:px-8 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+                    <div class="bg-white dark:bg-charcoal-800 rounded-xl shadow-sm sm:shadow-none sm:rounded-none p-4 sm:px-8 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50 dark:hover:bg-charcoal-700 transition-colors">
 
                         <div class="flex items-center gap-3">
-                            <div class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 flex-shrink-0">
+                            <div class="h-10 w-10 rounded-full bg-gray-100 dark:bg-charcoal-700 flex items-center justify-center text-gray-500 dark:text-gray-400 flex-shrink-0 transition-colors">
                                 <span class="text-xs font-bold">{{ attendance.student.roll_number|default:"-" }}</span>
                             </div>
                             <div>
-                                <p class="text-base font-semibold text-gray-900">{{ attendance.student.name }}</p>
+                                <p class="text-base font-semibold text-gray-900 dark:text-white transition-colors">{{ attendance.student.name }}</p>
                                 {% if attendance.status == 0 %}
-                                    <p class="text-xs text-orange-500 font-medium mt-0.5"><i
-                                            class="bi bi-circle-half"></i> Pending marking</p>
+                                    <p class="text-xs text-orange-500 dark:text-orange-400 font-medium mt-0.5 transition-colors">
+                                        <i
+                                                class="bi bi-circle-half"></i> Pending marking</p>
                                 {% endif %}
                             </div>
                         </div>
 
-                        <div class="flex items-center bg-gray-100 rounded-lg p-1 w-full sm:w-64 flex-shrink-0">
+                        <!-- Radio Buttons Container -->
+                        <div class="flex items-center bg-gray-100 dark:bg-charcoal-900 rounded-lg p-1 w-full sm:w-64 flex-shrink-0 transition-colors">
 
+                            <!-- Present -->
                             <label class="cursor-pointer flex-1 relative">
                                 <input type="radio" name="attendance_{{ attendance.pk }}" value="1"
                                        class="peer sr-only present-radio"
                                        {% if attendance.status == 1 %}checked{% endif %} required>
-                                <div class="text-center px-3 py-2 rounded-md text-sm font-semibold text-gray-500 hover:text-green-600 peer-checked:bg-green-500 peer-checked:text-white peer-checked:shadow-sm transition-all duration-200 flex items-center justify-center gap-1.5">
+                                <div class="text-center px-3 py-2 rounded-md text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 peer-checked:bg-green-500 peer-checked:text-white dark:peer-checked:text-white peer-checked:shadow-sm transition-all duration-200 flex items-center justify-center gap-1.5">
                                     <i class="bi bi-check-circle-fill text-base"></i> Present
                                 </div>
                             </label>
 
+                            <!-- Leave -->
                             <label class="cursor-pointer flex-1 relative">
                                 <input type="radio" name="attendance_{{ attendance.pk }}" value="3"
                                        class="peer sr-only"
                                        {% if attendance.status == 3 %}checked{% endif %} required>
-                                <div class="text-center px-3 py-2 rounded-md text-sm font-semibold text-gray-500 hover:text-cyan-600 peer-checked:bg-cyan-500 peer-checked:text-black peer-checked:shadow-sm transition-all duration-200 flex items-center justify-center gap-1.5">
+                                <div class="text-center px-3 py-2 rounded-md text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-cyan-400 peer-checked:bg-cyan-500 peer-checked:text-black dark:peer-checked:text-black peer-checked:shadow-sm transition-all duration-200 flex items-center justify-center gap-1.5">
                                     <i class="bi bi-check-circle-fill text-base"></i> Leave
                                 </div>
                             </label>
 
+                            <!-- Absent -->
                             <label class="cursor-pointer flex-1 relative">
                                 <input type="radio" name="attendance_{{ attendance.pk }}" value="2" class="peer sr-only"
                                        {% if attendance.status == 2 %}checked{% endif %} required>
-                                <div class="text-center px-3 py-2 rounded-md text-sm font-semibold text-gray-500 hover:text-red-600 peer-checked:bg-red-500 peer-checked:text-white peer-checked:shadow-sm transition-all duration-200 flex items-center justify-center gap-1.5">
+                                <div class="text-center px-3 py-2 rounded-md text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 peer-checked:bg-red-500 peer-checked:text-white dark:peer-checked:text-white peer-checked:shadow-sm transition-all duration-200 flex items-center justify-center gap-1.5">
                                     <i class="bi bi-x-circle-fill text-base"></i> Absent
                                 </div>
                             </label>
@@ -116,20 +125,22 @@
                         </div>
                     </div>
                 {% empty %}
-                    <div class="px-6 py-12 text-center text-gray-500 bg-white rounded-xl">
+                    <div class="px-6 py-12 text-center text-gray-500 dark:text-gray-400 bg-white dark:bg-charcoal-800 rounded-xl transition-colors">
                         <div class="flex flex-col items-center justify-center">
-                            <i class="bi bi-people text-4xl mb-3 text-gray-300"></i>
-                            <p class="text-base font-medium text-gray-900">No students found</p>
+                            <i class="bi bi-people text-4xl mb-3 text-gray-300 dark:text-gray-600 transition-colors"></i>
+                            <p class="text-base font-medium text-gray-900 dark:text-white transition-colors">No students
+                                found</p>
                             <p class="text-sm mt-1">There are no students enrolled in this class.</p>
                         </div>
                     </div>
                 {% endfor %}
             </div>
 
+            <!-- Save Action Bar -->
             {% if attendances and attendances.0.created_at.date == TODAY and session.subject_class.teacher.user == request.user %}
-                <div class="bg-gray-50/80 border-t border-gray-100 p-4 sm:px-8 sm:py-4 flex justify-end mt-4 sm:mt-0 rounded-xl sm:rounded-none sm:rounded-b-xl">
+                <div class="bg-gray-50/80 dark:bg-charcoal-900/50 border-t border-gray-100 dark:border-charcoal-700 p-4 sm:px-8 sm:py-4 flex justify-end mt-4 sm:mt-0 rounded-xl sm:rounded-none sm:rounded-b-xl transition-colors">
                     <button type="submit"
-                            class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 sm:py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-md">
+                            class="sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
                         <i class="bi bi-save"></i> Save Attendance
                     </button>
                 </div>

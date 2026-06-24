@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block navbar_btns %}
-    <div class="inline-flex items-center px-3 py-1.5 bg-white sm:bg-gray-100 text-gray-700 text-sm font-medium rounded-lg sm:shadow-sm border-0 sm:border border-gray-200">
-        <i class="bi bi-calendar3 mr-2 text-gray-500"></i>
+    <div class="inline-flex items-center px-3 py-1.5 bg-white dark:bg-charcoal-800 sm:bg-gray-100 dark:sm:bg-charcoal-900/50 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg sm:shadow-sm dark:shadow-none border-0 sm:border border-gray-200 dark:border-charcoal-700 transition-colors">
+        <i class="bi bi-calendar3 mr-2 text-gray-500 dark:text-gray-400"></i>
         {% now "F j, Y" %}
     </div>
 {% endblock %}
 
 {% block content %}
-    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-50 print:border-0 print:shadow-none print:p-0">
+    <div class="bg-white dark:bg-charcoal-800 p-4 sm:p-6 rounded-xl shadow-sm dark:shadow-none border border-gray-50 dark:border-charcoal-700 print:border-0 print:shadow-none print:p-0 transition-colors duration-200">
 
         {% if timetable and timetable.image %}
             <div class="flex justify-center w-full">
@@ -20,18 +20,19 @@
                     <img src="{{ timetable.image.url }}"
                          alt="Class Timetable"
                          onclick="openTimetableModal()"
-                         class="max-w-full h-auto rounded-lg border border-gray-200 shadow-sm object-contain cursor-zoom-in hover:opacity-90 transition-opacity duration-200 print:cursor-auto"
+                         class="max-w-full h-auto rounded-lg border border-gray-200 dark:border-charcoal-700 shadow-sm dark:shadow-none object-contain cursor-zoom-in hover:opacity-90 transition-all duration-200 print:cursor-auto"
                          title="Click to view full size"
                          loading="lazy">
                 </a>
             </div>
 
         {% else %}
-            <div class="py-16 flex flex-col items-center justify-center text-center text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
-                <div class="h-16 w-16 bg-white rounded-full flex items-center justify-center mb-3 shadow-sm">
-                    <i class="bi bi-image text-3xl text-gray-400"></i>
+            <div class="py-16 flex flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-charcoal-900/50 rounded-lg border-2 border-dashed border-gray-200 dark:border-charcoal-700 transition-colors">
+                <div class="h-16 w-16 bg-white dark:bg-charcoal-800 rounded-full flex items-center justify-center mb-3 shadow-sm dark:shadow-none transition-colors">
+                    <i class="bi bi-image text-3xl text-gray-400 dark:text-gray-500"></i>
                 </div>
-                <p class="text-base font-medium text-gray-900">No timetable available</p>
+                <p class="text-base font-medium text-gray-900 dark:text-white transition-colors">No timetable
+                    available</p>
                 <p class="text-sm mt-1">An image for the timetable hasn't been uploaded yet.</p>
             </div>
         {% endif %}

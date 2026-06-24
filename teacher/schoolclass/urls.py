@@ -1,8 +1,6 @@
 from django.urls import path
-from .views import (
-    SchoolClassListView,
-    SchoolClassDetailView,
-)
+
+from academics.schoolclass.views import SchoolClassListView, SchoolClassDetailView
 
 app_name = 'schoolclass'
 

@@ -6,25 +6,31 @@
 
 {% block navbar_btns %}
     <a href="{% url 'academics:schoolclass:list' %}"
-       class="hidden sm:inline-flex justify-center items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+       class="hidden sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
         <i class="bi bi-arrow-left"></i> Back to Classes
     </a>
-    <a href="{% url 'academics:schoolclass:update' school_class.pk %}"
-       class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
-        <i class="bi bi-pencil"></i> <span class="hidden sm:inline">Edit Class</span>
-    </a>
-    {% if not school_class.children.exists %}
-        <form method="post" enctype="multipart/form-data"
-              action="{% url 'academics:enrollment:import' school_class.pk %}">
-            {% csrf_token %}
+    {% perms.academics.view_admin_panel %}
+        <a href="{% url 'academics:schoolclass:update' school_class.pk %}"
+           class="sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
+            <i class="bi bi-pencil"></i> <span class="hidden sm:inline">Edit Class</span>
+        </a>
+        <a href="{% url 'academics:enrollment:template' %}"
+           class="hidden sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
+            <i class="bi bi-file-earmark-arrow-down"></i> <span class="hidden sm:inline">Download Format</span>
+        </a>
+        {% if not school_class.children.exists %}
+            <form method="post" enctype="multipart/form-data"
+                  action="{% url 'academics:enrollment:import' school_class.pk %}">
+                {% csrf_token %}
 
-            <input type="file" name="file" id="file-upload" class="hidden" onchange="this.form.submit()">
+                <input type="file" name="file" id="file-upload" class="hidden" onchange="this.form.submit()">
 
-            <label for="file-upload"
-                   class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm cursor-pointer">
-                <i class="bi bi-file-earmark-spreadsheet"></i> <span class="hidden sm:inline">Import</span>
-            </label>
-        </form>
+                <label for="file-upload"
+                       class="sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
+                    <i class="bi bi-file-earmark-arrow-up"></i> <span class="hidden sm:inline">Import</span>
+                </label>
+            </form>
+        {% endif %}
     {% endif %}
 {% endblock %}
 
@@ -74,51 +80,55 @@
         }
     </style>
 
-    <div class="max-w-6xl mx-auto space-y-4 sm:space-y-6">
+    <div class="max-w-6xl mx-auto space-y-4 sm:space-y-6 transition-colors duration-200">
 
-        <div class="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
-            <div class="px-5 py-5 sm:px-6 sm:py-6 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <!-- Header Card -->
+        <div class="bg-white dark:bg-charcoal-800 shadow-sm dark:shadow-none rounded-xl overflow-hidden border border-gray-100 dark:border-charcoal-700 transition-colors">
+            <div class="px-5 py-5 sm:px-6 sm:py-6 border-b border-gray-100 dark:border-charcoal-700 bg-gray-50/50 dark:bg-charcoal-900/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-colors">
                 <div class="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
-                    <div class="h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-600 flex-shrink-0">
+                    <div class="h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800/50 flex items-center justify-center text-blue-600 dark:text-blue-400 flex-shrink-0 transition-colors">
                         <i class="bi bi-easel text-xl sm:text-2xl"></i>
                     </div>
                     <div class="flex-1">
-                        <h2 class="text-lg sm:text-xl font-bold text-gray-900 leading-tight">{{ school_class }}</h2>
-                        <p class="text-xs sm:text-sm font-medium text-gray-500 mt-0.5 sm:mt-1">
+                        <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight transition-colors">{{ school_class }}</h2>
+                        <p class="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mt-0.5 sm:mt-1 transition-colors">
                             Teacher: <span
-                                class="text-gray-700">{{ school_class.class_teacher|default:"Not assigned" }}</span>
+                                class="text-gray-700 dark:text-gray-300">{{ school_class.class_teacher|default:"Not assigned" }}</span>
                         </p>
                     </div>
                 </div>
 
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-200 self-start sm:self-auto">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50 self-start sm:self-auto transition-colors">
                     Active Class
                 </span>
             </div>
         </div>
 
-        <div class="bg-transparent sm:bg-white sm:shadow-sm rounded-xl sm:overflow-hidden sm:border sm:border-gray-100">
+        <!-- Enrolled Students Section -->
+        <div class="bg-transparent sm:bg-white dark:sm:bg-charcoal-800 sm:shadow-sm dark:shadow-none rounded-xl sm:overflow-hidden sm:border sm:border-gray-100 dark:sm:border-charcoal-700 transition-colors">
 
-            <div class="bg-white shadow-sm sm:shadow-none rounded-xl sm:rounded-none px-5 py-4 sm:px-6 sm:py-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 mb-4 sm:mb-0 cursor-pointer select-none"
+            <div class="bg-white dark:bg-charcoal-800 shadow-sm sm:shadow-none rounded-xl sm:rounded-none px-5 py-4 sm:px-6 sm:py-5 border-b border-gray-100 dark:border-charcoal-700 flex flex-col sm:flex-row justify-between items-center gap-4 mb-4 sm:mb-0 cursor-pointer select-none transition-colors"
                  onclick="document.getElementById('students-acc').classList.toggle('is-collapsed'); document.getElementById('students-chev').classList.toggle('rotate-180');">
 
                 <div class="w-full sm:w-auto text-center sm:text-left">
-                    <h3 class="text-lg font-semibold text-gray-900 flex items-center justify-center sm:justify-start gap-3">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center justify-center sm:justify-start gap-3 transition-colors">
                         <i id="students-chev"
-                           class="bi bi-chevron-down transform rotate-180 transition-transform duration-300 text-gray-400 font-bold"></i>
+                           class="bi bi-chevron-down transform rotate-180 transition-transform duration-300 text-gray-400 dark:text-gray-500 font-bold"></i>
                         <span>Enrolled Students</span>
-                        <span class="bg-gray-100 text-gray-600 py-0.5 px-2.5 rounded-full text-xs font-bold border border-gray-200">
+                        <span class="bg-gray-100 dark:bg-charcoal-900 text-gray-600 dark:text-gray-300 py-0.5 px-2.5 rounded-full text-xs font-bold border border-gray-200 dark:border-charcoal-700 transition-colors">
                             {{ enrollments|length }}
                         </span>
                     </h3>
                 </div>
 
                 <div class="w-full sm:w-auto">
-                    <a href="{% url 'academics:enrollment:create' %}?schoolclass={{ school_class.pk }}"
-                       onclick="event.stopPropagation();"
-                       class="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-4 py-2 sm:px-3 sm:py-1.5 rounded-lg transition-colors">
-                        <i class="bi bi-plus-lg"></i> Enroll Student
-                    </a>
+                    {% if perms.academics.add_enrollment %}
+                        <a href="{% url 'academics:enrollment:create' %}?schoolclass={{ school_class.pk }}"
+                           onclick="event.stopPropagation();"
+                           class="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 px-4 py-2 sm:px-3 sm:py-1.5 rounded-lg transition-colors">
+                            <i class="bi bi-plus-lg"></i> Enroll Student
+                        </a>
+                    {% endif %}
                 </div>
             </div>
 
@@ -126,8 +136,8 @@
                 <div class="section-accordion-inner">
                     <div class="w-full overflow-x-auto pb-4 sm:pb-0">
 
-                        <table class="w-full text-sm text-left text-gray-500 hidden sm:table">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-100">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden sm:table">
+                            <thead class="text-xs text-gray-700 dark:text-gray-300 uppercase bg-gray-50 dark:bg-charcoal-900/50 border-b border-gray-100 dark:border-charcoal-700 transition-colors">
                             <tr>
                                 <th scope="col" class="px-6 py-4 font-semibold tracking-wider">Student Name</th>
                                 <th scope="col" class="px-6 py-4 font-semibold tracking-wider text-center">Roll No</th>
@@ -135,73 +145,78 @@
                                 <th scope="col" class="px-6 py-4 text-right font-semibold tracking-wider">Actions</th>
                             </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-100">
+                            <tbody class="divide-y divide-gray-100 dark:divide-charcoal-700 transition-colors">
                             {% for enrollment in enrollments %}
-                                <tr class="bg-white hover:bg-gray-50 transition-colors duration-150 group">
-                                    <td class="px-6 py-4 font-medium text-gray-900">
+                                <tr class="bg-white dark:bg-charcoal-800 hover:bg-gray-50 dark:hover:bg-charcoal-700 transition-colors duration-150 group">
+                                    <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                         <div class="flex items-center gap-3">
-                                            <div class="h-8 w-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0">
+                                            <div class="h-8 w-8 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 flex-shrink-0 transition-colors">
                                                 <i class="bi bi-person"></i>
                                             </div>
                                             <a href="{% url 'academics:enrollment:detail' enrollment.pk %}"
-                                               class="hover:text-blue-600 hover:underline transition-colors"
+                                               class="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
                                                title="View {{ enrollment.student.name }} Details">
                                                 {{ enrollment.student.name }}
                                             </a>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-600 text-center text-sm">
+                                    <td class="px-6 py-4 font-medium text-gray-600 dark:text-gray-400 text-center text-sm transition-colors">
                                         {{ enrollment.student.reg_number|default:"-" }}
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         {% if enrollment.on_leave %}
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 dark:bg-amber-900/20 text-amber-800 dark:text-amber-400 transition-colors">
                                                     On Leave
                                                 </span>
                                         {% else %}
-                                            <span class="text-gray-400">-</span>
+                                            <span class="text-gray-400 dark:text-gray-500 transition-colors">-</span>
                                         {% endif %}
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                                             <a href="{% url 'academics:enrollment:detail' enrollment.pk %}"
-                                               class="inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
+                                               class="inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-md transition-colors"
                                                title="View Student">
                                                 <i class="bi bi-eye"></i> View
                                             </a>
-                                            <a href="{% url 'academics:enrollment:onleave' enrollment.pk %}"
-                                               onclick="return confirm('Change leave status of {{ enrollment.student.name }}?');"
-                                               class="inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md transition-colors"
-                                               title="Toggle Leave Status">
-                                                {% if enrollment.on_leave %}
-                                                    <i class="bi bi-person-check"></i> Set Active
-                                                {% else %}
-                                                    <i class="bi bi-person-dash"></i> Set Leave
-                                                {% endif %}
-                                            </a>
-                                            <form method="POST"
-                                                  action="{% url 'academics:enrollment:delete' enrollment.pk %}?schoolclass={{ school_class.pk }}"
-                                                  class="m-0 p-0"
-                                                  onsubmit="return confirm('Remove {{ enrollment.student.name }} from this class?');">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="class_id" value="{{ school_class.pk }}">
-                                                <button type="submit"
-                                                        class="inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-md transition-colors cursor-pointer"
-                                                        title="Remove from Class">
-                                                    <i class="bi bi-trash"></i> Remove
-                                                </button>
-                                            </form>
+                                            {% if school_class.class_teacher.user == request.user or perms.academics.can_change_leave %}
+                                                <a href="{% url 'academics:enrollment:onleave' enrollment.pk %}"
+                                                   onclick="return confirm('Change leave status of {{ enrollment.student.name }}?');"
+                                                   class="inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 hover:bg-amber-100 dark:hover:bg-amber-900/40 rounded-md transition-colors"
+                                                   title="Toggle Leave Status">
+                                                    {% if enrollment.on_leave %}
+                                                        <i class="bi bi-person-check"></i> Set Active
+                                                    {% else %}
+                                                        <i class="bi bi-person-dash"></i> Set Leave
+                                                    {% endif %}
+                                                </a>
+                                            {% endif %}
+                                            {% if perms.academics.delete_enrollment %}
+                                                <form method="POST"
+                                                      action="{% url 'academics:enrollment:delete' enrollment.pk %}?schoolclass={{ school_class.pk }}"
+                                                      class="m-0 p-0"
+                                                      onsubmit="return confirm('Remove {{ enrollment.student.name }} from this class?');">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="class_id" value="{{ school_class.pk }}">
+                                                    <button type="submit"
+                                                            class="inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 rounded-md transition-colors cursor-pointer"
+                                                            title="Remove from Class">
+                                                        <i class="bi bi-trash"></i> Remove
+                                                    </button>
+                                                </form>
+                                            {% endif %}
                                         </div>
                                     </td>
                                 </tr>
                             {% empty %}
-                                <tr class="bg-white">
-                                    <td colspan="4" class="px-6 py-12 text-center text-gray-500">
+                                <tr class="bg-white dark:bg-charcoal-800 transition-colors">
+                                    <td colspan="4" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
                                         <div class="flex flex-col items-center justify-center">
-                                            <div class="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
-                                                <i class="bi bi-people text-3xl text-gray-400"></i>
+                                            <div class="h-16 w-16 bg-gray-50 dark:bg-charcoal-700 rounded-full flex items-center justify-center mb-3 transition-colors">
+                                                <i class="bi bi-people text-3xl text-gray-400 dark:text-gray-500"></i>
                                             </div>
-                                            <p class="text-base font-medium text-gray-900">No students enrolled yet</p>
+                                            <p class="text-base font-medium text-gray-900 dark:text-white transition-colors">
+                                                No students enrolled yet</p>
                                             <p class="text-sm mt-1">Students assigned to this class will appear
                                                 here.</p>
                                         </div>
@@ -211,89 +226,96 @@
                             </tbody>
                         </table>
 
+                        <!-- Mobile Student Cards -->
                         <div class="sm:hidden space-y-4 px-1">
                             {% for enrollment in enrollments %}
-                                <div class="mobile-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                                    <div class="flex justify-between items-center px-4 py-4 cursor-pointer"
+                                <div class="mobile-card bg-white dark:bg-charcoal-800 rounded-xl shadow-sm dark:shadow-none border border-gray-100 dark:border-charcoal-700 overflow-hidden transition-colors duration-200">
+                                    <div class="flex justify-between items-center px-4 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-charcoal-700/50 transition-colors"
                                          onclick="this.closest('.mobile-card').classList.toggle('is-expanded')">
 
                                         <div class="flex items-center gap-3">
-                                            <div class="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0">
+                                            <div class="h-10 w-10 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 flex-shrink-0 transition-colors">
                                                 <i class="bi bi-person"></i>
                                             </div>
                                             <a href="{% url 'academics:enrollment:detail' enrollment.pk %}"
                                                onclick="event.stopPropagation();"
-                                               class="font-medium text-gray-900 text-base hover:text-blue-600 hover:underline transition-colors"
+                                               class="font-medium text-gray-900 dark:text-white text-base hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
                                                title="View {{ enrollment.student.name }} Details">
                                                 {{ enrollment.student.name }}
                                             </a>
                                         </div>
 
-                                        <i class="bi bi-chevron-down dropdown-icon text-gray-400"></i>
+                                        <i class="bi bi-chevron-down dropdown-icon text-gray-400 dark:text-gray-500 transition-colors"></i>
                                     </div>
 
                                     <div class="mobile-content-wrap">
                                         <div class="mobile-content-inner">
 
-                                            <div class="flex flex-col gap-3 px-4 py-3 border-t border-gray-50">
+                                            <div class="flex flex-col gap-3 px-4 py-3 border-t border-gray-50 dark:border-charcoal-700 transition-colors">
                                                 <div class="flex justify-between items-center">
-                                                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Roll No</span>
-                                                    <span class="font-medium text-gray-600 text-sm">{{ enrollment.student.reg_number|default:"-" }}</span>
+                                                    <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Roll No</span>
+                                                    <span class="font-medium text-gray-600 dark:text-gray-300 text-sm transition-colors">{{ enrollment.student.reg_number|default:"-" }}</span>
                                                 </div>
                                                 <div class="flex justify-between items-center">
-                                                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</span>
+                                                    <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</span>
                                                     <span>
                                                         {% if enrollment.on_leave %}
-                                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800">
+                                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 dark:bg-amber-900/20 text-amber-800 dark:text-amber-400 transition-colors">
                                                                 On Leave
                                                             </span>
                                                         {% else %}
-                                                            <span class="text-gray-400 text-sm">-</span>
+                                                            <span class="text-gray-400 dark:text-gray-500 text-sm transition-colors">-</span>
                                                         {% endif %}
                                                     </span>
                                                 </div>
                                             </div>
 
-                                            <div class="flex flex-wrap items-center gap-2 px-4 py-4 bg-gray-50 border-t border-gray-100 rounded-b-xl">
+                                            <div class="flex flex-wrap items-center gap-2 px-4 py-4 bg-gray-50 dark:bg-charcoal-900/50 border-t border-gray-100 dark:border-charcoal-700 rounded-b-xl transition-colors">
                                                 <a href="{% url 'academics:enrollment:detail' enrollment.pk %}"
-                                                   class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
+                                                   class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-md transition-colors"
                                                    title="View Student">
                                                     <i class="bi bi-eye"></i> View
                                                 </a>
-                                                <a href="{% url 'academics:enrollment:onleave' enrollment.pk %}"
-                                                   onclick="return confirm('Change leave status of {{ enrollment.student.name }}?');"
-                                                   class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md transition-colors"
-                                                   title="Toggle Leave Status">
-                                                    {% if enrollment.on_leave %}
-                                                        <i class="bi bi-person-check"></i> Active
-                                                    {% else %}
-                                                        <i class="bi bi-person-dash"></i> Leave
-                                                    {% endif %}
-                                                </a>
-                                                <form method="POST"
-                                                      action="{% url 'academics:enrollment:delete' enrollment.pk %}?schoolclass={{ school_class.pk }}"
-                                                      class="flex-1 m-0 p-0"
-                                                      onsubmit="return confirm('Remove {{ enrollment.student.name }} from this class?');">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="class_id" value="{{ school_class.pk }}">
-                                                    <button type="submit"
-                                                            class="w-full inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-md transition-colors cursor-pointer"
-                                                            title="Remove from Class">
-                                                        <i class="bi bi-trash"></i> Remove
-                                                    </button>
-                                                </form>
+                                                {% if school_class.class_teacher.user == request.user or perms.academics.can_change_leave %}
+                                                    <a href="{% url 'academics:enrollment:onleave' enrollment.pk %}"
+                                                       onclick="return confirm('Change leave status of {{ enrollment.student.name }}?');"
+                                                       class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 hover:bg-amber-100 dark:hover:bg-amber-900/40 rounded-md transition-colors"
+                                                       title="Toggle Leave Status">
+                                                        {% if enrollment.on_leave %}
+                                                            <i class="bi bi-person-check"></i> Active
+                                                        {% else %}
+                                                            <i class="bi bi-person-dash"></i> Leave
+                                                        {% endif %}
+                                                    </a>
+                                                {% endif %}
+                                                {% if perms.academics.delete_enrollment %}
+                                                    <form method="POST"
+                                                          action="{% url 'academics:enrollment:delete' enrollment.pk %}?schoolclass={{ school_class.pk }}"
+                                                          class="flex-1 m-0 p-0"
+                                                          onsubmit="return confirm('Remove {{ enrollment.student.name }} from this class?');">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="class_id"
+                                                               value="{{ school_class.pk }}">
+                                                        <button type="submit"
+                                                                class="w-full inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 rounded-md transition-colors cursor-pointer"
+                                                                title="Remove from Class">
+                                                            <i class="bi bi-trash"></i> Remove
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
                                             </div>
 
                                         </div>
                                     </div>
                                 </div>
                             {% empty %}
-                                <div class="bg-white rounded-xl shadow-sm border border-gray-100 px-6 py-12 text-center text-gray-500">
+                                <div class="bg-white dark:bg-charcoal-800 rounded-xl shadow-sm dark:shadow-none border border-gray-100 dark:border-charcoal-700 px-6 py-12 text-center text-gray-500 dark:text-gray-400 transition-colors">
                                     <div class="flex flex-col items-center justify-center">
-                                        <div class="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
-                                            <i class="bi bi-people text-3xl text-gray-400"></i>
+                                        <div class="h-16 w-16 bg-gray-50 dark:bg-charcoal-700 rounded-full flex items-center justify-center mb-3 transition-colors">
+                                            <i class="bi bi-people text-3xl text-gray-400 dark:text-gray-500"></i>
                                         </div>
-                                        <p class="text-base font-medium text-gray-900">No students enrolled yet</p>
+                                        <p class="text-base font-medium text-gray-900 dark:text-white transition-colors">
+                                            No students enrolled yet</p>
                                         <p class="text-sm mt-1">Students assigned to this class will appear here.</p>
                                     </div>
                                 </div>
@@ -305,17 +327,18 @@
             </div>
         </div>
 
-        <div class="bg-transparent sm:bg-white sm:shadow-sm rounded-xl sm:overflow-hidden sm:border sm:border-gray-100">
+        <!-- Assigned Teachers Section -->
+        <div class="bg-transparent sm:bg-white dark:sm:bg-charcoal-800 sm:shadow-sm dark:shadow-none rounded-xl sm:overflow-hidden sm:border sm:border-gray-100 dark:sm:border-charcoal-700 transition-colors">
 
-            <div class="bg-white shadow-sm sm:shadow-none rounded-xl sm:rounded-none px-5 py-4 sm:px-6 sm:py-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 mb-4 sm:mb-0 cursor-pointer select-none"
+            <div class="bg-white dark:bg-charcoal-800 shadow-sm sm:shadow-none rounded-xl sm:rounded-none px-5 py-4 sm:px-6 sm:py-5 border-b border-gray-100 dark:border-charcoal-700 flex flex-col sm:flex-row justify-between items-center gap-4 mb-4 sm:mb-0 cursor-pointer select-none transition-colors"
                  onclick="document.getElementById('teachers-acc').classList.toggle('is-collapsed'); document.getElementById('teachers-chev').classList.toggle('rotate-180');">
 
                 <div class="w-full sm:w-auto text-center sm:text-left">
-                    <h3 class="text-lg font-semibold text-gray-900 flex items-center justify-center sm:justify-start gap-3">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center justify-center sm:justify-start gap-3 transition-colors">
                         <i id="teachers-chev"
-                           class="bi bi-chevron-down transform rotate-180 transition-transform duration-300 text-gray-400 font-bold"></i>
+                           class="bi bi-chevron-down transform rotate-180 transition-transform duration-300 text-gray-400 dark:text-gray-500 font-bold"></i>
                         <span>Assigned Teachers</span>
-                        <span class="bg-gray-100 text-gray-600 py-0.5 px-2.5 rounded-full text-xs font-bold border border-gray-200">
+                        <span class="bg-gray-100 dark:bg-charcoal-900 text-gray-600 dark:text-gray-300 py-0.5 px-2.5 rounded-full text-xs font-bold border border-gray-200 dark:border-charcoal-700 transition-colors">
                             {{ assigned_teachers|length }}
                         </span>
                     </h3>
@@ -324,7 +347,7 @@
                 <div class="w-full sm:w-auto">
                     <a href="{% url 'teacher:assignment:create' %}?schoolclass={{ school_class.pk }}"
                        onclick="event.stopPropagation();"
-                       class="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-4 py-2 sm:px-3 sm:py-1.5 rounded-lg transition-colors">
+                       class="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 px-4 py-2 sm:px-3 sm:py-1.5 rounded-lg transition-colors">
                         <i class="bi bi-plus-lg"></i> Assign Teacher
                     </a>
                 </div>
@@ -334,36 +357,36 @@
                 <div class="section-accordion-inner">
                     <div class="w-full overflow-x-auto pb-4 sm:pb-0">
 
-                        <table class="w-full text-sm text-left text-gray-500 hidden sm:table">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-100">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden sm:table">
+                            <thead class="text-xs text-gray-700 dark:text-gray-300 uppercase bg-gray-50 dark:bg-charcoal-900/50 border-b border-gray-100 dark:border-charcoal-700 transition-colors">
                             <tr>
                                 <th scope="col" class="px-6 py-4 font-semibold tracking-wider">Teacher Name</th>
                                 <th scope="col" class="px-6 py-4 font-semibold tracking-wider">Subject</th>
                                 <th scope="col" class="px-6 py-4 text-right font-semibold tracking-wider">Actions</th>
                             </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-100">
+                            <tbody class="divide-y divide-gray-100 dark:divide-charcoal-700 transition-colors">
                             {% for assigned_teacher in assigned_teachers %}
-                                <tr class="bg-white hover:bg-gray-50 transition-colors duration-150 group">
-                                    <td class="px-6 py-4 font-medium text-gray-900">
+                                <tr class="bg-white dark:bg-charcoal-800 hover:bg-gray-50 dark:hover:bg-charcoal-700 transition-colors duration-150 group">
+                                    <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                         <div class="flex items-center gap-3">
-                                            <div class="h-8 w-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 flex-shrink-0">
+                                            <div class="h-8 w-8 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0 transition-colors">
                                                 <i class="bi bi-person-badge"></i>
                                             </div>
                                             <a href="{% url 'teacher:teacher:detail' assigned_teacher.teacher.pk %}"
-                                               class="hover:text-indigo-600 hover:underline transition-colors"
+                                               class="hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline transition-colors"
                                                title="View Teacher Details">
                                                 {{ assigned_teacher.teacher.user.get_full_name|title }}
                                             </a>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-600 text-sm">
+                                    <td class="px-6 py-4 font-medium text-gray-600 dark:text-gray-400 text-sm transition-colors">
                                         {{ assigned_teacher.subject.name }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                                             <a href="{% url 'teacher:teacher:detail' assigned_teacher.teacher.pk %}"
-                                               class="inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
+                                               class="inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-md transition-colors"
                                                title="View Teacher">
                                                 <i class="bi bi-eye"></i> View
                                             </a>
@@ -374,7 +397,7 @@
                                                 {% csrf_token %}
                                                 <input type="hidden" name="schoolclass" value="{{ school_class.pk }}">
                                                 <button type="submit"
-                                                        class="inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-md transition-colors cursor-pointer"
+                                                        class="inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 rounded-md transition-colors cursor-pointer"
                                                         title="Unassign Teacher">
                                                     <i class="bi bi-dash-circle"></i> Unassign
                                                 </button>
@@ -383,13 +406,14 @@
                                     </td>
                                 </tr>
                             {% empty %}
-                                <tr class="bg-white">
-                                    <td colspan="3" class="px-6 py-12 text-center text-gray-500">
+                                <tr class="bg-white dark:bg-charcoal-800 transition-colors">
+                                    <td colspan="3" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
                                         <div class="flex flex-col items-center justify-center">
-                                            <div class="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
-                                                <i class="bi bi-person-badge text-3xl text-gray-400"></i>
+                                            <div class="h-16 w-16 bg-gray-50 dark:bg-charcoal-700 rounded-full flex items-center justify-center mb-3 transition-colors">
+                                                <i class="bi bi-person-badge text-3xl text-gray-400 dark:text-gray-500"></i>
                                             </div>
-                                            <p class="text-base font-medium text-gray-900">No Teachers Assigned yet</p>
+                                            <p class="text-base font-medium text-gray-900 dark:text-white transition-colors">
+                                                No Teachers Assigned yet</p>
                                             <p class="text-sm mt-1">Teachers assigned to this class will appear
                                                 here.</p>
                                         </div>
@@ -399,38 +423,39 @@
                             </tbody>
                         </table>
 
+                        <!-- Mobile Teacher Cards -->
                         <div class="sm:hidden space-y-4 px-1">
                             {% for assigned_teacher in assigned_teachers %}
-                                <div class="mobile-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                                    <div class="flex justify-between items-center px-4 py-4 cursor-pointer"
+                                <div class="mobile-card bg-white dark:bg-charcoal-800 rounded-xl shadow-sm dark:shadow-none border border-gray-100 dark:border-charcoal-700 overflow-hidden transition-colors duration-200">
+                                    <div class="flex justify-between items-center px-4 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-charcoal-700/50 transition-colors"
                                          onclick="this.closest('.mobile-card').classList.toggle('is-expanded')">
 
                                         <div class="flex items-center gap-3">
-                                            <div class="h-10 w-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 flex-shrink-0">
+                                            <div class="h-10 w-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0 transition-colors">
                                                 <i class="bi bi-person-badge"></i>
                                             </div>
                                             <a href="{% url 'teacher:teacher:detail' assigned_teacher.teacher.pk %}"
                                                onclick="event.stopPropagation();"
-                                               class="font-medium text-gray-900 text-base hover:text-indigo-600 hover:underline transition-colors"
+                                               class="font-medium text-gray-900 dark:text-white text-base hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline transition-colors"
                                                title="View Teacher Details">
                                                 {{ assigned_teacher.teacher.user.get_full_name|title }}
                                             </a>
                                         </div>
 
-                                        <i class="bi bi-chevron-down dropdown-icon text-gray-400"></i>
+                                        <i class="bi bi-chevron-down dropdown-icon text-gray-400 dark:text-gray-500 transition-colors"></i>
                                     </div>
 
                                     <div class="mobile-content-wrap">
                                         <div class="mobile-content-inner">
 
-                                            <div class="flex justify-between items-center px-4 py-3 border-t border-gray-50">
-                                                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Subject</span>
-                                                <span class="font-medium text-gray-600 text-sm">{{ assigned_teacher.subject.name }}</span>
+                                            <div class="flex justify-between items-center px-4 py-3 border-t border-gray-50 dark:border-charcoal-700 transition-colors">
+                                                <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Subject</span>
+                                                <span class="font-medium text-gray-600 dark:text-gray-300 text-sm transition-colors">{{ assigned_teacher.subject.name }}</span>
                                             </div>
 
-                                            <div class="flex flex-wrap items-center gap-2 px-4 py-4 bg-gray-50 border-t border-gray-100 rounded-b-xl">
+                                            <div class="flex flex-wrap items-center gap-2 px-4 py-4 bg-gray-50 dark:bg-charcoal-900/50 border-t border-gray-100 dark:border-charcoal-700 rounded-b-xl transition-colors">
                                                 <a href="{% url 'teacher:teacher:detail' assigned_teacher.teacher.pk %}"
-                                                   class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
+                                                   class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-md transition-colors"
                                                    title="View Teacher">
                                                     <i class="bi bi-eye"></i> View
                                                 </a>
@@ -442,7 +467,7 @@
                                                     <input type="hidden" name="schoolclass"
                                                            value="{{ school_class.pk }}">
                                                     <button type="submit"
-                                                            class="w-full inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-md transition-colors cursor-pointer"
+                                                            class="w-full inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 rounded-md transition-colors cursor-pointer"
                                                             title="Unassign Teacher">
                                                         <i class="bi bi-dash-circle"></i> Unassign
                                                     </button>
@@ -453,12 +478,13 @@
                                     </div>
                                 </div>
                             {% empty %}
-                                <div class="bg-white rounded-xl shadow-sm border border-gray-100 px-6 py-12 text-center text-gray-500">
+                                <div class="bg-white dark:bg-charcoal-800 rounded-xl shadow-sm dark:shadow-none border border-gray-100 dark:border-charcoal-700 px-6 py-12 text-center text-gray-500 dark:text-gray-400 transition-colors">
                                     <div class="flex flex-col items-center justify-center">
-                                        <div class="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
-                                            <i class="bi bi-person-badge text-3xl text-gray-400"></i>
+                                        <div class="h-16 w-16 bg-gray-50 dark:bg-charcoal-700 rounded-full flex items-center justify-center mb-3 transition-colors">
+                                            <i class="bi bi-person-badge text-3xl text-gray-400 dark:text-gray-500"></i>
                                         </div>
-                                        <p class="text-base font-medium text-gray-900">No Teachers Assigned yet</p>
+                                        <p class="text-base font-medium text-gray-900 dark:text-white transition-colors">
+                                            No Teachers Assigned yet</p>
                                         <p class="text-sm mt-1">Teachers assigned to this class will appear here.</p>
                                     </div>
                                 </div>
@@ -471,15 +497,11 @@
 
         </div>
 
-        <a href="{% url 'academics:enrollment:template' %}"
-           class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
-            <i class="bi bi-file-earmark-spreadsheet"></i> <span class="hidden sm:inline">download</span>
-        </a>
-
-        <div class="bg-red-50 border border-red-100 rounded-xl overflow-hidden p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left">
+        <!-- Danger Zone -->
+        <div class="bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-800/50 rounded-xl overflow-hidden p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left transition-colors">
             <div class="flex-1">
-                <h3 class="text-base font-semibold text-red-800">Danger Zone</h3>
-                <p class="text-sm text-red-600 mt-1">
+                <h3 class="text-base font-semibold text-red-800 dark:text-red-400 transition-colors">Danger Zone</h3>
+                <p class="text-sm text-red-600 dark:text-red-300 mt-1 transition-colors">
                     Deleting this class will permanently remove it from the system. This action cannot be undone.
                 </p>
             </div>
@@ -490,7 +512,7 @@
                       onsubmit="return confirm('Are you sure you want to completely delete this class? This action cannot be undone.');">
                     {% csrf_token %}
                     <button type="submit"
-                            class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-red-50">
+                            class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 dark:hover:bg-red-500 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-red-50 dark:focus:ring-offset-charcoal-900">
                         <i class="bi bi-trash3"></i> Delete Class
                     </button>
                 </form>

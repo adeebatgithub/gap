@@ -9,23 +9,25 @@
 
 {% block navbar_btns %}
     <a href="{% url 'teacher:attendance:export' %}?class_name={{ request.GET.class_name }}"
-       class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+       class="sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
         <i class="bi bi-file-earmark-spreadsheet"></i> <span class="hidden sm:inline">Export to xlsx</span>
     </a>
 {% endblock %}
 
 {% block content %}
-    <div class="bg-white p-3 sm:p-4 rounded-xl shadow-sm mb-6 border border-gray-50 print:hidden overflow-hidden transition-all duration-200">
+    <div class="bg-white dark:bg-charcoal-800 p-3 sm:p-4 rounded-xl shadow-sm dark:shadow-none mb-6 border border-gray-50 dark:border-charcoal-700 print:hidden overflow-hidden transition-all duration-200">
 
-        <div class="flex justify-between items-center sm:hidden cursor-pointer"
+        <!-- Mobile Toggle -->
+        <div class="flex justify-between items-center sm:hidden cursor-pointer hover:opacity-80 transition-opacity"
              onclick="document.getElementById('filter-wrapper').classList.toggle('hidden'); document.getElementById('filter-icon').classList.toggle('rotate-180');">
             <div class="flex items-center gap-3">
-                <div class="h-8 w-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-500">
+                <div class="h-8 w-8 rounded-full bg-gray-50 dark:bg-charcoal-900/50 flex items-center justify-center text-gray-500 dark:text-gray-400 transition-colors">
                     <i class="bi bi-funnel text-sm"></i>
                 </div>
-                <span class="font-semibold text-gray-900 text-sm">Filter Report</span>
+                <span class="font-semibold text-gray-900 dark:text-white text-sm transition-colors">Filter Report</span>
             </div>
-            <i id="filter-icon" class="bi bi-chevron-down text-gray-400 transition-transform duration-200 pr-2"></i>
+            <i id="filter-icon"
+               class="bi bi-chevron-down text-gray-400 dark:text-gray-500 transition-transform duration-200 pr-2"></i>
         </div>
 
         <div id="filter-wrapper" class="hidden sm:block mt-4 sm:mt-0">
@@ -37,25 +39,26 @@
 
                 <div class="w-full sm:w-auto flex-1 max-w-sm">
                     <label for="class_name"
-                           class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+                           class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5 transition-colors">
                         Select Class
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="bi bi-easel text-gray-400"></i>
+                            <i class="bi bi-easel text-gray-400 dark:text-gray-500 transition-colors"></i>
                         </div>
                         <select name="class_name" id="class_name"
-                                class="block w-full pl-10 pr-10 py-2 border border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 transition-colors appearance-none text-gray-700 bg-gray-50 focus:bg-white outline-none cursor-pointer">
-                            <option value="">All Classes</option>
+                                class="block w-full pl-10 pr-10 py-2 border border-gray-200 dark:border-charcoal-700 rounded-lg text-sm focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors appearance-none text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-charcoal-900 focus:bg-white dark:focus:bg-charcoal-800 outline-none cursor-pointer">
+                            <option value="" class="dark:bg-charcoal-800">All Classes</option>
                             {% for class in classes %}
                                 <option value="{{ class }}"
+                                        class="dark:bg-charcoal-800"
                                         {% if request.GET.class_name == class|stringformat:"s" %}selected{% endif %}>
                                     {{ class }}
                                 </option>
                             {% endfor %}
                         </select>
                         <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                            <i class="bi bi-chevron-down text-gray-400 text-xs"></i>
+                            <i class="bi bi-chevron-down text-gray-400 dark:text-gray-500 text-xs transition-colors"></i>
                         </div>
                     </div>
                 </div>
@@ -64,7 +67,7 @@
         </div>
     </div>
 
-    <div id="hx-data" class="space-y-8">
+    <div id="hx-data" class="space-y-8 transition-colors duration-200">
         {% include "teacher/report/partials/attendance.html" with classes=classes report=report %}
     </div>
 {% endblock %}

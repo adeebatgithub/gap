@@ -1,19 +1,19 @@
 {% load teacher_tags %}
 {% for class_name, rows in report.items %}
 
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="bg-white dark:bg-charcoal-800 rounded-2xl shadow-sm dark:shadow-none border border-gray-200 dark:border-charcoal-700 overflow-hidden transition-colors duration-200">
 
         <!-- Class Header -->
-        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-charcoal-700 bg-gray-50 dark:bg-charcoal-900/50 transition-colors">
             <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+                <div class="h-10 w-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center transition-colors">
                     <i class="bi bi-mortarboard text-lg"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl font-bold text-gray-800">
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-white transition-colors">
                         {{ class_name }}
                     </h2>
-                    <p class="text-sm text-gray-500">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 transition-colors">
                         Attendance summary
                     </p>
                 </div>
@@ -24,19 +24,19 @@
         <div class="overflow-x-auto">
             <table class="min-w-full border-collapse">
                 <!-- Header -->
-                <thead class="bg-gray-100">
+                <thead class="bg-gray-100 dark:bg-charcoal-900 transition-colors">
                 <tr>
-                    <th class="border border-gray-300 px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                    <th class="border border-gray-300 dark:border-charcoal-700 px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">
                         #
                     </th>
-                    <th class="border border-gray-300 px-4 py-3 text-left text-sm font-semibold text-gray-700 sticky left-0 bg-gray-100 z-10">
+                    <th class="border border-gray-300 dark:border-charcoal-700 px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 sticky left-0 bg-gray-100 dark:bg-charcoal-900 z-10 transition-colors">
                         Student Name
                     </th>
 
                     {% for key, values in rows.items %}
                         {% if key == "subjects" %}
                             {% for value in values %}
-                                <th class="border border-gray-300 px-4 py-3 text-center text-sm font-semibold text-gray-700 whitespace-nowrap">
+                                <th class="border border-gray-300 dark:border-charcoal-700 px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap transition-colors">
                                     {{ value|remove_z }}
                                 </th>
                             {% endfor %}
@@ -46,19 +46,19 @@
                 </thead>
 
                 <!-- Body -->
-                <tbody>
+                <tbody class="transition-colors">
                 <!-- Collect students from first subject -->
                 {% for key, values in rows.items %}
                     {% if key == "students" %}
                         {% for student_name, totals in values.items %}
-                            <tr class="hover:bg-gray-50 group">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-charcoal-700 group transition-colors">
                                 <!-- Index -->
-                                <td class="border border-gray-300 px-4 py-3 font-medium text-gray-800 bg-white">
+                                <td class="border border-gray-300 dark:border-charcoal-700 px-4 py-3 font-medium text-gray-800 dark:text-gray-200 bg-white dark:bg-charcoal-800 transition-colors">
                                     {{ forloop.counter }}
                                 </td>
 
                                 <!-- Student Name -->
-                                <td class="border border-gray-300 px-4 py-3 font-medium text-gray-800 bg-white sticky left-0 z-10 group-hover:bg-gray-50">
+                                <td class="border border-gray-300 dark:border-charcoal-700 px-4 py-3 font-medium text-gray-800 dark:text-white bg-white dark:bg-charcoal-800 sticky left-0 z-10 group-hover:bg-gray-50 dark:group-hover:bg-charcoal-700 transition-colors">
                                     {{ student_name }}
                                 </td>
 
@@ -66,7 +66,7 @@
                                 {% for key, subjects in rows.items %}
                                     {% if key == "subjects" %}
                                         {% for subject in subjects %}
-                                            <td class="border border-gray-300 px-4 py-3 text-center text-gray-700">
+                                            <td class="border border-gray-300 dark:border-charcoal-700 px-4 py-3 text-center text-gray-700 dark:text-gray-300 bg-white dark:bg-charcoal-800 transition-colors">
                                                 {% if totals|get_item:subject %}
                                                     {{ totals|get_item:subject }}
                                                 {% else %}
@@ -87,14 +87,14 @@
 
 {% empty %}
 
-    <div class="bg-white rounded-2xl shadow-sm p-12 text-center">
-        <div class="mx-auto h-20 w-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-            <i class="bi bi-bar-chart text-3xl text-gray-400"></i>
+    <div class="bg-white dark:bg-charcoal-800 rounded-2xl shadow-sm dark:shadow-none border border-transparent dark:border-charcoal-700 p-12 text-center transition-colors duration-200">
+        <div class="mx-auto h-20 w-20 rounded-full bg-gray-100 dark:bg-charcoal-700 flex items-center justify-center mb-4 transition-colors">
+            <i class="bi bi-bar-chart text-3xl text-gray-400 dark:text-gray-500"></i>
         </div>
-        <h3 class="text-xl font-semibold text-gray-800 mb-2">
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2 transition-colors">
             No Data Available
         </h3>
-        <p class="text-gray-500">
+        <p class="text-gray-500 dark:text-gray-400 transition-colors">
             Attendance records will appear here once sessions are marked.
         </p>
     </div>

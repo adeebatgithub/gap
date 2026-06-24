@@ -13,13 +13,15 @@ from timetable.models import Timetable, TimetableClass, TimetablePeriod, Timetab
 
 
 class TimetableImageView(TemplateView):
-    template_name = "timetable/image.html"
+    template_name = "timetable/old/image.html"
 
     def get_table(self):
         today = datetime.today().strftime('%A')
-        if today == "Sunday":
-            return TimetableImage.objects.none()
-        table = TimetableImage.objects.get(day=today)
+        try:
+            table = TimetableImage.objects.get(day=today)
+        except TimetableImage.DoesNotExist:
+            messages.info(self.request, "Timetable not found")
+            table = TimetableImage.objects.none()
         return table
 
     def get_context_data(self, **kwargs):
@@ -29,7 +31,7 @@ class TimetableImageView(TemplateView):
 
 
 class TimetableView(TemplateView):
-    template_name = "timetable/edit.html"
+    template_name = "timetable/old/edit.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,7 +44,7 @@ class TimetableView(TemplateView):
 
 
 class TimetablePreview(TemplateView):
-    template_name = "timetable/preview.html"
+    template_name = "timetable/old/preview.html"
 
     def get_table(self):
         if date := self.request.GET.get('date'):
@@ -101,7 +103,7 @@ class TimetableUpsertView(View):
 class TimeTableSubjectsPartialView(ListView):
     model = SubjectClass
     context_object_name = 'subjects'
-    template_name = "timetable/partials/subject.html"
+    template_name = "timetable/old/partials/subject.html"
 
     def get_filters(self):
         filters = {}

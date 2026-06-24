@@ -2,7 +2,7 @@
 
 {% block navbar_btns %}
     <a href="{% url 'academics:enrollment:create' %}"
-       class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+       class="sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
         <i class="bi bi-plus-circle"></i> <span class="hidden sm:inline">Enroll Student</span>
     </a>
 {% endblock %}
@@ -13,12 +13,12 @@
 
 {% block content %}
     <!-- Filter Section -->
-    <div class="flex flex-col sm:flex-row items-end gap-4 mb-6">
+    <div class="flex flex-col sm:flex-row items-end gap-4 mb-6 transition-colors duration-200">
 
         <!-- Search Field -->
         <div class="w-full sm:max-w-md relative">
             <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
-                <i class="bi bi-search text-gray-400"></i>
+                <i class="bi bi-search text-gray-400 dark:text-gray-500 transition-colors"></i>
             </div>
             <input hx-get="{% url 'academics:enrollment:list' %}"
                    hx-trigger="keyup changed delay:300ms"
@@ -27,28 +27,30 @@
                    type="search"
                    id="default-search"
                    name="search"
-                   class="block w-full p-3 pl-11 text-sm text-gray-900 border border-gray-200 rounded-xl bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all shadow-sm"
+                   class="block w-full p-3 pl-11 text-sm text-gray-900 dark:text-white border border-gray-200 dark:border-charcoal-700 rounded-xl bg-gray-50 dark:bg-charcoal-900 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 outline-none transition-all shadow-sm dark:shadow-none placeholder-gray-400 dark:placeholder-gray-500"
                    placeholder="Search students...">
         </div>
 
         <!-- Class Filter -->
         <div class="w-full sm:w-auto flex-1 max-w-xs">
-            <label for="class_name" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+            <label for="class_name"
+                   class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5 transition-colors">
                 Filter by Class
             </label>
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i class="bi bi-easel text-gray-400"></i>
+                    <i class="bi bi-easel text-gray-400 dark:text-gray-500 transition-colors"></i>
                 </div>
                 <select hx-get="{% url 'academics:enrollment:list' %}"
                         hx-target="#hx-list-table"
                         hx-swap="innerHTML"
                         name="class_name"
                         id="class_name"
-                        class="block w-full pl-10 pr-10 py-2 border border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 transition-colors appearance-none text-gray-700 bg-gray-50 focus:bg-white outline-none cursor-pointer">
-                    <option value="">All Classes</option>
+                        class="block w-full pl-10 pr-10 py-2 border border-gray-200 dark:border-charcoal-700 rounded-lg text-sm focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors appearance-none text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-charcoal-900 focus:bg-white dark:focus:bg-charcoal-800 outline-none cursor-pointer">
+                    <option value="" class="dark:bg-charcoal-800">All Classes</option>
                     {% for class in classes %}
                         <option value="{{ class }}"
+                                class="dark:bg-charcoal-800"
                                 {% if request.GET.class_name == class|stringformat:"s" %}selected{% endif %}>
                             {{ class }}
                         </option>
@@ -56,7 +58,7 @@
                 </select>
                 <!-- Custom dropdown arrow to replace default browser styling -->
                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                    <i class="bi bi-chevron-down text-gray-400 text-xs"></i>
+                    <i class="bi bi-chevron-down text-gray-400 dark:text-gray-500 text-xs transition-colors"></i>
                 </div>
             </div>
         </div>
@@ -64,7 +66,8 @@
     </div>
 
     <!-- Table Section -->
-    <div id="hx-list-table" class="bg-transparent sm:bg-white sm:shadow-sm rounded-xl sm:overflow-hidden">
+    <div id="hx-list-table"
+         class="bg-transparent sm:bg-white dark:sm:bg-charcoal-800 sm:shadow-sm dark:shadow-none rounded-xl sm:overflow-hidden transition-colors duration-200">
 
         {% include "academics/enrollments/partial_list.html" with enrollments=enrollments %}
 
