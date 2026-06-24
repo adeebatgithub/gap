@@ -344,13 +344,15 @@
                     </h3>
                 </div>
 
-                <div class="w-full sm:w-auto">
-                    <a href="{% url 'teacher:assignment:create' %}?schoolclass={{ school_class.pk }}"
-                       onclick="event.stopPropagation();"
-                       class="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 px-4 py-2 sm:px-3 sm:py-1.5 rounded-lg transition-colors">
-                        <i class="bi bi-plus-lg"></i> Assign Teacher
-                    </a>
-                </div>
+                {% if perms.teacher.add_teacher %}
+                    <div class="w-full sm:w-auto">
+                        <a href="{% url 'teacher:assignment:create' %}?schoolclass={{ school_class.pk }}"
+                           onclick="event.stopPropagation();"
+                           class="w-full sm:w-auto inline-flex justify-center items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 px-4 py-2 sm:px-3 sm:py-1.5 rounded-lg transition-colors">
+                            <i class="bi bi-plus-lg"></i> Assign Teacher
+                        </a>
+                    </div>
+                {% endif %}
             </div>
 
             <div id="teachers-acc" class="section-accordion">
@@ -497,27 +499,30 @@
 
         </div>
 
-        <!-- Danger Zone -->
-        <div class="bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-800/50 rounded-xl overflow-hidden p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left transition-colors">
-            <div class="flex-1">
-                <h3 class="text-base font-semibold text-red-800 dark:text-red-400 transition-colors">Danger Zone</h3>
-                <p class="text-sm text-red-600 dark:text-red-300 mt-1 transition-colors">
-                    Deleting this class will permanently remove it from the system. This action cannot be undone.
-                </p>
-            </div>
+        {% if perms.academics.view_danger %}
+            <!-- Danger Zone -->
+            <div class="bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-800/50 rounded-xl overflow-hidden p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left transition-colors">
+                <div class="flex-1">
+                    <h3 class="text-base font-semibold text-red-800 dark:text-red-400 transition-colors">Danger
+                        Zone</h3>
+                    <p class="text-sm text-red-600 dark:text-red-300 mt-1 transition-colors">
+                        Deleting this class will permanently remove it from the system. This action cannot be undone.
+                    </p>
+                </div>
 
-            <div class="w-full sm:w-auto mt-2 sm:mt-0 flex items-center">
-                <form method="POST" action="{% url 'academics:schoolclass:delete' school_class.pk %}"
-                      class="w-full sm:w-auto"
-                      onsubmit="return confirm('Are you sure you want to completely delete this class? This action cannot be undone.');">
-                    {% csrf_token %}
-                    <button type="submit"
-                            class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 dark:hover:bg-red-500 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-red-50 dark:focus:ring-offset-charcoal-900">
-                        <i class="bi bi-trash3"></i> Delete Class
-                    </button>
-                </form>
+                <div class="w-full sm:w-auto mt-2 sm:mt-0 flex items-center">
+                    <form method="POST" action="{% url 'academics:schoolclass:delete' school_class.pk %}"
+                          class="w-full sm:w-auto"
+                          onsubmit="return confirm('Are you sure you want to completely delete this class? This action cannot be undone.');">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 dark:hover:bg-red-500 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-red-50 dark:focus:ring-offset-charcoal-900">
+                            <i class="bi bi-trash3"></i> Delete Class
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
+        {% endif %}
 
     </div>
 {% endblock %}
