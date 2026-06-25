@@ -1,6 +1,5 @@
 from django.db import models
 
-from academics.academicyear.models import AcademicYear
 from academics.enrollment.models import Student
 from academics.subject.models import SubjectClass
 from controller.models import TimeStampedModel

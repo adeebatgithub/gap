@@ -87,6 +87,11 @@ class SessionCreateView(PermissionRequiredMixin, CreateView):
         kwargs['user'] = self.request.user
         return kwargs
 
+    def get_initial(self):
+        return {
+            "date": timezone.localdate(),
+        }
+
     def form_valid(self, form):
         form.instance.teacher = Teacher.objects.get(user=self.request.user)
         with transaction.atomic():
