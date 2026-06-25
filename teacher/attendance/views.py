@@ -33,7 +33,7 @@ class SessionListView(PermissionRequiredMixin, ListView):
     def get_filters(self):
         filters = {}
         if self.request.GET.get('date'):
-            filters['date__gte'] = self.request.GET.get('date')
+            filters['date'] = self.request.GET.get('date')
         else:
             filters['date'] = timezone.localdate()
 
