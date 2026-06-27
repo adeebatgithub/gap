@@ -14,6 +14,11 @@ class AssessmentListView(ListView):
     template_name = 'teacher/assessments/list.html'
     context_object_name = 'assessments'
 
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            subject_class__teacher__user=self.request.user,
+        )
+
 
 class AssessmentDetailView(DetailView):
     model = Assessment

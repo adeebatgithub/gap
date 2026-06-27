@@ -24,7 +24,7 @@ class AttendanceAdmin(admin.ModelAdmin):
 
 @admin.register(Assessment)
 class AssessmentAdmin(admin.ModelAdmin):
-    list_display = ("date", "subject", "school_class")
+    list_display = ("date", "id")
 
 
 @admin.register(Grade)
