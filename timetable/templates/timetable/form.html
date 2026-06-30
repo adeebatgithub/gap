@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block navbar_btns %}
-    <a href="{% url 'academics:academicyear:list' %}"
+    <a href="{% url 'timetable:image:list' %}"
        class="hidden sm:inline-flex items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
         <i class="bi bi-arrow-left"></i> Back to List
     </a>
@@ -33,7 +33,7 @@
             </div>
 
             <div class="p-4 sm:p-6">
-                {% url 'academics:academicyear:list' as cancel_destination %}
+                {% url 'timetable:image:list' as cancel_destination %}
 
                 {% include 'includes/form.html' with form=form show_secondary_btn=True secondary_btn_url=cancel_destination secondary_btn_label="Cancel" %}
             </div>
