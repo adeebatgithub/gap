@@ -8,4 +8,5 @@ app_name = "timetable"
 
 urlpatterns = [
     path('', TimetableImageView.as_view(), name='preview'),
+    path('', include("timetable.image.urls")),
 ]

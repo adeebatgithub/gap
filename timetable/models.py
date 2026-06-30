@@ -34,5 +34,13 @@ class TimetableCell(TimeStampedModel):
 
 
 class TimetableImage(TimeStampedModel):
-    day = models.CharField(max_length=10)
+    DAYS_OF_WEEK = (
+        ('monday', 'Monday'),
+        ('tuesday', 'Tuesday'),
+        ('wednesday', 'Wednesday'),
+        ('thursday', 'Thursday'),
+        ('friday', 'Friday'),
+        ('saturday', 'Saturday'),
+    )
+    day = models.CharField(max_length=10, choices=DAYS_OF_WEEK)
     image = models.ImageField(upload_to='images/timetable/')

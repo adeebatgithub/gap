@@ -1,8 +1,8 @@
 {% extends 'includes/base.html' %}
 
 {% block navbar_btns %}
-    <a href="{% url 'timetable:create' %}"
-       class="inline-flex justify-center items-center gap-2 bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
+    <a href="{% url 'timetable:image:create' %}"
+       class="sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
         <i class="bi bi-plus-circle"></i> <span class="hidden sm:inline">Add Timetable</span>
     </a>
 {% endblock %}
@@ -12,46 +12,45 @@
 {% endblock %}
 
 {% block content %}
-    <div class="space-y-6">
+    <div class="space-y-6 transition-colors duration-200">
 
-        <!-- Grid Container -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for timetable in timetables %}
+            {% for timetable in timetable_images %}
                 <div class="bg-white dark:bg-charcoal-800 rounded-xl shadow-sm dark:shadow-none border border-gray-100 dark:border-charcoal-700 p-4 transition-all duration-200 hover:shadow-md dark:hover:border-charcoal-600">
 
-                    <!-- Day Header -->
                     <div class="mb-3 flex justify-between items-center">
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ timetable.day|title }}</h3>
-                        <span class="text-xs bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 px-2 py-1 rounded-md border border-indigo-100 dark:border-indigo-800/50">
-                            Timetable
-                        </span>
                     </div>
 
-                    <!-- Timetable Image -->
                     <div class="aspect-video w-full overflow-hidden rounded-lg bg-gray-50 dark:bg-charcoal-900 border border-gray-100 dark:border-charcoal-700">
                         <img src="{{ timetable.image.url }}"
                              alt="{{ timetable.day }} Timetable"
                              class="h-full w-full object-contain p-1 hover:scale-105 transition-transform duration-300">
                     </div>
 
-                    <!-- Optional Actions Row -->
-                    <div class="mt-4 flex gap-2">
+                    <div class="mt-4 grid grid-cols-2 gap-2">
                         <a href="{{ timetable.image.url }}" target="_blank"
-                           class="flex-1 text-center text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-charcoal-700 hover:bg-gray-200 dark:hover:bg-charcoal-600 py-2 rounded-lg transition-colors">
-                            <i class="bi bi-arrows-fullscreen mr-1"></i> View Full
+                           class="sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
+                            <i class="bi bi-arrows-fullscreen"></i> View
+                        </a>
+
+                        <a href="{% url 'timetable:image:update' timetable.pk %}"
+                           class="flex justify-center items-center gap-2 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/40 px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                            <i class="bi bi-pencil"></i> Edit
                         </a>
                     </div>
                 </div>
             {% empty %}
-                <!-- Empty State -->
-                <div class="col-span-full py-20 flex flex-col items-center justify-center text-center bg-white dark:bg-charcoal-800 rounded-2xl border border-dashed border-gray-200 dark:border-charcoal-700">
-                    <div class="h-16 w-16 bg-gray-50 dark:bg-charcoal-700 rounded-full flex items-center justify-center mb-4">
+                <div class="col-span-full py-20 flex flex-col items-center justify-center text-center bg-white dark:bg-charcoal-800 rounded-2xl border border-dashed border-gray-200 dark:border-charcoal-700 transition-colors">
+                    <div class="h-16 w-16 bg-gray-50 dark:bg-charcoal-700 rounded-full flex items-center justify-center mb-4 transition-colors">
                         <i class="bi bi-calendar-x text-3xl text-gray-400 dark:text-gray-500"></i>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">No timetables found</h3>
-                    <p class="text-gray-500 dark:text-gray-400 mt-1">Get started by adding a new timetable.</p>
-                    <a href="{% url 'timetable:create' %}"
-                       class="mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white transition-colors">No timetables
+                        found</h3>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1 transition-colors">Get started by adding a new
+                        timetable.</p>
+                    <a href="{% url 'timetable:image:create' %}"
+                       class="mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline transition-colors">
                         + Create your first timetable
                     </a>
                 </div>
