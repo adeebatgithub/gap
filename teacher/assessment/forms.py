@@ -1,32 +1,30 @@
 from django import forms
 
 from .models import Assessment
-from academics.subject.models import Subject
+from academics.subject.models import Subject, SubjectClass
 from academics.schoolclass.models import SchoolClass
 
 
 class AssessmentForm(forms.ModelForm):
     class Meta:
         model = Assessment
-        fields = ['subject', 'school_class', 'date']
+        fields = "__all__"
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
         }
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        self.fields['subject'].queryset = Subject.objects.order_by('name')
-        self.fields['school_class'].queryset = SchoolClass.objects.order_by('name')
+        self.fields['subject_class'].queryset = SubjectClass.objects.filter(
+            teacher__user=user
+        ).order_by('subject__name')
 
 
 class AssessmentUpdateForm(forms.ModelForm):
     class Meta:
         model = Assessment
-        fields = ['subject', 'date']
+        fields = "__all__"
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['subject'].queryset = Subject.objects.order_by('name')

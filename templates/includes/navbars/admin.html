@@ -50,7 +50,7 @@
         Stats
     </a>
 
-    <a href="{% url 'timetable:preview' %}"
+    <a href="{% url 'timetable:image:list' %}"
        class="group flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-all duration-200
               {% if request.resolver_match.app_name == 'timetable' %}bg-gray-900 text-white shadow-md shadow-gray-900/10 dark:bg-charcoal-900 dark:shadow-none{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-charcoal-700 dark:hover:text-white{% endif %}"
        {% if request.resolver_match.app_name == 'timetable' %}aria-current="page"{% endif %}>

@@ -16,7 +16,7 @@ class TimetableImageView(TemplateView):
     template_name = "timetable/old/image.html"
 
     def get_table(self):
-        today = datetime.today().strftime('%A')
+        today = datetime.today().strftime('%A').lower()
         try:
             table = TimetableImage.objects.get(day=today)
         except TimetableImage.DoesNotExist:

@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block navbar_btns %}
-    <a href="{% url 'academics:assessment:list' %}"
+    <a href="{% url 'teacher:assessment:list' %}"
        class="hidden sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
         <i class="bi bi-arrow-left"></i> Back to Assessments
     </a>
@@ -25,7 +25,7 @@
                         <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight transition-colors">{{ assessment.subject.name|title }}</h2>
                         <p class="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mt-0.5 sm:mt-1 transition-colors">
                             Class: <span
-                                class="text-gray-700 dark:text-gray-300">{{ assessment.school_class.name }}</span>
+                                class="text-gray-700 dark:text-gray-300">{{ assessment.subject_class.school_class }}</span>
                         </p>
                     </div>
                 </div>
@@ -41,22 +41,16 @@
                 <dl class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
                     <div class="flex justify-between sm:justify-start sm:gap-4 items-center">
                         <dt class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-1.5 transition-colors">
-                            <i class="bi bi-calendar3 text-gray-400 dark:text-gray-500"></i> Academic Year
+                            <i class="bi bi-calendar3 text-gray-400 dark:text-gray-500"></i> Total Mark
                         </dt>
-                        <dd class="text-sm text-gray-900 dark:text-gray-200 font-medium transition-colors">{{ assessment.academic_year }}</dd>
-                    </div>
-                    <div class="flex justify-between sm:justify-start sm:gap-4 items-center">
-                        <dt class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-1.5 transition-colors">
-                            <i class="bi bi-people text-gray-400 dark:text-gray-500"></i> Total Students
-                        </dt>
-                        <dd class="text-sm text-gray-900 dark:text-gray-200 font-medium transition-colors">{{ grades|length }}</dd>
+                        <dd class="text-sm text-gray-900 dark:text-gray-200 font-medium transition-colors">{{ assessment.mark }}</dd>
                     </div>
                 </dl>
             </div>
         </div>
 
         <!-- Grading Form -->
-        <form method="POST" action="{% url 'academics:assessment:grade' assessment.pk %}" id="grading-form"
+        <form method="POST" action="{% url 'teacher:assessment:grade' assessment.pk %}" id="grading-form"
               class="bg-transparent sm:bg-white dark:sm:bg-charcoal-800 sm:shadow-sm dark:sm:shadow-none sm:rounded-xl sm:border sm:border-gray-100 dark:sm:border-charcoal-700 overflow-hidden transition-colors">
             {% csrf_token %}
 
@@ -120,7 +114,7 @@
             {% if grades %}
                 <div class="bg-gray-50/80 dark:bg-charcoal-900/50 border-t border-gray-100 dark:border-charcoal-700 p-4 sm:px-8 sm:py-4 flex justify-end mt-4 sm:mt-0 rounded-xl sm:rounded-none sm:rounded-b-xl transition-colors">
                     <button type="submit"
-                            class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 px-6 py-3 sm:py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-md dark:shadow-none">
+                            class="sm:inline-flex w-full py-3 justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
                         <i class="bi bi-save"></i> Save Marks
                     </button>
                 </div>

@@ -1,0 +1,27 @@
+<nav class="md:hidden fixed bottom-4 left-4 right-4 z-50 py-2 px-2 shadow-xl shadow-gray-200/50 dark:shadow-none bg-white dark:bg-charcoal-800 backdrop-blur-md border border-gray-100 dark:border-charcoal-700 rounded-3xl flex justify-around items-center transition-colors duration-300">
+
+
+    <a href="{% url 'timetable:preview' %}"
+       class="flex flex-col items-center justify-center p-2 text-xs font-medium w-full rounded-2xl active:scale-95 transition-all duration-200 {% if 'timetable' in request.resolver_match.app_name %}text-indigo-600 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-900/20{% else %}text-gray-500 dark:text-gray-400{% endif %}">
+        <i class="bi bi-calendar-week text-lg mb-0.5"></i>
+        <span class="text-[10px]">Timetable</span>
+    </a>
+
+    <a href="{% url 'teacher:attendance:list' %}"
+       class="flex flex-col items-center justify-center p-2 text-xs font-medium w-full rounded-2xl active:scale-95 transition-all duration-200 {% if 'attendance' in request.resolver_match.app_name %}text-indigo-600 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-900/20{% else %}text-gray-500 dark:text-gray-400{% endif %}">
+        <i class="bi bi-journal-check text-lg mb-0.5"></i>
+        <span class="text-[10px]">Attendance</span>
+    </a>
+
+    <a href="{% url 'teacher:assessment:list' %}"
+       class="flex flex-col items-center justify-center p-2 text-xs font-medium w-full rounded-2xl active:scale-95 transition-all duration-200 {% if 'assessment' in request.resolver_match.app_name %}text-indigo-600 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-900/20{% else %}text-gray-500 dark:text-gray-400{% endif %}">
+        <i class="bi bi-clipboard-check text-lg mb-0.5"></i>
+        <span class="text-[10px]">Assessment</span>
+    </a>
+
+    <a href="{% url 'teacher:profile' %}"
+       class="flex flex-col items-center justify-center p-2 text-xs font-medium w-full rounded-2xl active:scale-95 transition-all duration-200 {% if request.resolver_match.url_name == 'profile' %}text-indigo-600 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-900/20{% else %}text-gray-500 dark:text-gray-400{% endif %}">
+        <i class="bi bi-person text-lg mb-0.5"></i>
+        <span class="text-[10px]">Profile</span>
+    </a>
+</nav>
