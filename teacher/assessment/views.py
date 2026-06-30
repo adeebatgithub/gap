@@ -18,12 +18,24 @@ class AssessmentListView(ListView):
 
     def get_filters(self):
         filters = {}
-        if self.request.GET.get('date'):
-            filters['date'] = self.request.GET.get('date')
+        if date:=self.request.GET.get('month'):
+            year, month_num = date.split("-")
+            filters.update({
+                'date__month': month_num,
+                'date__year': year,
+            })
         else:
-            filters['date'] = timezone.localdate()
+            filters.update({
+                'date__month': timezone.localdate().month,
+                'date__year': timezone.localdate().year,
+            })
 
         return filters
+
+    def get_template_names(self):
+        if self.request.htmx:
+            return ["teacher/assessments/partial_list.html"]
+        return super().get_template_names()
 
     def get_queryset(self):
         return super().get_queryset().select_related(
@@ -119,6 +131,9 @@ class GradeAssessmentView(View):
 
             for grade in grades:
                 mark = request.POST.get(f'grade_{grade.pk}')
+                if int(mark) > assessment.mark:
+                    messages.error(request, 'Mark cannot be greater than total mark')
+                    return reverse_lazy('teacher:assessment:detail', kwargs={'pk': self.kwargs['pk']})
                 grade.marks = int(mark)
                 grade.save()
         messages.success(request, "Assessment saved successfully!")
