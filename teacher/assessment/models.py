@@ -13,10 +13,11 @@ class Assessment(TimeStampedModel):
         ("seminar", "Seminar"),
         ("written exam", "Written exam"),
     )
+    name = models.CharField(max_length=100, null=True, blank=True)
     subject_class = models.ForeignKey(SubjectClass, on_delete=models.CASCADE)
     date = models.DateField()
     assessment_type = models.CharField(choices=CHOICES, max_length=20)
-    mark = models.IntegerField(default=0)
+    mark = models.IntegerField()
 
     def __str__(self):
         return self.subject_class

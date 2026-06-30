@@ -11,6 +11,7 @@ from openpyxl.workbook.workbook import Workbook
 
 from academics.enrollment.models import Enrollment
 from academics.schoolclass.models import SchoolClass
+from academics.subject.models import SubjectClass
 from controller.utils import get_academic_year
 from teacher.attendance.models import Session, Attendance
 from teacher.teacher.models import Teacher
@@ -36,6 +37,9 @@ class SessionListView(PermissionRequiredMixin, ListView):
             filters['date'] = self.request.GET.get('date')
         else:
             filters['date'] = timezone.localdate()
+
+        if self.request.GET.get('class'):
+            filters['subject_class__school_class_id'] = self.request.GET.get('class')
 
         return filters
 

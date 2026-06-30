@@ -217,6 +217,10 @@
                 sidebar.classList.toggle('-translate-x-full');
                 backdrop.classList.toggle('hidden');
                 document.body.classList.toggle('overflow-hidden');
+                const bottomNav = document.getElementById("bottom-nav")
+                if (bottomNav) {
+                    bottomNav.classList.add("hidden")
+                }
             }
         }
 
@@ -224,6 +228,10 @@
             sidebar.classList.add('-translate-x-full');
             backdrop.classList.add('hidden');
             document.body.classList.remove('overflow-hidden');
+            const bottomNav = document.getElementById("bottom-nav")
+            if (bottomNav) {
+                bottomNav.classList.remove("hidden")
+            }
         }
 
         if (toggleBtn) toggleBtn.addEventListener('click', handleSidebarToggle);
