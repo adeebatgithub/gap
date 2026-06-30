@@ -13,7 +13,7 @@ class Assessment(TimeStampedModel):
         ("seminar", "Seminar"),
         ("written exam", "Written exam"),
     )
-    subject_class = models.ForeignKey(SubjectClass, on_delete=models.CASCADE, default=0)
+    subject_class = models.ForeignKey(SubjectClass, on_delete=models.CASCADE)
     date = models.DateField()
     assessment_type = models.CharField(choices=CHOICES, max_length=20)
     mark = models.IntegerField(default=0)
