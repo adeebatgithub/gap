@@ -1,9 +1,9 @@
 {% extends 'includes/base.html' %}
 
 {% block navbar_btns %}
-    <a href="{% url 'teacher:attendance:create' %}"
+    <a href="{% url 'teacher:assessment:create' %}"
        class="sm:inline-flex justify-center items-center gap-2 bg-white dark:bg-charcoal-800 border border-gray-300 dark:border-charcoal-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-charcoal-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm dark:shadow-none">
-        <i class="bi bi-calendar-plus"></i> <span class="hidden sm:inline">Add Session</span>
+        <i class="bi bi-calendar-plus"></i> <span class="hidden sm:inline">Add Assessment</span>
     </a>
 {% endblock %}
 
@@ -14,7 +14,7 @@
 {% block content %}
     <!-- Filter Section -->
     <div class="bg-white dark:bg-charcoal-800 p-4 rounded-xl shadow-sm dark:shadow-none mb-6 border border-gray-50 dark:border-charcoal-700 print:hidden transition-colors duration-200">
-        <form hx-get="{% url 'teacher:attendance:list' %}"
+        <form hx-get="{% url 'teacher:assessment:list' %}"
               hx-target="#hx-list-table"
               hx-swap="innerHTML"
               hx-trigger="change"
