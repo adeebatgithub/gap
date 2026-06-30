@@ -16,6 +16,7 @@ class Assessment(TimeStampedModel):
     subject_class = models.ForeignKey(SubjectClass, on_delete=models.CASCADE)
     date = models.DateField()
     assessment_type = models.CharField(choices=CHOICES, max_length=20)
+    mark = models.IntegerField(default=0)
 
     def __str__(self):
         return self.subject_class

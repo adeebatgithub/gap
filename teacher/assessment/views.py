@@ -2,11 +2,13 @@ from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 
-from .models import Assessment, Grade
-from academics.enrollment.models import Enrollment, Student
+from academics.enrollment.models import Enrollment
+from attendance.utils import get_leafnodes
 from .forms import AssessmentForm, AssessmentUpdateForm
+from .models import Assessment, Grade
 
 
 class AssessmentListView(ListView):
@@ -14,9 +16,23 @@ class AssessmentListView(ListView):
     template_name = 'teacher/assessments/list.html'
     context_object_name = 'assessments'
 
+    def get_filters(self):
+        filters = {}
+        if self.request.GET.get('date'):
+            filters['date'] = self.request.GET.get('date')
+        else:
+            filters['date'] = timezone.localdate()
+
+        return filters
+
     def get_queryset(self):
-        return super().get_queryset().filter(
+        return super().get_queryset().select_related(
+            "subject_class",
+            "subject_class__school_class",
+            "subject_class__subject",
+        ).filter(
             subject_class__teacher__user=self.request.user,
+            **self.get_filters(),
         )
 
 
@@ -28,7 +44,10 @@ class AssessmentDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            "grades": Grade.objects.filter(assessment=self.object).order_by('student__reg_number'),
+            "grades": Grade.objects.select_related(
+                "assessment",
+                "student"
+            ).filter(assessment=self.object).order_by('student__reg_number'),
         })
         return context
 
@@ -37,17 +56,29 @@ class AssessmentCreateView(CreateView):
     model = Assessment
     form_class = AssessmentForm
     template_name = 'teacher/assessments/form.html'
-    success_url = reverse_lazy('teacher:assessment:list')
+
+    def get_success_url(self):
+        return reverse_lazy('teacher:assessment:detail', kwargs={'pk': self.object.pk})
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def get_initial(self):
+        return {
+            "date": timezone.localdate(),
+        }
 
     def form_valid(self, form):
         with transaction.atomic():
             self.object = form.save()
-            students = Student.objects.filter(
-                id__in=Enrollment.objects.filter(school_class=self.object.school_class).values("student_id")
+            enrollments = Enrollment.objects.filter(
+                school_class__in=get_leafnodes(self.object.subject_class.school_class)
             )
-            for student in students:
+            for enrollment in enrollments:
                 Grade.objects.create(
-                    student=student,
+                    student_id=enrollment.student_id,
                     assessment=self.object,
                 )
         return redirect(self.get_success_url())
@@ -63,7 +94,7 @@ class AssessmentUpdateView(UpdateView):
 class AssessmentDeleteView(DeleteView):
     http_method_names = ("post",)
     model = Assessment
-    success_url = reverse_lazy('academics:assessment:list')
+    success_url = reverse_lazy('teacher:assessment:list')
 
     def delete(self, request, *args, **kwargs):
         Grade.objects.filter(assessment=self.object).delete()
