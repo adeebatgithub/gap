@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 
 from academics.enrollment.models import Enrollment
-from attendance.utils import get_leafnodes
+from teacher.attendance.utils import get_leafnodes
 from .forms import AssessmentForm, AssessmentUpdateForm
 from .models import Assessment, Grade
 
