@@ -71,10 +71,10 @@
 
                         <div class="flex items-center gap-3">
                             <div class="h-10 w-10 rounded-full bg-gray-100 dark:bg-charcoal-700 flex items-center justify-center text-gray-500 dark:text-gray-400 flex-shrink-0 transition-colors">
-                                <span class="text-xs font-bold">{{ grade.student.roll_number|default:"-" }}</span>
+                                <span class="text-xs font-bold">{{ grade.student.reg_number|default:"-" }}</span>
                             </div>
                             <div>
-                                <p class="text-base font-semibold text-gray-900 dark:text-white transition-colors">{{ grade.student.name }}</p>
+                                <p class="text-base font-semibold text-gray-900 dark:text-white transition-colors">{{ grade.student.name|title }}</p>
                                 {% if grade.marks == 0 %}
                                     <p class="text-xs text-orange-500 dark:text-orange-400 font-medium mt-0.5 transition-colors">
                                         <i

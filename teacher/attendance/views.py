@@ -72,7 +72,7 @@ class SessionDetailView(PermissionRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         print(get_leafnodes(self.object.subject_class.school_class))
         context.update({
-            "attendances": Attendance.objects.select_related("student").filter(session=self.object),
+            "attendances": Attendance.objects.select_related("student").filter(session=self.object).order_by("student__name"),
         })
         return context
 

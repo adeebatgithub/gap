@@ -110,18 +110,19 @@
     </table>
 
     <div class="sm:hidden space-y-4">
+        <!-- Session List -->
         {% for session in sessions %}
             <div class="mobile-card bg-white dark:bg-charcoal-800 rounded-xl shadow-sm dark:shadow-none border border-transparent dark:border-charcoal-700 overflow-hidden transition-colors duration-200">
                 <div class="flex justify-between items-center px-4 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-charcoal-700/50 transition-colors"
                      onclick="this.classList.toggle('is-expanded'); this.closest('.mobile-card').classList.toggle('is-expanded')">
 
                     <div class="flex items-center gap-3">
-                        <div class="h-10 w-10 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 flex-shrink-0 transition-colors">
+                        <div class="h-10 w-10 rounded-full bg-gray-100 dark:bg-charcoal-700 flex items-center justify-center text-gray-700 dark:text-gray-300 flex-shrink-0 transition-colors">
                             <i class="bi bi-calendar-event"></i>
                         </div>
                         <a href="{% url 'teacher:attendance:detail' session.pk %}"
                            onclick="event.stopPropagation();"
-                           class="font-medium text-gray-900 dark:text-white text-base hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
+                           class="font-medium text-gray-900 dark:text-white text-base hover:text-emerald-600 dark:hover:text-emerald-400 hover:underline transition-colors"
                            title="View Session Details">
                             {{ session.subject_class.school_class }}
                         </a>
@@ -149,7 +150,7 @@
 
                         <div class="flex flex-wrap items-center gap-2 px-4 py-4 bg-gray-50 dark:bg-charcoal-900/50 border-t border-gray-100 dark:border-charcoal-700 rounded-b-xl transition-colors">
                             <a href="{% url 'teacher:attendance:detail' session.pk %}"
-                               class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-md transition-colors focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-500 outline-none"
+                               class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 text-xs font-medium text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-charcoal-700 hover:bg-gray-300 dark:hover:bg-charcoal-600 rounded-md transition-colors focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-500 outline-none"
                                title="View Details">
                                 <i class="bi bi-eye"></i> View
                             </a>
@@ -176,6 +177,7 @@
                 </div>
             </div>
         {% empty %}
+            <!-- Empty State -->
             <div class="bg-white dark:bg-charcoal-800 rounded-xl shadow-sm dark:shadow-none border border-transparent dark:border-charcoal-700 px-6 py-12 text-center text-gray-500 dark:text-gray-400 transition-colors">
                 <div class="flex flex-col items-center justify-center">
                     <div class="h-16 w-16 bg-gray-50 dark:bg-charcoal-700 rounded-full flex items-center justify-center mb-3 transition-colors">
@@ -183,13 +185,19 @@
                     </div>
                     <p class="text-base font-medium text-gray-900 dark:text-white transition-colors">No sessions
                         found</p>
-                    <p class="text-sm mt-1">Get started by scheduling a new class session.</p>
-                    <a href="{% url 'teacher:attendance:create' %}"
-                       class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
-                        <i class="bi bi-plus"></i> Schedule your first session
-                    </a>
+                    <p class="text-sm mt-1">Tap the dashed card below to schedule your first session.</p>
                 </div>
             </div>
         {% endfor %}
+        <!-- Dashed Card -->
+        <a href="{% url 'teacher:attendance:create' %}"
+           class="group w-full flex flex-col justify-center items-center gap-2 px-4 py-5 border-2 border-dashed border-gray-300 dark:border-charcoal-700 rounded-xl bg-transparent hover:bg-emerald-50 dark:hover:bg-emerald-900/10 hover:border-emerald-400 dark:hover:border-emerald-500/50 transition-all duration-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 dark:focus:ring-offset-charcoal-900">
+            <div class="h-10 w-10 rounded-full bg-gray-100 dark:bg-charcoal-800 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/30 flex items-center justify-center text-gray-500 dark:text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors shadow-sm">
+                <i class="bi bi-plus-lg text-lg"></i>
+            </div>
+            <span class="text-sm font-sm text-gray-600 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+            Schedule New Session
+        </span>
+        </a>
     </div>
 </div>

@@ -190,15 +190,22 @@
                     <div class="h-16 w-16 bg-gray-50 dark:bg-charcoal-700 rounded-full flex items-center justify-center mb-3 transition-colors">
                         <i class="bi bi-calendar-x text-3xl text-gray-400 dark:text-gray-500"></i>
                     </div>
-                    <p class="text-base font-medium text-gray-900 dark:text-white transition-colors">No assessments
-                        found</p>
-                    <p class="text-sm mt-1">Get started by Adding a new class assessment.</p>
-                    <a href="{% url 'teacher:attendance:create' %}"
-                       class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
-                        <i class="bi bi-plus"></i> Add your first assessment
-                    </a>
+                    <p class="text-base font-medium text-gray-900 dark:text-white transition-colors">
+                        No Assessment found
+                    </p>
+                    <p class="text-sm mt-1">Tap the dashed card below to Add your first assessment.</p>
                 </div>
             </div>
         {% endfor %}
+        <!-- Dashed Card -->
+        <a href="{% url 'teacher:attendance:create' %}"
+           class="group w-full flex flex-col justify-center items-center gap-2 px-4 py-5 border-2 border-dashed border-gray-300 dark:border-charcoal-700 rounded-xl bg-transparent hover:bg-emerald-50 dark:hover:bg-emerald-900/10 hover:border-emerald-400 dark:hover:border-emerald-500/50 transition-all duration-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 dark:focus:ring-offset-charcoal-900">
+            <div class="h-10 w-10 rounded-full bg-gray-100 dark:bg-charcoal-800 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/30 flex items-center justify-center text-gray-500 dark:text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors shadow-sm">
+                <i class="bi bi-plus-lg text-lg"></i>
+            </div>
+            <span class="text-sm font-sm text-gray-600 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+            Add New Assessment
+        </span>
+        </a>
     </div>
 </div>
