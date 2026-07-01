@@ -59,7 +59,7 @@ class AssessmentDetailView(DetailView):
             "grades": Grade.objects.select_related(
                 "assessment",
                 "student"
-            ).filter(assessment=self.object).order_by('student__reg_number'),
+            ).filter(assessment=self.object).order_by('student__name'),
         })
         return context
 
